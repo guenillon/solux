@@ -1,0 +1,14 @@
+{% extends "JPISoluxBundle:Form:layout_liste_entity.html.twig" %}
+
+{% block liste_entity_table_data %}
+	<thead>
+		<tr>
+			<th>Nom</th>
+		</tr>
+	</thead>
+	{% for item in liste %}
+	<tr class="clickableRow" data-href="{{ path( pathShow, { 'id': item.id }) }}">
+		<td>{{ item.nom }}</td>
+	</tr>
+	{% endfor %}
+{% endblock liste_entity_table_data %}

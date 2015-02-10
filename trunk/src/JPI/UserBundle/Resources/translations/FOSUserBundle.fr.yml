@@ -1,0 +1,27 @@
+# Security
+"Bad credentials.": Nom d'utilisateur ou mot de passe incorrect
+
+security:
+    login:
+        username: "Nom d'utilisateur"
+        password: "Mot de passe"
+        jpi_forgot_pass: "Mot de passe oublié ?"
+
+# Form field labels
+form:
+    group_name: "Nom du groupe"
+    username: "Nom d'utilisateur"
+    email: "Adresse e-mail"
+    current_password: "Mot de passe actuel"
+    password: "Mot de passe"
+    password_confirmation: "Vérification"
+    new_password: "Nouveau mot de passe"
+    new_password_confirmation: "Vérification"
+    
+resetting:        
+    request:
+        username: "Nom d'utilisateur ou adresse e-mail"
+
+delete:
+    flash:
+        success: "L'utilisateur a été supprimé avec succès"

@@ -1,0 +1,91 @@
+{# app/Resources/views/layout.html.twig #}
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}Pain d'Epices{% endblock %}</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+		
+		<link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css">
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+
+		{% stylesheets 'bundles/user/css/main.css' %}
+		  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+		{% endstylesheets %}
+	</head>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="{{ path("home") }}">Pain d'Épices</a>
+					</div>
+				  	<ul class="nav navbar-nav">
+				  		{% if is_granted('ROLE_ADMIN') %}
+						<li> <a href="{{ path("jpi_liste_user") }}">Utilisateurs</a> </li>
+						{% endif %}
+						{% if not is_granted('ROLE_ADMIN') and is_granted('ROLE_USER') %}
+						<li> <a href="{{ path("jpi_solux_caisse") }}">Caisse</a> </li>
+						<li> <a href="{{ path("jpi_solux_famille") }}">Familles</a> </li>
+						<li class="dropdown"> 
+						    <a data-toggle="dropdown" href="#">Statistiques <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Achat par famille</a></li>
+								<li><a href="#">Vente de produit</a></li>
+								<li><a href="#">Familles</a></li>
+							</ul>
+						</li>
+						<li class="dropdown"> 
+						    <a data-toggle="dropdown" href="#">Paramétrages <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path("jpi_solux_categorie") }}">Catégories</a></li>
+								<li><a href="{{ path("jpi_solux_produit") }}">Produits</a></li>
+								<li><a href="{{ path("jpi_solux_montant_max_achat") }}">Montant maximum d'achat</a></li>
+								<li><a href="{{ path("jpi_solux_taux_participation") }}">Taux de participation</a></li>
+								<li><a href="{{ path('jpi_solux_statut_professionnel') }}">Statut professionnel</a></li>
+							</ul>
+						</li>
+						{% endif %}
+		 			</ul>
+		 			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown"> 
+							<a data-toggle="dropdown" href="#">{{ app.user.username }} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path("fos_user_profile_show") }}"><span class="glyphicon glyphicon-user"></span> Mon compte</a></li>
+								<li class="divider"></li>
+								<li><a href="{{ path("fos_user_security_logout") }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+							</ul>
+						</li>
+		 			</ul>
+		 			{% endif %}
+				</div>
+      		</nav>
+	    {% block body %}
+	    {% endblock %}
+		</div>
+			
+	    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+	
+		{% javascripts 'bundles/user/js/main.js' %}
+		  <script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+  	</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "JPIUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+<div class="panel panel-default">
+	<div class="panel-heading clearfix">
+    	<div class="panel-title">
+			<ul class="list-inline">
+        		<li class="col-xs-12">
+           			<h4 class="pull-left">Compte : {{ user.username }}</h4>
+          			<span class="btn-group pull-right"> 
+	    				<a href="{{ path("jpi_user_edit", { 'id': user.id }) }}" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Modifier</a>
+	    				{% if app.user.id != user.id %}
+	    				<a data-toggle="modal" href="#confirm-action" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Supprimer</a>
+	    				{% endif %}
+       				</span>
+				</li>
+			</ul>
+		</div>
+  	</div>
+	<div class="modal fade" id="confirm-action">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">x</button>
+	        <h4 class="modal-title">Supprimer</h4>
+	      </div>
+	      <div class="modal-body">
+	      	Voulez-vous supprimer {{ user.username }} ?
+	      </div>
+	      <div class="modal-footer">
+	        <a href="{{ path("jpi_user_delete", { 'id': user.id }) }}" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Supprimer</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+  	{% include "JPIUserBundle:Profile:show_content.html.twig" %}
+</div>  	
+{% endblock fos_user_content %}

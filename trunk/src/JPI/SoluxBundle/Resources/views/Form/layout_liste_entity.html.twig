@@ -1,0 +1,26 @@
+{% extends "JPISoluxBundle::layout.html.twig" %}
+
+{% block jpi_solux_content %}
+<div class="panel panel-default">
+	<div class="panel-heading clearfix">
+		<div class="panel-title">
+			<ul class="list-inline">
+        		<li class="col-xs-12">
+           			<h4 class="pull-left">{{ entityName|transchoice(nombreEntity) }}</h4>
+          			<span class="btn-group pull-right"> 
+          				<a href="{{ pathAdd }}" class="btn btn-default "><i class="glyphicon glyphicon-plus"></i> {{ 'form.ajouter'|trans }}</a>
+						<a href="{{ path(pathExport, { 'format': "xlsx" }) }}" class="btn btn-default "><i class="glyphicon glyphicon-download"></i> Excel</a>
+						<a href="{{ path(pathExport, { 'format': "csv" }) }}" class="btn btn-default "><i class="glyphicon glyphicon-download"></i> CSV</a>
+       				</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel-body">
+		<table class="jpi_table_data_table table table-striped table-bordered table-responsive table-condensed table-hover">
+			{% block liste_entity_table_data  %}
+			{% endblock liste_entity_table_data %}
+		</table>
+	</div>
+</div>
+{% endblock jpi_solux_content %}

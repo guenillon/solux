@@ -1,0 +1,31 @@
+jpi_liste_user:
+    path:     /
+    defaults: { _controller: "JPIUserBundle:Admin:listeUser" }
+
+jpi_show_user_profile:
+    path:      /user/{id}
+    defaults:  { _controller: "JPIUserBundle:Admin:show" }
+    requirements:
+        id: \d+
+
+jpi_user_add:
+    path:      /add
+    defaults:  { _controller: "JPIUserBundle:Admin:add" }
+
+jpi_user_edit:
+    path:      /edit/{id}
+    defaults:  { _controller: "JPIUserBundle:Admin:edit" }
+    requirements:
+        id: \d+
+
+jpi_user_delete:
+    path:      /delete/{id}
+    defaults:  { _controller: "JPIUserBundle:Admin:delete" }
+    requirements:
+        id: \d+
+
+jpi_user_export:
+    path:      /export.{format}
+    defaults:  { _controller: "JPIUserBundle:Admin:export", format: "%jpi.export.default%" }
+    requirements:
+        format: "%jpi.export.format%"

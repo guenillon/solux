@@ -1,0 +1,89 @@
+form:
+    add:
+        titre: "Ajouter"
+    annuler: "Annuler"
+    enregistrer: "Enregistrer"
+    ajouter: "Ajouter"
+    modifier: "Modifier"
+    supprimer: 
+        titre: "Supprimer"
+        button: "Supprimer"
+    confirm_delete: "Voulez-vous supprimer %entityLabel% ?"
+    duree:
+        jour: "Jour|]1,+Inf]Jours"
+    membre : "Membre|]1,+Inf]Membres"
+
+categorie:
+    liste:
+        titre: "Catégorie|]1,+Inf]Catégories"
+    show:
+        titre: "Catégorie"
+    add:
+        titre: "une catégorie"
+    edit:
+        titre: "Catégorie"
+    export:
+        titre: "Catégories"
+        
+produit:
+    liste:
+        titre: "Produit|]1,+Inf]Produits"
+    show:
+        titre: "Produit"
+        prixFixe:
+            oui: "Oui"
+            non: "Non"
+    add:
+        titre: "un produit"
+    edit:
+        titre: "Produit"
+    export:
+        titre: "Produits"
+        
+statut_professionnel:
+    liste:
+        titre: "Statut|]1,+Inf]Statuts"
+    show:
+        titre: "Statut"
+    add:
+        titre: "un statut"
+    edit:
+        titre: "Statut"
+    export:
+        titre: "Statuts professionel"
+        
+taux_participation:
+    liste:
+        titre: "Taux"
+    show:
+        titre: "Taux"
+    add:
+        titre: "un taux"
+    edit:
+        titre: "Taux"
+    export:
+        titre: "Taux participation"
+        
+montant_max_achat:
+    liste:
+        titre: "Montant maximum d'achat|]1,+Inf]Montants maximum d'achat"
+    show:
+        titre: "Montant"
+    add:
+        titre: "un montant"
+    edit:
+        titre: "Montant"
+    export:
+        titre: "Montants maximum d'achat"
+        
+famille:
+    liste:
+        titre: "Famille|]1,+Inf]Familles"
+    show:
+        titre: "Famille"
+    add:
+        titre: "une famille"
+    edit:
+        titre: "Famille"
+    export:
+        titre: "Familles"

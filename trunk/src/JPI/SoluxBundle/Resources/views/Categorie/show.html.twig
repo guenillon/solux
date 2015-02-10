@@ -1,0 +1,7 @@
+{% extends "JPISoluxBundle:Form:show.html.twig" %}
+{% block jpi_solux_delete_confirm_message %}
+<div class="alert alert-warning">
+	L'ensemble des produits de cette catégorie seront supprimés.
+</div>
+{{ parent() }}
+{% endblock jpi_solux_delete_confirm_message %}
