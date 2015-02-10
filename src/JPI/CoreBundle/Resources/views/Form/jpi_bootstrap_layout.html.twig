@@ -1,0 +1,23 @@
+{% extends 'bootstrap_3_horizontal_layout.html.twig' %}
+
+
+{% block button_widget -%}
+	 {% set attr = attr|merge({class: (attr.class|default('') ~ ' btn btn-default pull-right')|trim}) %}
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><span class="glyphicon {{ jpi_icon_classe }}"></span> {{ label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget %}
+
+{% block submit_widget -%}
+    {% set type = type|default('submit') %}
+    {% set jpi_icon_classe = 'glyphicon-ok' %}
+    {{- block('button_widget') -}}
+{%- endblock submit_widget %}

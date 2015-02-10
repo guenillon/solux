@@ -1,0 +1,10 @@
+services:
+    jpi_user.registration.form.type:
+        class: JPI\UserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: jpi_user_registration }
+    jpi_user.user_profile.form.type:
+        class: JPI\UserBundle\Form\Type\UserProfileFormType
+        arguments: ["@security.context"]
+        tags:
+            - { name: form.type, alias: jpi_user_profile }

@@ -1,0 +1,18 @@
+{% extends "JPISoluxBundle:Form:layout_liste_entity.html.twig" %}
+
+{% block liste_entity_table_data %}
+	<thead>
+		<tr>
+			<th>Reste pour vivre : De</th>
+			<th>À</th>
+			<th>Taux</th>
+		</tr>
+	</thead>
+	{% for item in liste %}
+	<tr class="clickableRow text-right" data-href="{{ path( pathShow, { 'id': item.id }) }}">
+		<td data-sort="{{ item.min }}">{{ item.min|localizedcurrency(currency) }}</td>
+		<td data-sort="{{ item.max }}">{{ item.max|localizedcurrency(currency) }}</td>
+		<td data-sort="{{ item.taux }}">{{ (item.taux * 100)|localizednumber  }} %</td>
+	</tr>
+	{% endfor %}
+{% endblock liste_entity_table_data %}
