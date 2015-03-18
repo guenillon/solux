@@ -18,7 +18,10 @@ class FamilleType extends AbstractType
             ->add('nom')
             ->add('prenomChef')
             ->add('dateEntree')
-            ->add('dateSortie')
+            ->add('dateSortie', 'date', array(
+            		"required" => false,
+			    'empty_value' => '',
+			))
             ->add('recettes', 'money', array(
             		"required" => true
             ))
