@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use JPI\SoluxBundle\Form\LimiteAchatProduitType;
+use JPI\SoluxBundle\Entity\CategorieRepository;
 
 class ProduitType extends AbstractType
 {
@@ -20,7 +21,10 @@ class ProduitType extends AbstractType
             		"label" => "Catégorie",
             		"class" => "JPISoluxBundle:Categorie",
   					'property' => 'nom',
-            		"required" => true
+            		"required" => true,
+            		'query_builder' => function(CategorieRepository $repo) {
+            			return $repo->getOrderedQueryBuilder();
+            		}
             ))
             ->add('nom', 'text', array(
             		"required" => true

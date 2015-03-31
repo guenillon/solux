@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategorieRepository extends EntityRepository
 {
+	public function getOrderedQueryBuilder()
+	{
+		return $this
+		->createQueryBuilder('a')
+		->orderBy('a.nom', 'ASC')
+		;
+	}
 }
