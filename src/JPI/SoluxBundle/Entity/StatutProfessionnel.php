@@ -59,7 +59,7 @@ class StatutProfessionnel extends BaseEntity
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = ucfirst($nom);
 
         return $this;
     }
