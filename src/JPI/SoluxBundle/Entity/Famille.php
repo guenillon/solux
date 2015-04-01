@@ -124,7 +124,7 @@ class Famille extends BaseEntity
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = ucfirst($nom);
 
         return $this;
     }
@@ -147,7 +147,7 @@ class Famille extends BaseEntity
      */
     public function setPrenomChef($prenomChef)
     {
-        $this->prenomChef = $prenomChef;
+        $this->prenomChef = ucfirst($prenomChef);
 
         return $this;
     }
