@@ -5,6 +5,7 @@ namespace JPI\SoluxBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use JPI\SoluxBundle\Entity\StatutProfessionnelRepository;
 
 class FamilleType extends AbstractType
 {
@@ -31,7 +32,10 @@ class FamilleType extends AbstractType
             ->add('statutProfessionnel', 'entity', array(
             		"class" => "JPISoluxBundle:StatutProfessionnel",
   					'property' => 'nom',
-            		"required" => true
+            		"required" => true,
+            		'query_builder' => function(StatutProfessionnelRepository $repo) {
+            			return $repo->getOrderedQueryBuilder();
+            		}
             ))
             ->add('membres', 'collection', array(
             		'type'         => new MembreFamilleType(),
