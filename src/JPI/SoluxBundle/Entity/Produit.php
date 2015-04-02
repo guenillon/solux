@@ -135,7 +135,7 @@ class Produit extends BaseEntity
      */
     public function setNom($nom)
     {
-        $this->nom = ucfirst($nom);
+        $this->nom = ucfirst(strtolower($nom));
 
         return $this;
     }

@@ -84,7 +84,7 @@ class MembreFamille extends BaseEntity
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = ucfirst(strtolower($nom));
 
         return $this;
     }
@@ -107,7 +107,7 @@ class MembreFamille extends BaseEntity
      */
     public function setPrenom($prenom)
     {
-        $this->prenom = $prenom;
+        $this->prenom = ucfirst(strtolower($prenom));
 
         return $this;
     }
