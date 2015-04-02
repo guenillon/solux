@@ -87,3 +87,9 @@ famille:
         titre: "Famille"
     export:
         titre: "Familles"
+        
+membre_famille:
+    show:
+        parent:
+            oui: "Oui"
+            non: "Non"

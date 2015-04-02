@@ -24,8 +24,14 @@
 			<td>{{ ligne.nom }}</td>
 			<td>{{ ligne.prenom }}</td>
 			<td>{{ ligne.dateNaissance|localizeddate('medium', 'none', locale) }}</td>
-			<td>{{ ligne.pourcentageACharge }}</td>
-			<td>{{ ligne.parent }}</td>
+			<td>{{ (ligne.pourcentageACharge * 100)|localizednumber  }} %</td>
+			<td>
+				{% if ligne.parent %}
+					{{ "membre_famille.show.parent.oui"|trans  }}
+				{% else %}
+					{{ "membre_famille.show.parent.non"|trans  }}
+				{% endif %}
+			</td>
 		</tr>
     {%- endfor -%}
     	</tbody>

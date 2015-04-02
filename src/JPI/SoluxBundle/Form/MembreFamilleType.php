@@ -15,11 +15,20 @@ class MembreFamilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('dateNaissance')
-            ->add('pourcentageACharge')
-            ->add('parent')
+            ->add('nom', 'text', array(
+            		"required" => true
+            ))
+            ->add('prenom', 'text', array(
+            		"required" => true
+            ))
+            ->add('dateNaissance', 'birthday')
+            ->add('pourcentageACharge', 'percent', array(
+            		"precision" => 2,
+            		"required" => false
+            ))
+            ->add('parent', 'checkbox', array(
+            		"required" => false
+            ))
         ;
     }
     
