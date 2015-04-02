@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Famille
@@ -298,5 +300,26 @@ class Famille extends BaseEntity
     public function getStatutProfessionnel()
     {
         return $this->statutProfessionnel;
+    }
+    
+    /**
+     * @Assert\Callback
+     */
+    public function validateDateDebutFin(ExecutionContextInterface $context)
+    {
+    	$dF=$this->getDateSortie();
+    	
+    	if( !is_null($dF)) {
+	    	$dO=$this->getDateEntree();
+	    		    	 
+	    	if($dF->format("dd/mm/yy") < $dO->format("dd/mm/yy")){
+	    		$context->addViolationAt(
+	    				'dateEntree',
+	    				'Erreur! la date de sortie est supérieure à la date d\'entrée',
+	    				array(),
+	    				null
+	    		);
+	    	}
+    	}
     }
 }
