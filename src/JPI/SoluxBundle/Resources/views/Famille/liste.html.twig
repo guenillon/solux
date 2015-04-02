@@ -4,11 +4,13 @@
 	<thead>
 		<tr>
 			<th>Nom</th>
+			<th>Prénom</th>
 		</tr>
 	</thead>
 	{% for item in liste %}
 	<tr class="clickableRow" data-href="{{ path( pathShow, { 'id': item.id }) }}">
 		<td>{{ item.nom }}</td>
+		<td>{{ item.prenomChef }}</td>
 	</tr>
 	{% endfor %}
 {% endblock liste_entity_table_data %}
