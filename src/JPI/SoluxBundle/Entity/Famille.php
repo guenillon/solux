@@ -30,6 +30,8 @@ class Famille extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $nom;
 
@@ -37,6 +39,8 @@ class Famille extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="prenomChef", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $prenomChef;
 
@@ -44,6 +48,7 @@ class Famille extends BaseEntity
      * @var \DateTime
      *
      * @ORM\Column(name="dateEntree", type="date")
+     * @Assert\Date()
      */
     protected $dateEntree;
 
@@ -51,6 +56,7 @@ class Famille extends BaseEntity
      * @var \DateTime
      *
      * @ORM\Column(name="dateSortie", type="date", nullable=true)
+     * @Assert\Date()
      */
     protected $dateSortie;
 
@@ -58,6 +64,8 @@ class Famille extends BaseEntity
      * @var integer
      *
      * @ORM\Column(name="numeroCompte", type="integer", nullable=true)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $numeroCompte;
 
@@ -65,6 +73,9 @@ class Famille extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="recettes", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $recettes;
 
@@ -72,6 +83,9 @@ class Famille extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="depenses", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $depenses;
     
@@ -83,6 +97,7 @@ class Famille extends BaseEntity
     
     /**
      * @ORM\OneToMany(targetEntity="JPI\SoluxBundle\Entity\MembreFamille", mappedBy="famille", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     protected $membres;
     

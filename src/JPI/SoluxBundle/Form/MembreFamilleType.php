@@ -16,17 +16,23 @@ class MembreFamilleType extends AbstractType
     {
         $builder
             ->add('nom', 'text', array(
+            		"label" => "Nom",
             		"required" => true
             ))
             ->add('prenom', 'text', array(
+            		"label" => "Prénom",
             		"required" => true
             ))
-            ->add('dateNaissance', 'birthday')
+            ->add('dateNaissance', 'birthday',  array(
+            		"label" => "Date de Naissance"
+            ))
             ->add('pourcentageACharge', 'percent', array(
+            		"label" => "% à charge",
             		"precision" => 2,
             		"required" => false
             ))
             ->add('parent', 'checkbox', array(
+            		"label" => "Parent",
             		"required" => false
             ))
         ;

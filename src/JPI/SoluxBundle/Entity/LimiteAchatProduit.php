@@ -28,7 +28,8 @@ class LimiteAchatProduit extends BaseEntity
      *
      * @ORM\Column(name="nbMembreMin", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreMin;
 
@@ -37,7 +38,8 @@ class LimiteAchatProduit extends BaseEntity
      *
      * @ORM\Column(name="nbMembreMax", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreMax;
 
@@ -46,7 +48,8 @@ class LimiteAchatProduit extends BaseEntity
      *
      * @ORM\Column(name="duree", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $duree;
 
@@ -55,7 +58,8 @@ class LimiteAchatProduit extends BaseEntity
      *
      * @ORM\Column(name="quantiteMax", type="decimal", precision=12, scale=3)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $quantiteMax;
     

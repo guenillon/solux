@@ -16,20 +16,30 @@ class FamilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenomChef')
-            ->add('dateEntree')
+            ->add('nom', 'text', array(
+            		"label" => "Nom"
+            ))
+            ->add('prenomChef', 'text', array(
+            		"label" => "Prénom"
+            ))
+            ->add('dateEntree', 'date', array(
+            		"label" => "Date d'entrée"
+			))
             ->add('dateSortie', 'date', array(
             		"required" => false,
-			    'empty_value' => '',
+			    	"empty_value" => '',
+            		"label" => "Date de sortie"
 			))
             ->add('recettes', 'money', array(
+            		"label" => "Recettes",
             		"required" => true
             ))
             ->add('depenses', 'money', array(
+            		"label" => "Dépenses",
             		"required" => true
             ))
             ->add('statutProfessionnel', 'entity', array(
+            		"label" => "Statut Professionnel",
             		"class" => "JPISoluxBundle:StatutProfessionnel",
   					'property' => 'nom',
             		"required" => true,
@@ -38,6 +48,7 @@ class FamilleType extends AbstractType
             		}
             ))
             ->add('membres', 'collection', array(
+            		"label" => "Membres",
             		'type'         => new MembreFamilleType(),
             		'allow_add'    => true,
             		'allow_delete' => true,

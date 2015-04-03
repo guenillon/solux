@@ -30,6 +30,7 @@ class StatutProfessionnel extends BaseEntity
      *
      * @ORM\Column(name="nom", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $nom;
 

@@ -31,6 +31,7 @@ class Produit extends BaseEntity
      *
      * @ORM\Column(name="nom", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $nom;
 
@@ -54,7 +55,8 @@ class Produit extends BaseEntity
      *
      * @ORM\Column(name="quantite", type="decimal", precision=12, scale=3)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $quantite;
 
@@ -63,6 +65,7 @@ class Produit extends BaseEntity
      *
      * @ORM\Column(name="unite", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $unite;
 
@@ -71,7 +74,8 @@ class Produit extends BaseEntity
      *
      * @ORM\Column(name="prix", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $prix;
 
@@ -92,6 +96,7 @@ class Produit extends BaseEntity
 
     /**
      * @ORM\OneToMany(targetEntity="JPI\SoluxBundle\Entity\LimiteAchatProduit", mappedBy="produit", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     private $limites;
 

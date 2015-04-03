@@ -5,6 +5,8 @@
 <p class="list-group-item">Prénom : {{ famille.prenomChef }}</p>
 <p class="list-group-item">Date d'entrée : {{ famille.dateEntree|localizeddate('medium', 'none', locale) }}</p>
 <p class="list-group-item">Date de sortie : {{famille.dateSortie is empty ? "" : famille.dateSortie|localizeddate('medium', 'none', locale) }}</p>
+<p class="list-group-item">Recettes : {{ famille.recettes|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Dépenses : {{ famille.depenses|localizedcurrency(currency) }}</p>
 <p class="list-group-item">Statut professionnel : {{ famille.statutProfessionnel.nom }}</p>
 {% if famille.membres is not empty %}
 <p class="list-group-item">Membres

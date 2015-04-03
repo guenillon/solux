@@ -28,6 +28,7 @@ class MembreFamille extends BaseEntity
      *
      * @ORM\Column(name="nom", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $nom;
 
@@ -36,6 +37,7 @@ class MembreFamille extends BaseEntity
      *
      * @ORM\Column(name="prenom", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     protected $prenom;
 
@@ -43,6 +45,7 @@ class MembreFamille extends BaseEntity
      * @var \DateTime
      *
      * @ORM\Column(name="dateNaissance", type="date")
+     * @Assert\Date()
      */
     protected $dateNaissance;
 
@@ -51,8 +54,8 @@ class MembreFamille extends BaseEntity
      *
      * @ORM\Column(name="pourcentageACharge", type="decimal", precision=6, scale=4)
      * @Assert\NotBlank()
-     * @Assert\GreaterThanOrEqual(value = 0)
-     * @Assert\LessThanOrEqual(value = 1)
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 1)
      */
     protected $pourcentageACharge;
 

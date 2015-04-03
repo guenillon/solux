@@ -28,7 +28,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="nbMembreAdulteMin", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreAdulteMin;
 
@@ -37,7 +38,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="nbMembreAdulteMax", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreAdulteMax;
 
@@ -46,7 +48,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="nbMembreEnfantMin", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreEnfantMin;
 
@@ -55,7 +58,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="nbMembreEnfantMax", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $nbMembreEnfantMax;
 
@@ -64,7 +68,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="montant", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     protected $montant;
 
@@ -73,7 +78,8 @@ class MontantMaxAchat extends BaseEntity
      *
      * @ORM\Column(name="duree", type="smallint")
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\Type(type="int")
+     * @Assert\Range(min = 0, max = 1000)
      */
     protected $duree;
 
