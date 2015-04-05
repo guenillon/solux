@@ -7,6 +7,7 @@ use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Produit
@@ -315,4 +316,41 @@ class Produit extends BaseEntity
     {
         return $this->categorie;
     }
+    
+    /**
+     * isLimitesValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isLimitesValid(ExecutionContextInterface $context)
+    {
+    	$lLimites = $this->getLimites();
+    	$lLimitesValid = array();
+    	
+    	foreach( $lLimites as $lLimite ) {
+    		if( empty( $lLimitesValid ) ) {
+    			array_push($lLimitesValid, $lLimite);
+    		} else {
+    			foreach( $lLimitesValid as $lLimiteValid ) {
+    				if ( 
+    						($lLimiteValid->getNbMembreMin() <= $lLimite->getNbMembreMin() && $lLimite->getNbMembreMin() <= $lLimiteValid->getNbMembreMax())
+    						|| 
+    						($lLimiteValid->getNbMembreMin() <= $lLimite->getNbMembreMax() && $lLimite->getNbMembreMax() <= $lLimiteValid->getNbMembreMax())
+    						||
+    						($lLimite->getNbMembreMin() <= $lLimiteValid->getNbMembreMin() && $lLimiteValid->getNbMembreMax() <= $lLimite->getNbMembreMax())
+    				) {
+    					$context->addViolationAt(
+    							'limites',
+    							'Les limites ne doivent pas se chevaucher',
+    							array(),
+    							null
+    					);
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    
 }

@@ -5,11 +5,15 @@
 <p class="list-group-item">Nom : {{ produit.nom }}</p>
 <p class="list-group-item">Quantité : {{ produit.quantite|localizednumber }} {{ produit.unite }}</p>
 <p class="list-group-item">Prix : {{ produit.prix|localizedcurrency(currency) }}</p>
-<p class="list-group-item">Prix Fixe : {{ prixFixe }}</p>
+<p class="list-group-item">Prix Fixe : 
+				{% if produit.prixFixe %}
+					{{ "produit.show.prixFixe.oui"|trans  }}
+				{% else %}
+					{{ "produit.show.prixFixe.non"|trans  }}
+				{% endif %}
+</p>
+{% if not produit.limites.empty %}
 <p class="list-group-item">Limites
-{% if produit.limites.empty %}
-	: Aucune limite
-{% else %}
 	<table class="table table-striped table-bordered table-responsive table-condensed table-hover">
 		<thead>
 			<tr>

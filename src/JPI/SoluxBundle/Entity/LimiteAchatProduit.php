@@ -5,6 +5,7 @@ namespace JPI\SoluxBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * LimiteAchatProduit
@@ -194,6 +195,32 @@ class LimiteAchatProduit extends BaseEntity
     public function getProduit()
     {
         return $this->produit;
+    }
+    
+    
+    
+    /**
+     * isNbMembreValid
+     * 
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isNbMembreValid(ExecutionContextInterface $context)
+    {
+    	if($this->nbMembreMax < $this->nbMembreMin) {
+    		$context->addViolationAt(
+    				'nbMembreMin',
+    				'Le min doit être inférieur au max',
+    				array(),
+    				null
+    		);
+    		$context->addViolationAt(
+    				'nbMembreMax',
+    				'Le min doit être inférieur au max',
+    				array(),
+    				null
+    		);
+    	}
     }
 }
 ?>

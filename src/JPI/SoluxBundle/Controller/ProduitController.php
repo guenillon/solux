@@ -6,6 +6,8 @@ use JPI\SoluxBundle\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\Produit;
 use JPI\SoluxBundle\Form\ProduitType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use JPI\SoluxBundle\JPISoluxBundle;
 
 class ProduitController extends EntityController
 {
@@ -35,31 +37,32 @@ class ProduitController extends EntityController
 	public function showAction($id)
 	{
 		$entity = $this->getEntity($id);
-		
-		$translator = $this->get('translator');
-		if($entity->getPrixFixe()) {
-			$PrixFixe = $translator->trans('produit.show.prixFixe.oui');
-		} else {
-			$PrixFixe = $translator->trans('produit.show.prixFixe.non');			
-		}
-		
 		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
 
+		$lProduit = $entity[0];
+		$id = $lProduit->getId();
 		return $this->render($template, array(
-				"entity" => $entity,
-				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $entity->getId())),
-				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $entity->getId())),
+				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $id)),
+				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $id)),
 				"entityName" => $this->entityLabelShow,
-				"entityLabel" => $entity->getNom(),
-				"produit" => $entity,
-				"prixFixe" => $PrixFixe
+				"entityLabel" => $lProduit->getNom(),
+				"produit" => $lProduit
 		));
 	}
 	
 	public function editAction(Request $request, $id)
 	{
 		$entity = $this->getEntity($id);
-		return $this->edit($entity, $request, $this->entityTypeClass, $entity->getNom());
+		$lProduit = $entity[0];
+		return $this->edit($lProduit, $request, $this->entityTypeClass, $lProduit->getNom());
+	}
+	
+	protected function getEntity($id) {
+		$entity = $this->getRepository()->getProduit($id);
+		if (null === $entity) {
+			throw new NotFoundHttpException("L'élément d'id ".$id." n'existe pas.");
+		}
+		return $entity;
 	}
 }
 ?>

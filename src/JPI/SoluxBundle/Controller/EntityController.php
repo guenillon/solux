@@ -61,7 +61,6 @@ abstract class EntityController extends Controller
 	}
 
 	protected function getEntity($id) {
-		$repository = $this->getRepository();
 		$entity = $this->getRepository()->find($id);
 		if (null === $entity) {
 			throw new NotFoundHttpException("L'élément d'id ".$id." n'existe pas.");

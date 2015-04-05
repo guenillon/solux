@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProduitRepository extends EntityRepository
 {
+	public function getProduit($id)
+	{
+		$lQuery = $this
+		->createQueryBuilder('a')
+		->where('a.id = :id')
+		->setParameter('id', $id)
+		->leftJoin('a.limites', 'limites')
+		->addSelect('limites')
+		->join('a.categorie', 'categorie')
+		->addSelect('categorie')
+		->orderBy('limites.nbMembreMin', 'ASC');
+		
+		return $lQuery
+		->getQuery()
+		->getResult()
+		;
+	}
 }
