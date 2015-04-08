@@ -2,3 +2,8 @@ services:
 #    jpi_solux.example:
 #        class: JPI\SoluxBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    jpi_solux.constraint.mma_limite:
+        class: JPI\SoluxBundle\Validator\Constraints\MontantMaximumAchatLimiteValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: validator.constraint_validator, alias: mma_limite }

@@ -342,7 +342,7 @@ class Produit extends BaseEntity
     				) {
     					$context->addViolationAt(
     							'limites',
-    							'Les limites ne doivent pas se chevaucher',
+    							'Les limites ne doivent pas se chevaucher.',
     							array(),
     							null
     					);

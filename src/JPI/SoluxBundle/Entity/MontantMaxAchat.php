@@ -5,12 +5,15 @@ namespace JPI\SoluxBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JPI\SoluxBundle\Validator\Constraints as JPIAssert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * MontantMaxAchat
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="JPI\SoluxBundle\Entity\MontantMaxAchatRepository")
+ * @JPIAssert\MontantMaximumAchatLimite
  */
 class MontantMaxAchat extends BaseEntity
 {
@@ -230,32 +233,23 @@ class MontantMaxAchat extends BaseEntity
     {
         return $this->duree;
     }
-    
+        
     /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
+     * isNbMembreValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
      */
-    public function isNbMembreAdulteMinValid() {
-    	return ($this->nbMembreAdulteMin <= $this->nbMembreAdulteMax);
-    }
-    
-    /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
-     */
-    public function isNbMembreAdulteMaxValid() {
-    	return ($this->nbMembreAdulteMin <= $this->nbMembreAdulteMax);
-    }
-    
-    /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
-     */
-    public function isNbMembreEnfantMinValid() {
-    	return ($this->nbMembreEnfantMin <= $this->nbMembreEnfantMax);
-    }
-    
-    /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
-     */
-    public function isNbMembreEnfantMaxValid() {
-    	return ($this->nbMembreEnfantMin <= $this->nbMembreEnfantMax);
+    public function isNbMembreValid(ExecutionContextInterface $context)
+    {
+    	if($this->nbMembreAdulteMax < $this->nbMembreAdulteMin) {
+    		$context->addViolationAt('nbMembreAdulteMin', 'Le min doit être inférieur au max', array(),	null);
+    		$context->addViolationAt('nbMembreAdulteMax', 'Le min doit être inférieur au max', array(),	null);
+    	}
+
+    	if($this->nbMembreEnfantMax < $this->nbMembreEnfantMin) {
+    		$context->addViolationAt('nbMembreEnfantMin', 'Le min doit être inférieur au max', array(),	null);
+    		$context->addViolationAt('nbMembreEnfantMax', 'Le min doit être inférieur au max', array(),	null);
+    	}
     }
 }
