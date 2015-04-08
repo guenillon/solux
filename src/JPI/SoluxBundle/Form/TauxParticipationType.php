@@ -36,11 +36,7 @@ class TauxParticipationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\TauxParticipation',
-        	'error_mapping' => array(
-        		'minValid' => 'min',
-        		'maxValid' => 'max'
-        	)
+            'data_class' => 'JPI\SoluxBundle\Entity\TauxParticipation'
         ));
     }
 

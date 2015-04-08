@@ -30,7 +30,7 @@ class MontantMaxAchatRepository extends EntityRepository
 		$lId = $montantMaxAchat->getId();
 		if(!is_null($lId) ) {	
 			$lQuery->andWhere(':id != a.id')
-			->setParameter('id', $montantMaxAchat->getId());
+			->setParameter('id', $lId);
 		}
 		
 		return $lQuery

@@ -47,13 +47,7 @@ class MontantMaxAchatType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\MontantMaxAchat',
-        	'error_mapping' => array(
-        		'nbMembreAdulteMinValid' => 'nbMembreAdulteMin',
-        		'nbMembreAdulteMaxValid' => 'nbMembreAdulteMax',
-        		'nbMembreEnfantMinValid' => 'nbMembreEnfantMin',
-        		'nbMembreEnfantMaxValid' => 'nbMembreEnfantMax'
-        	)
+            'data_class' => 'JPI\SoluxBundle\Entity\MontantMaxAchat'
         ));
     }
 

@@ -5,12 +5,15 @@ namespace JPI\SoluxBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JPI\SoluxBundle\Validator\Constraints as JPIAssert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * TauxParticipation
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="JPI\SoluxBundle\Entity\TauxParticipationRepository")
+ * @JPIAssert\TauxParticipationLimite
  */
 class TauxParticipation extends BaseEntity
 {
@@ -130,16 +133,16 @@ class TauxParticipation extends BaseEntity
     }
     
     /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
+     * isLimiteValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
      */
-    public function isMinValid() {
-    	return ($this->min <= $this->max);
-    }
-    
-    /**
-     * @Assert\True(message = "Le min doit être inférieur au max")
-     */
-    public function isMaxValid() {
-    	return ($this->min <= $this->max);
+    public function isLimiteValid(ExecutionContextInterface $context)
+    {
+    	if($this->max < $this->min) {
+    		$context->addViolationAt('min', 'Le min doit être inférieur au max', array(),	null);
+    		$context->addViolationAt('max', 'Le min doit être inférieur au max', array(),	null);
+    	}
     }
 }

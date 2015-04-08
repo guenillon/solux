@@ -5,7 +5,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\ORM\EntityManager;
 
-class MontantMaximumAchatLimiteValidator extends ConstraintValidator
+class TauxParticipationLimiteValidator extends ConstraintValidator
 {
 	private $entityManager;
 	
@@ -14,10 +14,10 @@ class MontantMaximumAchatLimiteValidator extends ConstraintValidator
 		$this->entityManager = $entityManager;
 	}
 	
-    public function validate($montantMaxAchat, Constraint $constraint)
+    public function validate($tauxParticipation, Constraint $constraint)
     {
-       	$entities = $this->entityManager->getRepository("JPISoluxBundle:MontantMaxAchat")
-               ->validLimite($montantMaxAchat);
+       	$entities = $this->entityManager->getRepository("JPISoluxBundle:TauxParticipation")
+               ->validLimite($tauxParticipation);
         
         if (!empty($entities)) {
             $this->context->addViolation($constraint->message, array());

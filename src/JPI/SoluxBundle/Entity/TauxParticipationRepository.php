@@ -12,4 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class TauxParticipationRepository extends EntityRepository
 {
+	public function validLimite($tauxParticipation)
+	{
+		$lQuery = $this
+			->createQueryBuilder('a')
+			->where(':min BETWEEN  a.min AND a.max
+				OR :max BETWEEN  a.min AND a.max
+				OR (:min <= a.min AND  a.max <= :max)')
+			->setParameter('min', $tauxParticipation->getMin())
+			->setParameter('max', $tauxParticipation->getMax());
+	
+		$lId = $tauxParticipation->getId();
+		if(!is_null($lId) ) {
+			$lQuery->andWhere(':id != a.id')
+			->setParameter('id', $lId);
+		}
+	
+		return $lQuery
+		->getQuery()
+		->getResult();
+	}
 }

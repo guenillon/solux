@@ -7,3 +7,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: validator.constraint_validator, alias: mma_limite }
+    jpi_solux.constraint.tx_part_limite:
+        class: JPI\SoluxBundle\Validator\Constraints\TauxParticipationLimiteValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: validator.constraint_validator, alias: tx_part_limite }
