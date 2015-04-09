@@ -13,6 +13,14 @@ form:
         jour: "Jour|]1,+Inf]Jours"
     membre : "Membre|]1,+Inf]Membres"
 
+caisse:
+    add:
+        titre: "Nouvel achat"
+        nom: "Nom"
+        prenom: "Prénom"
+        taux_participation: "Taux de participation"
+        montant_max: "Montant maximum"
+
 categorie:
     liste:
         titre: "Catégorie|]1,+Inf]Catégories"

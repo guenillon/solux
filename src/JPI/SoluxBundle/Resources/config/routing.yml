@@ -1,7 +1,13 @@
 jpi_solux_caisse:
     path:     /caisse
-    defaults: { _controller: "JPISoluxBundle:Caisse:listeFamille" }
-    
+    defaults: { _controller: "JPISoluxBundle:Caisse:liste" }
+
+jpi_solux_caisse_add:
+    path:      /caisse/{id}
+    defaults:  { _controller: "JPISoluxBundle:Caisse:add" }
+    requirements:
+        id: \d+
+        
 jpi_solux_famille:
     path:     /parametrage/famille
     defaults: { _controller: "JPISoluxBundle:Famille:liste" }

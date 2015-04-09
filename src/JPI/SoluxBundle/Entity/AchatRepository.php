@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class AchatRepository extends EntityRepository
 {
+	function getTotalAchatSurPeriode( $id, $duree ) {
+		$date = new \DateTime();
+		$lQuery = $this->createQueryBuilder('a');
+		$lQuery
+			->select('sum(a.montant) as total')
+			->where($lQuery->expr()->eq('a.famille', ':id'))
+			->andWhere($lQuery->expr()->between('a.date', ':debut', ':fin'))
+			->setParameter('id', $id)
+			->setParameter('fin', $date->format('Y-m-d H:i:s'))
+			->setParameter('debut', $date->sub(new \DateInterval('P'. $duree .'D'))->format('Y-m-d H:i:s'));
+		
+		return $lQuery
+			->getQuery()
+			->getSingleResult();
+	}
 }

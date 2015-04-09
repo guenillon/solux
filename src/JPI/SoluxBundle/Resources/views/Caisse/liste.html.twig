@@ -16,14 +16,13 @@
 			<thead>
 				<tr>
 					<th>Nom</th>
-				{#	<th>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</th> #}
+					<th>Prénom</th>
 				</tr>
 			</thead>
 			{% for famille in listeFamille %}
-			<tr class="clickableRow" data-href="
-		{#	{{ path('jpi_show_user_profile', { 'id': user.id }) }} #}
-			">
+			<tr class="clickableRow" data-href="{{ path( 'jpi_solux_caisse_add', { 'id': famille.id }) }}">
 				<td>{{ famille.nom }}</td>
+				<td>{{ famille.prenomChef }}</td>
 			</tr>
 			{% endfor %}
 		</table>

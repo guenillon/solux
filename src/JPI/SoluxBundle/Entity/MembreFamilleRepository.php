@@ -12,4 +12,58 @@ use Doctrine\ORM\EntityRepository;
  */
 class MembreFamilleRepository extends EntityRepository
 {
+	public function getMontantMax($id)
+	{
+		/*select * from montantmaxachat b
+		
+		where (
+				select count(1) from membrefamille a
+				where a.famille_id = 1
+				and parent = 1) between b.nbMembreAdulteMin and b.nbMembreAdulteMax
+				AND (
+						select count(1) from membrefamille c
+						where c.famille_id = 1
+						and parent = 0) between b.nbMembreEnfantMin and b.nbMembreEnfantMax
+		*/
+
+		$lSubquery1 = $this->createQueryBuilder('b');
+		$lSubquery1->select($lSubquery1->expr()->count('b.pourcentageACharge'))
+			->where($lSubquery1->expr()->eq('b.famille', ':id'))
+			->andWhere($lSubquery1->expr()->eq('b.parent', 1));
+		
+		$lSubquery2 = $this->createQueryBuilder('c');
+		$lSubquery2->select($lSubquery2->expr()->count('c.pourcentageACharge'))
+			->where($lSubquery2->expr()->eq('c.famille', ':id'))
+			->andWhere($lSubquery2->expr()->eq('c.parent', 1));
+		
+		$lSubquery3 = $this->createQueryBuilder('d');
+		$lSubquery3->select($lSubquery3->expr()->count('d.pourcentageACharge'))
+			->where($lSubquery3->expr()->eq('d.famille', ':id'))
+			->andWhere($lSubquery3->expr()->eq('d.parent', 0));
+		
+		$lSubquery4 = $this->createQueryBuilder('e');
+		$lSubquery4->select($lSubquery4->expr()->count('e.pourcentageACharge'))
+			->where($lSubquery4->expr()->eq('e.famille', ':id'))
+			->andWhere($lSubquery4->expr()->eq('e.parent', 0));
+		
+		$lQuery = $this->_em->createQueryBuilder();
+		$lQuery->select('a')->from('JPI\SoluxBundle\Entity\MontantMaxAchat', 'a')
+			->where($lQuery->expr()->gte(sprintf('(%s)', $lSubquery1->getDQL()), 'a.nbMembreAdulteMin'))
+			->andWhere($lQuery->expr()->lte(sprintf('(%s)', $lSubquery2->getDQL()), 'a.nbMembreAdulteMax'))
+			->andWhere($lQuery->expr()->gte(sprintf('(%s)', $lSubquery3->getDQL()), 'a.nbMembreEnfantMin'))
+			->andWhere($lQuery->expr()->lte(sprintf('(%s)', $lSubquery4->getDQL()), 'a.nbMembreEnfantMax'))
+			->setParameter('id', $id);
+		
+		/*$lQuery->select('b')
+		->from($this->_entityName, 'a')
+		->from('JPI\SoluxBundle\Entity\TauxParticipation', 'b')
+		->where($lQuery->expr()->eq('a.id', ':id'))
+		->andWhere($lQuery->expr()->gte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.min'))
+		->andWhere($lQuery->expr()->lte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.max'))
+		->setParameter('id', $id);*/
+	
+		return $lQuery
+			->getQuery()
+			->getSingleResult();
+	}
 }

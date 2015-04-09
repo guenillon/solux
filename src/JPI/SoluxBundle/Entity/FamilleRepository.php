@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class FamilleRepository extends EntityRepository
 {
+	public function getTauxParticipation($id)
+	{	
+		$lQuery = $this->_em->createQueryBuilder();
+		$lQuery->select('b')
+			->from($this->_entityName, 'a')
+			->from('JPI\SoluxBundle\Entity\TauxParticipation', 'b')
+			->where($lQuery->expr()->eq('a.id', ':id'))
+			->andWhere($lQuery->expr()->gte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.min'))
+			->andWhere($lQuery->expr()->lte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.max'))
+			->setParameter('id', $id);
+
+		return $lQuery
+			->getQuery()
+			->getSingleResult();
+	}
 }
