@@ -22,7 +22,7 @@
 		<![endif]-->
 
 
-		{% stylesheets 'bundles/user/css/main.css' %}
+		{% stylesheets 'css/*' %}
 		  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
 	</head>
@@ -86,7 +86,6 @@
 		<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	
 		{% javascripts 
-			'bundles/user/js/main.js'
 			'js/*'
 		%}
 		  <script type="text/javascript" src="{{ asset_url }}"></script>
