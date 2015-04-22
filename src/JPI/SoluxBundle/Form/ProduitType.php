@@ -32,7 +32,7 @@ class ProduitType extends AbstractType
             ->add('description', 'textarea', array(
             		"required" => false
             ))
-            ->add('codeBarre', 'integer', array(
+            ->add('codeBarre', 'text', array(
             		"required" => false
             ))
             ->add('quantite', 'number', array(

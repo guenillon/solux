@@ -4,12 +4,15 @@ namespace JPI\SoluxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Achat
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="JPI\SoluxBundle\Entity\AchatRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Achat extends BaseEntity
 {
@@ -41,7 +44,35 @@ class Achat extends BaseEntity
      * @ORM\JoinColumn(nullable=false)
      */
     private $famille;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="JPI\SoluxBundle\Entity\AchatDetail", mappedBy="achat", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
+     */
+    protected $detail;
 
+    public function __construct()
+    {
+    	$this->detail = new ArrayCollection();
+    	$this->date = new \Datetime();
+    }
+    
+    public function addDetail(AchatDetail $detail)
+    {
+    	$this->detail[] = $detail;
+    	$detail->setAchat($this);
+    	return $this;
+    }
+    
+    public function removeDetail(AchatDetail $detail)
+    {
+    	$this->detail->removeElement($detail);
+    }
+    
+    public function getDetail()
+    {
+    	return $this->detail;
+    }
 
     /**
      * Get id
@@ -120,5 +151,18 @@ class Achat extends BaseEntity
     public function getFamille()
     {
         return $this->famille;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+    	$this->setDate(new \Datetime());
+    	$lTotal = 0;
+    	foreach($this->detail as $lProduit) {
+    		$lTotal += $lProduit->getPrix();
+    	}
+    	$this->setMontant($lTotal);
     }
 }

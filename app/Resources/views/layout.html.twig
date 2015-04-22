@@ -39,7 +39,7 @@
 						{% endif %}
 						{% if not is_granted('ROLE_ADMIN') and is_granted('ROLE_USER') %}
 						<li> <a href="{{ path("jpi_solux_caisse") }}">Caisse</a> </li>
-						<li> <a href="{{ path("jpi_solux_famille") }}">Familles</a> </li>
+						<li> <a href="{{ path("jpi_solux_famille") }}">Achats</a> </li>
 						<li class="dropdown"> 
 						    <a data-toggle="dropdown" href="#">Statistiques <b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -51,6 +51,7 @@
 						<li class="dropdown"> 
 						    <a data-toggle="dropdown" href="#">Paramétrages <b class="caret"></b></a>
 							<ul class="dropdown-menu">
+								<li><a href="{{ path("jpi_solux_famille") }}">Familles</a></li>
 								<li><a href="{{ path("jpi_solux_categorie") }}">Catégories</a></li>
 								<li><a href="{{ path("jpi_solux_produit") }}">Produits</a></li>
 								<li><a href="{{ path("jpi_solux_montant_max_achat") }}">Montant maximum d'achat</a></li>
@@ -81,10 +82,13 @@
 	    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	
-		{% javascripts 'bundles/user/js/main.js' %}
+		{% javascripts 
+			'bundles/user/js/main.js'
+			'js/*'
+		%}
 		  <script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
   	</body>

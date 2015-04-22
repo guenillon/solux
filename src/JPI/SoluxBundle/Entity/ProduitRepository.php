@@ -29,4 +29,26 @@ class ProduitRepository extends EntityRepository
 		->getResult()
 		;
 	}
+	
+	public function findProduitByParametres($data)
+	{
+		$query = $this->createQueryBuilder('a');
+			
+		// Si la recherche porte sur le codeBarre	
+		if($data['codeBarre'] != '')
+		{
+			$query->andWhere('a.codeBarre = :codeBarre')
+			->setParameter('codeBarre', $data['codeBarre']);
+		}
+	
+		// Si la recherche porte sur le nom	
+		if($data['nom'] != '')
+		{
+			$query->andWhere('a.nom = :nom')
+			->setParameter('nom', $data['nom']);
+		}
+	
+		return $query->getQuery()->getResult();
+	
+	}
 }

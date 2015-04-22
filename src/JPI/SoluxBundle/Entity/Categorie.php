@@ -58,6 +58,11 @@ class Categorie extends BaseEntity
     	return $this;
     }
     
+    public function eraseProduits()
+    {
+    	$this->produits = new ArrayCollection();
+    }
+    
     public function removeProduit(Produit $produit)
     {
     	$this->produits->removeElement($produit);

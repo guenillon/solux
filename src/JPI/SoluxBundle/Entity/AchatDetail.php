@@ -44,7 +44,7 @@ class AchatDetail extends BaseEntity
     private $prix;
     
     /**
-     * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Achat")
+     * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Achat", inversedBy="detail")
      * @ORM\JoinColumn(nullable=false)
      */
     private $achat;

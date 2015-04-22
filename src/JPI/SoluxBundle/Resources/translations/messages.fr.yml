@@ -16,8 +16,7 @@ form:
 caisse:
     add:
         titre: "Nouvel achat"
-        nom: "Nom"
-        prenom: "Prénom"
+        famille: "Famille"
         taux_participation: "Taux de participation"
         montant_max: "Montant maximum"
 

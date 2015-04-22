@@ -23,6 +23,7 @@ class AppKernel extends Kernel
         	new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new JPI\CoreBundle\JPICoreBundle(),
             new JPI\SoluxBundle\JPISoluxBundle(),
+        	new JMS\SerializerBundle\JMSSerializerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

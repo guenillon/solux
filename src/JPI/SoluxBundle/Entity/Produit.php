@@ -44,9 +44,9 @@ class Produit extends BaseEntity
     protected $description;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="codeBarre", type="integer", nullable=true)
+     * @ORM\Column(name="codeBarre", type="decimal", precision=13, scale=0, nullable=true)
      * @Assert\GreaterThan(value = 0)
      */
     protected $codeBarre;
@@ -111,6 +111,11 @@ class Produit extends BaseEntity
     	$this->limites[] = $limite;
     	$limite->setProduit($this);
     	return $this;
+    }
+    
+    public function eraseLimites()
+    {
+    	$this->limites = new ArrayCollection();
     }
     
     public function removeLimite(LimiteAchatProduit $limite)

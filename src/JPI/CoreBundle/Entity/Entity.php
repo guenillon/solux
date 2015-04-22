@@ -3,6 +3,7 @@ namespace JPI\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * @ORM\MappedSuperclass
@@ -13,26 +14,31 @@ abstract class Entity
 	
 	/**
 	 * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+	 * @Exclude
 	 */
 	protected $createdAt;
 	
 	/**
 	 * @ORM\Column(name="createdBy", type="integer", nullable=true)
+	 * @Exclude
 	 */
 	protected $createdBy;
 	
 	/**
 	 * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
+	 * @Exclude
 	 */
 	protected $updatedAt;
 	
 	/**
 	 * @ORM\Column(name="updatedBy", type="integer", nullable=true)
+	 * @Exclude
 	 */
 	protected $updatedBy;
 	
 	/**
 	 * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+	 * @Exclude
 	 */
 	protected $deletedAt;
 
