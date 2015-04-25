@@ -40,6 +40,22 @@ class Achat extends BaseEntity
     private $montant;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="taux", type="decimal", precision=6, scale=4)
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(value = 0)
+     */
+    private $taux;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montantPaye", type="decimal", precision=12, scale=2)
+     */
+    private $montantPaye;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Famille")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -49,7 +65,7 @@ class Achat extends BaseEntity
      * @ORM\OneToMany(targetEntity="JPI\SoluxBundle\Entity\AchatDetail", mappedBy="achat", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      */
-    protected $detail;
+    private $detail;
 
     public function __construct()
     {
@@ -153,16 +169,73 @@ class Achat extends BaseEntity
         return $this->famille;
     }
     
+    public function majDetail() {
+    	foreach($this->detail as $lProduit) {
+    		$lProduit->majDetail();
+    	}
+    }
+
     /**
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist()
     {
-    	$this->setDate(new \Datetime());
     	$lTotal = 0;
+    	$lTotalPaye = 0;
     	foreach($this->detail as $lProduit) {
     		$lTotal += $lProduit->getPrix();
+    		$lTotalPaye += $lProduit->getPrixPaye();
     	}
     	$this->setMontant($lTotal);
+    	$this->setMontantPaye($lTotalPaye);
+    }
+
+    /**
+     * Set taux
+     *
+     * @param string $taux
+     *
+     * @return Achat
+     */
+    public function setTaux($taux)
+    {
+        $this->taux = $taux;
+
+        return $this;
+    }
+
+    /**
+     * Get taux
+     *
+     * @return string
+     */
+    public function getTaux()
+    {
+        return $this->taux;
+    }
+
+    /**
+     * Set montantPaye
+     *
+     * @param string $montantPaye
+     *
+     * @return Achat
+     */
+    public function setMontantPaye($montantPaye)
+    {
+        $this->montantPaye = $montantPaye;
+
+        return $this;
+    }
+
+    /**
+     * Get montantPaye
+     *
+     * @return string
+     */
+    public function getMontantPaye()
+    {
+        return $this->montantPaye;
     }
 }

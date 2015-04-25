@@ -122,6 +122,11 @@ class Famille extends BaseEntity
     {
     	return $this->membres;
     }
+    
+    public function countMembres()
+    {
+    	return count($this->membres);
+    }
 
     /**
      * Get id

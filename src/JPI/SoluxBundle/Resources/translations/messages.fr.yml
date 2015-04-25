@@ -19,6 +19,17 @@ caisse:
         famille: "Famille"
         taux_participation: "Taux de participation"
         montant_max: "Montant maximum"
+    produit:
+        inconnu: 
+            titre: "Produit Inconnu"
+            message: "Le produit n'a pas été trouvé"
+        quantite_max: 
+            titre: "Quantité maximum atteinte"
+            message: "La quantité maximum d'achat du produit est atteinte."
+        montant_max: 
+            titre: "Montant maximum atteint"
+            message: "Le montant maximum d'achat est atteint."
+            
 
 categorie:
     liste:

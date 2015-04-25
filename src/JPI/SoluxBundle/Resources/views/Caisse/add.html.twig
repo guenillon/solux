@@ -8,49 +8,137 @@
         		<li class="col-xs-12">
            			<div class="col-xs-3 ">{{ 'caisse.add.titre'|trans }}</div>           			
 					<div class="col-xs-3 ">{{ 'caisse.add.famille'|trans }} : {{ famille.prenomChef }} {{ famille.nom }}</div>
-					<div class="col-xs-3 ">{{ 'caisse.add.taux_participation'|trans }} : {{ (taux.taux *100)|localizednumber  }} %</div>
-					<div class="col-xs-3 ">{{ 'caisse.add.montant_max'|trans }} : {{ montantMaxAchat|localizedcurrency(currency) }}</div>	
+					<div class="col-xs-3 ">{{ 'caisse.add.taux_participation'|trans }} : 
+						{% if taux is null %}
+							<span id="taux" data-taux="100">Indéterminé</span>
+						{% else %}
+							<span id="taux" data-taux="{{ taux.taux }}">{{ (taux.taux *100)|localizednumber  }} %</span>
+						{% endif %}
+					</div>
+					<div class="col-xs-3 ">{{ 'caisse.add.montant_max'|trans }} : 
+						{% if montantMaxAchat is null %}
+							<span id="montantMax" data-montantMax="-1">Aucune limite</span>
+						{% else %}
+							<span id="montantMax" data-montantMax="{{ montantMaxAchat }}">{{ montantMaxAchat|localizedcurrency(currency) }}</span>
+						{% endif %}
+					</div>	
 				</li>
 			</ul>
 		</div>
   	</div>
 	<div class="panel-body">
 		{{ form_start(form) }}
-   				{{ form_errors(form) }}
-   				<div class="col-xs-6">
-   					{{ form_row(form.codeBarre) }}
-   				</div>
-   				<div class="col-xs-6">
-   					{{ form_row(form.nom) }}
-   				</div>
-   				<input class="hidden" type="submit" />
-   				{{ form_rest(form) }}
-   				{{ form_end(form) }}
+   		{{ form_errors(form) }}
+   		<div class="col-xs-6">
+   			{{ form_row(form.codeBarre) }}
+   		</div>
+   		<div class="col-xs-6">
+   			{{ form_row(form.nom) }}
+   		</div>
+   		<input class="hidden" type="submit" />
+   		{{ form_rest(form) }}
+   		{{ form_end(form) }}
 	</div>
 </div>
 
 <div class="panel panel-default">
 	<div class="panel-heading clearfix">
     	<div class="panel-title">
-				{{ form(form_achat) }}
+			<div class="row" id="ligne-total">
+				<div class="col-md-3">Total : <span id="total"></span></div>
+				<div class="col-md-3">Total payé : <span id="total-paye"></span></div>
+				<div class="col-md-1">
+					<label class="control-label" for="versement">Versement</label>
+				</div>
+				<div class="col-md-2">
+					<div class="input-group">
+						<input type="text" class="form-control" id="versement"/>
+						<span class="input-group-addon"> €</span>
+					</div>
+				</div>
+				<div class="col-md-3">À rendre : <span id="rendre"></span></div>
+			</div>	
 		</div>
-  	</div>
+	</div>
+    <div class="panel-body">
+    	<table data-paging="false" data-searching="false" data-info="false" class="jpi_table_data_table_caisse table table-striped table-bordered table-responsive table-condensed table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Catégorie</th>
+					<th>Produit</th>
+					<th>Qu</th>
+					<th>Pu</th>
+					<th></th>
+					<th >Quantité</th>
+					<th></th>
+					<th>Prix</th>
+					<th>Prix Payé</th>
+					<th></th>
+				</tr>
+			</thead>
+		</table>
+		<div>		
+			<div class="hidden">	
+			{{ form_start(form_achat) }}
+			{{ form_errors(form_achat) }}
+			{{ form_rest(form_achat) }}
+			</div>	
+			<div class="form-group">
+				<div class="col-sm-2">
+					<a href="{{ path("jpi_solux_caisse") }}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> {{ 'form.annuler'|trans }}</a>
+				</div>
+				<div class="col-sm-10">
+					<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-ok"></span> {{ 'form.enregistrer'|trans }}</button>
+				</div>
+			</div>
+			<div class="hidden">	
+			{{ form_end(form_achat) }}
+			</div>	
+		</div>
+	</div>
 </div>
 
-<div class="panel-body">
-	<table class="jpi_table_data_table table table-striped table-bordered table-responsive table-condensed table-hover">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Catégorie</th>
-				<th>Produit</th>
-				<th>Qu</th>
-				<th>Pu</th>
-				<th>Quantité</th>
-				<th>Total</th>
-			</tr>
-		</thead>
-	</table>
+<div class="modal fade" id="produit-inconnu">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.inconnu.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.inconnu.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quantite-max">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.quantite_max.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.quantite_max.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="montant-max">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.montant_max.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.montant_max.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock jpi_solux_content %}

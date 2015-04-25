@@ -27,4 +27,22 @@ class AchatRepository extends EntityRepository
 			->getQuery()
 			->getSingleResult();
 	}
+	
+	function getTotalAchatProduitSurPeriode( $id, $duree, $produit ) {
+		$date = new \DateTime();
+		$lQuery = $this->createQueryBuilder('a');
+		$lQuery
+		->select('sum(detail.quantite) as total')
+		->join('a.detail', 'detail', 'WITH', $lQuery->expr()->eq('detail.produit', ':produit'))
+		->setParameter('produit', $produit)
+		->where($lQuery->expr()->eq('a.famille', ':id'))
+		->andWhere($lQuery->expr()->between('a.date', ':debut', ':fin'))
+		->setParameter('id', $id)
+		->setParameter('fin', $date->format('Y-m-d H:i:s'))
+		->setParameter('debut', $date->sub(new \DateInterval('P'. $duree .'D'))->format('Y-m-d H:i:s'));
+	
+		return $lQuery
+		->getQuery()
+		->getSingleResult();
+	}
 }

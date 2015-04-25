@@ -47,8 +47,15 @@ class ProduitRepository extends EntityRepository
 			$query->andWhere('a.nom = :nom')
 			->setParameter('nom', $data['nom']);
 		}
+		
+		$query->leftJoin('a.limites', 'limites', 'WITH', ':nbMembres >= limites.nbMembreMin AND :nbMembres <= limites.nbMembreMax ' )
+			->addSelect('limites')
+			->setParameter('nbMembres', $data['nbMembres'])
+			->join('a.categorie', 'categorie')
+			->addSelect('categorie');
 	
 		return $query->getQuery()->getResult();
 	
 	}
 }
+?>

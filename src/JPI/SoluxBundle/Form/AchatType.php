@@ -5,6 +5,8 @@ namespace JPI\SoluxBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+/*use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;*/
 
 class AchatType extends AbstractType
 {
@@ -15,16 +17,6 @@ class AchatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //->add('montant')
-           // ->add('famille')
-
-	        ->add('famille' , 'entity', array(
-	        		"label" => "Famille",
-	        		"class" => "JPISoluxBundle:Famille",
-	        		'property' => 'nom',
-	        		"required" => true
-	        ))
-
             ->add('detail', 'collection', array(
             		"label" => "Produits",
             		'type'         => new AchatDetailType(),
@@ -33,6 +25,17 @@ class AchatType extends AbstractType
             		'by_reference' => false
             ))
         ;
+            
+          /*  $builder->addEventListener(
+            		FormEvents::POST_SUBMIT,
+            		function(FormEvent $event) {
+            			// Il est important de récupérer ici $event->getForm()->getData(),
+            			// car $event->getData() vous renverra la données initiale (vide)
+            			$achat = $event->getForm()->getData();
+            			$achat->majDetail();
+            			
+            		}
+            );*/
     }
     
     /**

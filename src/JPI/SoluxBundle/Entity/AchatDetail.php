@@ -4,6 +4,7 @@ namespace JPI\SoluxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * AchatDetail
@@ -44,6 +45,20 @@ class AchatDetail extends BaseEntity
     private $prix;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="taux", type="decimal", precision=6, scale=4)
+     */
+    private $taux;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prixPaye", type="decimal", precision=12, scale=2)
+     */
+    private $prixPaye;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Achat", inversedBy="detail")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -55,7 +70,19 @@ class AchatDetail extends BaseEntity
      */
     private $produit;
 
-
+    
+    public function majDetail()
+    {
+    	$produit = $this->produit;
+    	$this->taux = 1;
+    	if(!$produit->getPrixFixe()) {
+    		$this->taux = $this->achat->getTaux();
+    	}    	
+    	$this->unite = $produit->getUnite();
+    	$this->prix = $produit->getPrix() * $this->getQuantite();
+    	$this->prixPaye = $this->prix * $this->taux;
+    }
+    
     /**
      * Get id
      *
@@ -179,5 +206,53 @@ class AchatDetail extends BaseEntity
     public function getProduit()
     {
         return $this->produit;
+    }
+
+    /**
+     * Set taux
+     *
+     * @param string $taux
+     *
+     * @return AchatDetail
+     */
+    public function setTaux($taux)
+    {
+        $this->taux = $taux;
+
+        return $this;
+    }
+
+    /**
+     * Get taux
+     *
+     * @return string
+     */
+    public function getTaux()
+    {
+        return $this->taux;
+    }
+
+    /**
+     * Set prixPaye
+     *
+     * @param string $prixPaye
+     *
+     * @return AchatDetail
+     */
+    public function setPrixPaye($prixPaye)
+    {
+        $this->prixPaye = $prixPaye;
+
+        return $this;
+    }
+
+    /**
+     * Get prixPaye
+     *
+     * @return string
+     */
+    public function getPrixPaye()
+    {
+        return $this->prixPaye;
     }
 }
