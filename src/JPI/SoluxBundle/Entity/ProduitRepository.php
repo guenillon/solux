@@ -30,6 +30,24 @@ class ProduitRepository extends EntityRepository
 		;
 	}
 	
+	public function getProduits($id)
+	{
+		$lQuery = $this
+		->createQueryBuilder('a')
+		->where('a.id in (:id)')
+		->setParameter('id', $id)
+		->leftJoin('a.limites', 'limites')
+		->addSelect('limites')
+		->join('a.categorie', 'categorie')
+		->addSelect('categorie')
+		->orderBy('limites.nbMembreMin', 'ASC');
+	
+		return $lQuery
+		->getQuery()
+		->getResult()
+		;
+	}
+	
 	public function findProduitByParametres($data)
 	{
 		$query = $this->createQueryBuilder('a');

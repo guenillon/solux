@@ -95,18 +95,7 @@ class CaisseController extends Controller
     	if($request->getMethod() == 'POST')
     	{
     		// Form d'achat	
-    		if ($request->request->has('jpi_soluxbundle_achat')) {    	
-
-    		/*	$formAchat;
-    			$achat = $formAchat->getData();
-    			$formAchat->setData();*/
-    			
-    		//	$detail = $achat->getDetail();
-    		//	$detail = $detail[0];
-    			
-    			
-    			//return new Response($detail->getTaux());
-    			
+    		if ($request->request->has('jpi_soluxbundle_achat')) {    	    			
     			//On vérifie que les valeurs entrées sont correctes
     			if($formAchat->handleRequest($request)->isValid())
     			{
@@ -116,7 +105,6 @@ class CaisseController extends Controller
     				
     				$request->getSession()->getFlashBag()->add('success', 'Ajout effectué avec succés.');
     				return $this->redirect($this->generateUrl('jpi_solux_caisse'));
-	    			//return new Response('OK');
     			}
     		}
     	}
@@ -140,6 +128,22 @@ class CaisseController extends Controller
     			'form' => $form->createView(),
     			'form_achat' => $formAchat->createView()
     	));
+    }
+    
+    public function listeProduitAction() {
+    	$request = $this->getRequest();
+    	if($request->getMethod() == 'POST')
+    	{
+    		$data = $this->getRequest()->request->get('id');
+	    	$repo = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Produit');
+	    	$produits = $repo->getProduits($data);
+	    	
+	    	$serializer = $this->container->get('serializer');
+	    	$response = new Response($serializer->serialize($produits, 'json'));
+	    	$response->headers->set('Content-Type', 'application/json');
+	    	
+	    	return $response;
+    	}
     }
 }
 ?>
