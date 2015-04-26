@@ -5,6 +5,7 @@ namespace JPI\SoluxBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use JPI\SoluxBundle\Entity\ProduitRepository;
 
 class AchatDetailType extends AbstractType
 {
@@ -15,14 +16,28 @@ class AchatDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantite')
-            ->add('unite')
-            ->add('prix')
-            ->add('produit')
-            ->add('produit', 'integer', array(
+            ->add('quantite', 'number', array(
+            		"label" => "Quantité",
+            		"required" => true
+            ))
+            ->add('unite', 'text', array(
+            		"label" => "Unité",
+            		"required" => true
+            ))
+            ->add('prix', 'money', array(
+            		"required" => true
+            ))
+
+            ->add('taux', 'number', array(
+            		"required" => true
+            ))
+            ->add('prixPaye', 'money', array(
+            		"required" => true
+            ))
+            ->add('produit', 'entity', array(
             		"label" => "Produit",
-            		/*"class" => "JPISoluxBundle:Produit",
-            		'property' => 'nom',*/
+            		"class" => "JPISoluxBundle:Produit",
+            		'property' => 'id',
             		"required" => true
             ))
         ;

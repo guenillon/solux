@@ -25,6 +25,6 @@ class FamilleRepository extends EntityRepository
 
 		return $lQuery
 			->getQuery()
-			->getSingleResult();
+			->getOneOrNullResult();
 	}
 }

@@ -4,6 +4,8 @@ namespace JPI\SoluxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * AchatDetail
@@ -26,6 +28,9 @@ class AchatDetail extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="quantite", type="decimal", precision=12, scale=3)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     private $quantite;
 
@@ -33,6 +38,8 @@ class AchatDetail extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="unite", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "0",max = "255")
      */
     private $unite;
 
@@ -40,8 +47,30 @@ class AchatDetail extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="prix", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
      */
     private $prix;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="taux", type="decimal", precision=6, scale=4)
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(value = 0)
+     */
+    private $taux;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prixPaye", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
+     */
+    private $prixPaye;
     
     /**
      * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Achat", inversedBy="detail")
@@ -54,8 +83,7 @@ class AchatDetail extends BaseEntity
      * @ORM\JoinColumn(nullable=false)
      */
     private $produit;
-
-
+    
     /**
      * Get id
      *
@@ -179,5 +207,120 @@ class AchatDetail extends BaseEntity
     public function getProduit()
     {
         return $this->produit;
+    }
+
+    /**
+     * Set taux
+     *
+     * @param string $taux
+     *
+     * @return AchatDetail
+     */
+    public function setTaux($taux)
+    {
+        $this->taux = $taux;
+
+        return $this;
+    }
+
+    /**
+     * Get taux
+     *
+     * @return string
+     */
+    public function getTaux()
+    {
+        return $this->taux;
+    }
+
+    /**
+     * Set prixPaye
+     *
+     * @param string $prixPaye
+     *
+     * @return AchatDetail
+     */
+    public function setPrixPaye($prixPaye)
+    {
+        $this->prixPaye = $prixPaye;
+
+        return $this;
+    }
+
+    /**
+     * Get prixPaye
+     *
+     * @return string
+     */
+    public function getPrixPaye()
+    {
+        return $this->prixPaye;
+    }
+    
+    /**
+     * isPrixValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isPrixValid(ExecutionContextInterface $context)
+    {    	 
+    	if($this->getPrix() != bcmul($this->getProduit()->getPrix(), $this->getQuantite(), 2)) {
+    		$context->addViolationAt(
+    				'prix',
+    				'Le prix est incorrect.',
+    				array(),
+    				null
+    		);
+    	}
+    	if($this->getPrixPaye() != bcmul($this->getPrix(), $this->getTaux(), 2)) {
+    		$context->addViolationAt(
+    				'prixPaye',
+    				'Le prix payé est incorrect.',
+    				array(),
+    				null
+    		);
+    	}
+    }
+    
+    /**
+     * isUniteValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isUniteValid(ExecutionContextInterface $context)
+    {
+    	if($this->getUnite() != $this->getProduit()->getUnite()) {
+    		$context->addViolationAt(
+    				'unite',
+    				'L\'unité est incorrecte.',
+    				array(),
+    				null
+    		);
+    	}
+    }
+    
+    /**
+     * isTauxValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isTauxValid(ExecutionContextInterface $context)
+    {
+    	$lTaux = 1;
+    	if(!$this->getProduit()->getPrixFixe()) {
+    		$lTaux = $this->getAchat()->getTaux();
+    	}
+    	
+    	if($this->getTaux() != $lTaux) {
+    		$context->addViolationAt(
+    				'taux',
+    				'Le taux est incorrect.',
+    				array(),
+    				null
+    		);
+    	}
     }
 }

@@ -30,6 +30,24 @@ class ProduitRepository extends EntityRepository
 		;
 	}
 	
+	public function getProduits($id)
+	{
+		$lQuery = $this
+		->createQueryBuilder('a')
+		->where('a.id in (:id)')
+		->setParameter('id', $id)
+		->leftJoin('a.limites', 'limites')
+		->addSelect('limites')
+		->join('a.categorie', 'categorie')
+		->addSelect('categorie')
+		->orderBy('limites.nbMembreMin', 'ASC');
+	
+		return $lQuery
+		->getQuery()
+		->getResult()
+		;
+	}
+	
 	public function findProduitByParametres($data)
 	{
 		$query = $this->createQueryBuilder('a');
@@ -47,8 +65,15 @@ class ProduitRepository extends EntityRepository
 			$query->andWhere('a.nom = :nom')
 			->setParameter('nom', $data['nom']);
 		}
+		
+		$query->leftJoin('a.limites', 'limites', 'WITH', ':nbMembres >= limites.nbMembreMin AND :nbMembres <= limites.nbMembreMax ' )
+			->addSelect('limites')
+			->setParameter('nbMembres', $data['nbMembres'])
+			->join('a.categorie', 'categorie')
+			->addSelect('categorie');
 	
 		return $query->getQuery()->getResult();
 	
 	}
 }
+?>

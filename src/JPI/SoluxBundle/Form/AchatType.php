@@ -15,16 +15,12 @@ class AchatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //->add('montant')
-           // ->add('famille')
-
-	        ->add('famille' , 'entity', array(
-	        		"label" => "Famille",
-	        		"class" => "JPISoluxBundle:Famille",
-	        		'property' => 'nom',
-	        		"required" => true
-	        ))
-
+        	->add('montant', 'money', array(
+            		"required" => true
+            ))
+            ->add('montantPaye', 'money', array(
+            		"required" => true
+            ))
             ->add('detail', 'collection', array(
             		"label" => "Produits",
             		'type'         => new AchatDetailType(),

@@ -1,5 +1,5 @@
-$(document).ready(function() {
-	var lDataTable = $('.jpi_table_data_table').DataTable({
+$(document).ready(function() {	
+	$('.jpi_table_data_table').DataTable({
 	    "language": {
 		"url": "https://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/French.json"
 	    }
@@ -74,82 +74,5 @@ $(document).ready(function() {
 		  $prototype.find('[id^=' + $fieldName + '_]').first().append($deleteLink);
 		}
 	
-	}
-	
-	var lock = false;
-	
-	$('[name=jpi_soluxbundle_recherche_produit]').keyup(function () {
-		var lCodeBarre = $(this).find("#jpi_soluxbundle_recherche_produit_codeBarre").val();
-		if(lCodeBarre.length == 13 && !lock) {
-			submitSearchProduit($(this));
-		}
-	}).submit(function() {
-		if(!lock) {
-			submitSearchProduit($(this));
-		}
-		return false;
-	});
-	
-	function submitSearchProduit(form) {
-		lock = true;
-		$(form).ajaxSubmit({"clearForm":true, "success": addProduit, "dataType": 'json'});
-	}
-	
-		
-	function addProduit(produit, statusText, xhr, $form)  { 
-		lock = false;
-		
-		if(produit != "") { // Si la recherche retourne un produit
-			// Vérifier si le produit est déjà dans l'achat
-			if($('#jpi_soluxbundle_achat_detail_' + produit.id + '_produit').length > 0) { // Maj de la quantité et du prix
-				var lQuantite = (
-							parseFloat($('#jpi_soluxbundle_achat_detail_' + produit.id + '_quantite').val())
-						+ 
-							parseFloat(produit.quantite)
-						).toFixed(2);
-				
-				var lPrix = (
-							parseFloat($('#jpi_soluxbundle_achat_detail_' + produit.id + '_prix').val())
-						+ 
-							parseFloat(produit.prix)
-						).toFixed(2);
-				
-				$('#jpi_soluxbundle_achat_detail_' + produit.id + '_quantite').val(lQuantite);
-				$('#jpi_soluxbundle_achat_detail_' + produit.id + '_prix').val(lPrix);
-				
-				var index = lDataTable.column( 0 ).data().indexOf( produit.id );
-				
-				lDataTable.row(index).data( [ produit.id,
-								                      produit.categorie.nom,
-								                      produit.nom,
-								                      produit.quantite + ' ' + produit.unite,
-								                      produit.prix,
-								                      lQuantite + ' ' + produit.unite,
-								                      lPrix
-								                 ] ).draw();
-				
-			} else { // Ajout du produit au formulaire
-				var $prototype = $($("#jpi_soluxbundle_achat_detail").attr('data-prototype')
-						.replace(/__name__label__/g, produit.nom)
-					    .replace(/__name__/g, produit.id))
-				$prototype.find('#jpi_soluxbundle_achat_detail_' + produit.id + '_produit').val(produit.id);
-				$prototype.find('#jpi_soluxbundle_achat_detail_' + produit.id + '_quantite').val(produit.quantite);
-				$prototype.find('#jpi_soluxbundle_achat_detail_' + produit.id + '_unite').val(produit.unite);
-				$prototype.find('#jpi_soluxbundle_achat_detail_' + produit.id + '_prix').val(produit.prix);
-				$("#jpi_soluxbundle_achat_detail").after($prototype);
-				
-				var rowNode = lDataTable.row.add( [ produit.id,
-				                      produit.categorie.nom,
-				                      produit.nom,
-				                      produit.quantite + ' ' + produit.unite,
-				                      produit.prix,
-				                      produit.quantite + ' ' + produit.unite,
-				                      produit.prix
-				                 ] ).draw().node();
-				$( rowNode )    .css( 'color', 'red' ).animate( { color: 'black' } );
-			}
-		} else {
-			alert("error");
-		}
 	}
 } );

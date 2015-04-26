@@ -64,6 +64,6 @@ class MembreFamilleRepository extends EntityRepository
 	
 		return $lQuery
 			->getQuery()
-			->getSingleResult();
+			->getOneOrNullResult();
 	}
 }

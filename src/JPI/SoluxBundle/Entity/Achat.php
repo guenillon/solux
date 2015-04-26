@@ -6,13 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use JPI\SoluxBundle\Validator\Constraints as JPIAssert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Achat
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="JPI\SoluxBundle\Entity\AchatRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @JPIAssert\AchatTauxParticipationFamille
  */
 class Achat extends BaseEntity
 {
@@ -29,6 +31,7 @@ class Achat extends BaseEntity
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\Date()
      */
     private $date;
 
@@ -36,8 +39,32 @@ class Achat extends BaseEntity
      * @var string
      *
      * @ORM\Column(name="montant", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\GreaterThan(value = 0)
      */
     private $montant;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="taux", type="decimal", precision=6, scale=4)
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(value = 0)
+     */
+    private $taux;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montantPaye", type="decimal", precision=12, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float")
+     * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\GreaterThan(value = 0)
+     */
+    private $montantPaye;
     
     /**
      * @ORM\ManyToOne(targetEntity="JPI\SoluxBundle\Entity\Famille")
@@ -49,7 +76,7 @@ class Achat extends BaseEntity
      * @ORM\OneToMany(targetEntity="JPI\SoluxBundle\Entity\AchatDetail", mappedBy="achat", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
      */
-    protected $detail;
+    private $detail;
 
     public function __construct()
     {
@@ -154,15 +181,83 @@ class Achat extends BaseEntity
     }
     
     /**
-     * @ORM\PrePersist
+     * Set taux
+     *
+     * @param string $taux
+     *
+     * @return Achat
      */
-    public function prePersist()
+    public function setTaux($taux)
     {
-    	$this->setDate(new \Datetime());
+        $this->taux = $taux;
+
+        return $this;
+    }
+
+    /**
+     * Get taux
+     *
+     * @return string
+     */
+    public function getTaux()
+    {
+        return $this->taux;
+    }
+
+    /**
+     * Set montantPaye
+     *
+     * @param string $montantPaye
+     *
+     * @return Achat
+     */
+    public function setMontantPaye($montantPaye)
+    {
+        $this->montantPaye = $montantPaye;
+
+        return $this;
+    }
+
+    /**
+     * Get montantPaye
+     *
+     * @return string
+     */
+    public function getMontantPaye()
+    {
+        return $this->montantPaye;
+    }
+    
+    /**
+     * isMontantsValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isMontantsValid(ExecutionContextInterface $context)
+    {
     	$lTotal = 0;
-    	foreach($this->detail as $lProduit) {
-    		$lTotal += $lProduit->getPrix();
+    	$lTotalPaye = 0;
+    	foreach($this->getDetail() as $lProduit) {
+    		$lTotal = bcadd($lTotal, $lProduit->getPrix(),2);
+    		$lTotalPaye = bcadd($lTotalPaye, $lProduit->getPrixPaye(), 2);
     	}
-    	$this->setMontant($lTotal);
+    	
+    	if($this->getMontant() != $lTotal) {
+    		$context->addViolationAt(
+    				'montant',
+    				'Le montant est différent de la somme du détail.',
+    				array(),
+    				null
+    		);
+    	}
+    	if($this->getMontantPaye() != $lTotalPaye) {
+    		$context->addViolationAt(
+    				'montantPaye',
+    				'Le montant payé est différent de la somme du détail.',
+    				array(),
+    				null
+    		);
+    	}
     }
 }
