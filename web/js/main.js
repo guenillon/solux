@@ -95,10 +95,7 @@ $(document).ready(function() {
 		$(form).ajaxSubmit({"clearForm":true, "success": addProduit, "dataType": 'json'});
 	}
 	
-	
-    var lIndex = 0;	
-    var lRawIndex = [];
-	
+		
 	function addProduit(produit, statusText, xhr, $form)  { 
 		lock = false;
 		
@@ -120,7 +117,9 @@ $(document).ready(function() {
 				$('#jpi_soluxbundle_achat_detail_' + produit.id + '_quantite').val(lQuantite);
 				$('#jpi_soluxbundle_achat_detail_' + produit.id + '_prix').val(lPrix);
 				
-				lDataTable.row(lRawIndex[produit.id]).data( [ produit.id,
+				var index = lDataTable.column( 0 ).data().indexOf( produit.id );
+				
+				lDataTable.row(index).data( [ produit.id,
 								                      produit.categorie.nom,
 								                      produit.nom,
 								                      produit.quantite + ' ' + produit.unite,
@@ -139,17 +138,15 @@ $(document).ready(function() {
 				$prototype.find('#jpi_soluxbundle_achat_detail_' + produit.id + '_prix').val(produit.prix);
 				$("#jpi_soluxbundle_achat_detail").after($prototype);
 				
-				lDataTable.row.add( [ produit.id,
+				var rowNode = lDataTable.row.add( [ produit.id,
 				                      produit.categorie.nom,
 				                      produit.nom,
 				                      produit.quantite + ' ' + produit.unite,
 				                      produit.prix,
 				                      produit.quantite + ' ' + produit.unite,
 				                      produit.prix
-				                 ] ).draw();
-				
-				lRawIndex[produit.id] = lIndex;
-				lIndex++;
+				                 ] ).draw().node();
+				$( rowNode )    .css( 'color', 'red' ).animate( { color: 'black' } );
 			}
 		} else {
 			alert("error");
