@@ -110,7 +110,6 @@ class CaisseController extends Controller
     			//On vérifie que les valeurs entrées sont correctes
     			if($formAchat->handleRequest($request)->isValid())
     			{
-    				$achat->majDetail();
     				$em = $this->getDoctrine()->getManager();
     				$em->persist($achat);
     				$em->flush();

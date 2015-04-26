@@ -16,9 +16,24 @@ class AchatDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantite')
-          /*  ->add('unite')
-            ->add('prix')*/
+            ->add('quantite', 'number', array(
+            		"label" => "Quantité",
+            		"required" => true
+            ))
+            ->add('unite', 'text', array(
+            		"label" => "Unité",
+            		"required" => true
+            ))
+            ->add('prix', 'money', array(
+            		"required" => true
+            ))
+
+            ->add('taux', 'number', array(
+            		"required" => true
+            ))
+            ->add('prixPaye', 'money', array(
+            		"required" => true
+            ))
             ->add('produit', 'entity', array(
             		"label" => "Produit",
             		"class" => "JPISoluxBundle:Produit",

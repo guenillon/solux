@@ -44,9 +44,9 @@
 <div class="panel panel-default">
 	<div class="panel-heading clearfix">
     	<div class="panel-title">
-			<div class="row" id="ligne-total">
-				<div class="col-md-3">Total : <span id="total"></span></div>
-				<div class="col-md-3">Total payé : <span id="total-paye"></span></div>
+			<div class="row ligne-total">
+				<div class="col-md-3">Total : <span id="total">0</span> €</div>
+				<div class="col-md-3">Total payé : <span id="total-paye">0</span> €</div>
 				<div class="col-md-1">
 					<label class="control-label" for="versement">Versement</label>
 				</div>
@@ -56,7 +56,7 @@
 						<span class="input-group-addon"> €</span>
 					</div>
 				</div>
-				<div class="col-md-3">À rendre : <span id="rendre"></span></div>
+				<div class="col-md-3">À rendre : <span id="rendre">0</span> €</div>
 			</div>	
 		</div>
 	</div>
@@ -66,20 +66,31 @@
 				<tr>
 					<th>Id</th>
 					<th>Catégorie</th>
-					<th>Produit</th>
-					<th>Qu</th>
-					<th>Pu</th>
+					<th class="text-center">Produit</th>
+					<th class="text-center">Qu</th>
+					<th class="text-center">Pu</th>
+					<th colspan="3" class="text-center">Quantité</th>
+					<th class="text-center">Prix</th>
+					<th class="text-center">Prix Payé</th>
 					<th></th>
-					<th >Quantité</th>
+				</tr>
+				<tr class="hidden">
 					<th></th>
-					<th>Prix</th>
-					<th>Prix Payé</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
 					<th></th>
 				</tr>
 			</thead>
 		</table>
 		<div>		
-			<div class="hidden">	
+			<div class="">	
 			{{ form_start(form_achat) }}
 			{{ form_errors(form_achat) }}
 			{{ form_rest(form_achat) }}
@@ -88,8 +99,8 @@
 				<div class="col-sm-2">
 					<a href="{{ path("jpi_solux_caisse") }}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> {{ 'form.annuler'|trans }}</a>
 				</div>
-				<div class="col-sm-10">
-					<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-ok"></span> {{ 'form.enregistrer'|trans }}</button>
+				<div class="col-sm-10 ">
+					<button type="submit" class="btn btn-default pull-right ligne-total" id="btn-submit"><span class="glyphicon glyphicon-ok"></span> {{ 'form.enregistrer'|trans }}</button>
 				</div>
 			</div>
 			<div class="hidden">	

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {	
 	$('.jpi_table_data_table').DataTable({
 	    "language": {
 		"url": "https://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/French.json"
@@ -83,7 +83,8 @@ $(document).ready(function() {
 	    },
 	    "columnDefs": [
 	         { "visible": false, "targets": [0, 1] },
-	         { "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
+	         { "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+	         { "className": "text-right", "targets": [ 3, 4, 6, 8, 9 ] }
          ],
          "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
          "drawCallback": function ( settings ) {
@@ -120,7 +121,6 @@ $(document).ready(function() {
 		$(form).ajaxSubmit({"clearForm":true, "success": addProduit, "dataType": 'json'});
 	}
 	
-	var lPrixProduit = [];
 	function addProduit(response, statusText, xhr, $form)  { 
 		lock = false;
 		
@@ -140,40 +140,40 @@ $(document).ready(function() {
 					$("#quantite-max").modal('show');
 				}
 				
+				var lPrixPaye = produit.prix;
+				var lTauxProduit = 1;
+				if(!produit.prix_fixe) {
+					lPrixPaye = (parseFloat(produit.prix)*lTaux).toFixed(2);
+					lTauxProduit = lTaux;
+				}
+				
 				var $prototype = $($("#jpi_soluxbundle_achat_detail").attr('data-prototype')
 						.replace(/__name__label__/g, produit.nom)
 					    .replace(/__name__/g, produit.id))
 				$prototype.find(lEnteteNomChamp + '_produit').val(produit.id);
 				$prototype.find(lEnteteNomChamp + '_quantite').val(produit.quantite);
-				
-				var lPrixPaye = produit.prix;
-				if(!produit.prix_fixe) {
-					lPrixPaye = (parseFloat(produit.prix)*lTaux).toFixed(2);
-				}
-				
+				$prototype.find(lEnteteNomChamp + '_unite').val(produit.unite);
+				$prototype.find(lEnteteNomChamp + '_prix').val(produit.prix);
+				$prototype.find(lEnteteNomChamp + '_prixPaye').val(lPrixPaye);
+				$prototype.find(lEnteteNomChamp + '_taux').val(lTauxProduit);
+
 				var lNode = lDataTable.row.add( [ produit.id,
 				                      produit.categorie.nom,
 				                      produit.nom,
 				                      produit.quantite + ' ' + produit.unite,
-				                      produit.prix,
+				                      $.number(produit.prix, 2, ',', ' ' ) + ' €',
 				                      '<a href="#" class="btn btn-xs btn-block btn-default delete-qte"><span class="glyphicon glyphicon-minus-sign"></span></a>',
-				                      produit.quantite + ' ' + produit.unite,
+				                      $.number(produit.quantite, 2, ',', ' ' ) + ' ' + produit.unite,
 				                      '<a href="#" class="btn btn-xs btn-block btn-default add-qte" data-produit="' + produit.id + '" data-unite="' + produit.unite + '" data-quantite="' + produit.quantite + '" data-prix="' + produit.prix + '"><span class="glyphicon glyphicon-plus-sign"></span></a>',
-				                      produit.prix,
-				                      lPrixPaye, 
+				                      $.number(produit.prix, 2, ',', ' ' ) + ' €',
+				                      $.number(lPrixPaye, 2, ',', ' ' ) + ' €',
 				                      '<a href="#" class="btn btn-xs btn-block btn-default delete-row"><span class="glyphicon glyphicon-remove"></span></a>'
 				                 ] ).draw().node();
-				
-				
-				lPrixProduit[produit.id] = produit.prix;
-				
-				$("#ligne-total").show();
-				
+
 				// Suppression de la ligne
 				$(lNode).find(".delete-row").click(function(e) { 					
 			  		$prototype.remove();
 			  		lDataTable.row( $(this).parents('tr') ).remove().draw();
-			  		majTotal();
 			  		e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
@@ -181,7 +181,6 @@ $(document).ready(function() {
 				// Ajout de quantité
 				$(lNode).find(".add-qte").click(function(e) { 			
 					majQuantite(lEnteteNomChamp, response, lTaux, true);
-					majTotal();
 					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
@@ -189,17 +188,13 @@ $(document).ready(function() {
 				// Ajout de quantité
 				$(lNode).find(".delete-qte").click(function(e) { 			
 					majQuantite(lEnteteNomChamp, response, lTaux, false);
-					majTotal();
 					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
 				
 				$("#jpi_soluxbundle_achat_detail").after($prototype);
-
-			}
-			majTotal();
-			
-			
+				majTotal();
+			}		
 		} else {
 			$("#produit-inconnu").modal('show');
 		}
@@ -233,13 +228,13 @@ $(document).ready(function() {
 			var lPrix = 0;
 			if(lAjout) {
 				lPrix =(
-						parseFloat(lPrixProduit[produit.id])
+						parseFloat($(lEnteteNomChamp + '_prix').val())
 					+ 
 						parseFloat(produit.prix)
 					).toFixed(2);
 			} else {
 				lPrix =(
-						parseFloat(lPrixProduit[produit.id])
+						parseFloat($(lEnteteNomChamp + '_prix').val())
 					- 
 						parseFloat(produit.prix)
 					).toFixed(2);
@@ -251,23 +246,31 @@ $(document).ready(function() {
 			}
 		
 			$(lEnteteNomChamp + '_quantite').val(lQuantite);
+			$(lEnteteNomChamp + '_prix').val(lPrix);
+			$(lEnteteNomChamp + '_prixPaye').val(lPrixPaye);
 							
 			var lIndex = lDataTable.column( 0, { order: 'index' } ).data().indexOf( produit.id );
 			
-			lDataTable.cell( lIndex, 6 ).data(lQuantite + ' ' + produit.unite);
-			lDataTable.cell( lIndex, 8 ).data(lPrix);
-			lDataTable.cell( lIndex, 9 ).data(lPrixPaye);
-			lPrixProduit[produit.id] = lPrix;
+			lDataTable.cell( lIndex, 6 ).data($.number(lQuantite, 2, ',', ' ' ) + ' ' + produit.unite);
+			lDataTable.cell( lIndex, 8 ).data($.number(lPrix, 2, ',', ' ' )+ ' €');
+			lDataTable.cell( lIndex, 9 ).data($.number(lPrixPaye, 2, ',', ' ' )+ ' €');
 		}
+
+		majTotal();
 	}
 		
-	$("#ligne-total").hide();
-	$("#versement").keyup(function() {majVersement();});
+	$("#btn-submit").hide();
+	$("#versement").keyup(function() {majVersement();}).number( true, 2 );
+	//$("#jpi_soluxbundle_recherche_produit_codeBarre" ).blur();
 	
 	function majTotal() {
-		var lTotal = calculTotalCol(8);
-		$("#total").text(lTotal);		
-		$("#total-paye").text(calculTotalCol(9));		
+		var lTotal = calculTotalCol('prix');
+		$("#total").text($.number(lTotal, 2, ',', ' ' ));		
+		$("#jpi_soluxbundle_achat_montant").val(lTotal);
+		
+		var lTotalPaye = calculTotalCol('prixPaye'); 
+		$("#total-paye").text($.number(lTotalPaye, 2, ',', ' ' ));	
+		$("#jpi_soluxbundle_achat_montantPaye").val(lTotalPaye);
 		majVersement();
 		
 		var lMontantMax = parseFloat($("#montantMax").data('montantmax'));
@@ -277,17 +280,19 @@ $(document).ready(function() {
 		}
 		
 		if(lTotal == 0) {
-			$("#ligne-total").hide();
+			$(".ligne-total").hide();
+		} else {
+			$(".ligne-total").show();
 		}		
 	}
 	
 	function calculTotalCol(col) {
-		var lData = lDataTable.column( col ).data();
-		if(lData.length === 0 ) {
-			return 0;
-		} else {
-			return lData.reduce( function (a,b) {return (parseFloat(a) + parseFloat(b)).toFixed(2);} );
-		}
+		
+		var lTotal = 0;
+		$( "input[name$='[" + col + "]']" ).each(function() {
+			lTotal = (parseFloat(lTotal) + parseFloat($(this).val())).toFixed(2);			
+		});
+		return lTotal;
 	}
 	
 	function majVersement() {
@@ -295,13 +300,13 @@ $(document).ready(function() {
 		
 		var lRendre = 0;
 		if(!isNaN(lVersement)) {
-			var lTotalPaye = calculTotalCol(9);
+			var lTotalPaye = calculTotalCol('prixPaye');
 			lRendre = (lVersement - lTotalPaye).toFixed(2);
 			if(lRendre < 0) {
 				lRendre = 0;
 			}
 		}
-		$("#rendre").html(lRendre);
+		$("#rendre").html($.number(lRendre, 2, ',', ' ' ));
 	}
 	
 

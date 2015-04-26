@@ -12,3 +12,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: validator.constraint_validator, alias: tx_part_limite }
+    jpi_solux.constraint.achat_taux_participation_famille:
+        class: JPI\SoluxBundle\Validator\Constraints\AchatTauxParticipationFamilleValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: validator.constraint_validator, alias: achat_taux_participation_famille }

@@ -58,6 +58,7 @@ class Produit extends BaseEntity
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
      * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\GreaterThan(value = 0)
      */
     protected $quantite;
 
@@ -77,6 +78,7 @@ class Produit extends BaseEntity
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
      * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\GreaterThan(value = 0)
      */
     protected $prix;
 
