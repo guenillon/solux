@@ -1,12 +1,27 @@
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% extends "JPISoluxBundle::layout.html.twig" %}
 {% block jpi_solux_content %}
+<div class="hidden" id="caisse-config" 
+{% if achat.id is null %}
+	data-add="1"
+{% else %}
+	data-add="0"
+{% endif %}
+></div>
+
+
 <div class="panel panel-default">
 	<div class="panel-heading clearfix">
     	<div class="panel-title">
 			<ul class="list-inline">
         		<li class="col-xs-12">
-           			<div class="col-xs-3 ">{{ 'caisse.add.titre'|trans }}</div>           			
+           			<div class="col-xs-3 ">
+           				{% if achat.id is null %}
+							{{ 'caisse.add.titre'|trans }}
+						{% else %}
+							{{ 'caisse.show.titre'|trans }} : {{ achat.date|localizeddate('short', 'none', locale) }}
+						{% endif %}
+					</div>           			
 					<div class="col-xs-3 ">{{ 'caisse.add.famille'|trans }} : {{ famille.prenomChef }} {{ famille.nom }}</div>
 					<div class="col-xs-3 ">{{ 'caisse.add.taux_participation'|trans }} : 
 						{% if taux is null %}
@@ -45,8 +60,22 @@
 	<div class="panel-heading clearfix">
     	<div class="panel-title">
 			<div class="row">
-				<div class="col-md-3">Total : <span id="total">0</span> €</div>
-				<div class="col-md-3">Total payé : <span id="total-paye">0</span> €</div>
+				<div class="col-md-3">Total : 
+					<span id="total">
+						{% if achat.id is null %}
+							0
+						{% else %}	
+							{{ achat.montant|localizednumber }}
+						{% endif %}
+					</span> €</div>
+				<div class="col-md-3">Total payé : 
+					<span id="total-paye">				
+						{% if achat.id is null %}
+							0
+						{% else %}	
+							{{ achat.montantPaye|localizednumber }}
+						{% endif %}
+					</span> €</div>
 				<div class="col-md-1">
 					<label class="control-label" for="versement">Versement</label>
 				</div>
@@ -88,9 +117,31 @@
 					<th></th>
 				</tr>
 			</thead>
+			
+			{% if achat.id is not null %}
+			<tbody>
+				{% for detail in achat.detail %}
+				<tr>
+					<td>{{ detail.produit.id }}</td>
+					<td>{{ detail.produit.categorie.nom }}</td>
+					<td>{{ detail.produit.nom }}</td>
+					<td>{{ detail.produit.quantite|localizednumber }} {{ detail.produit.unite }}</td>
+					<td>{{ detail.produit.prix|localizedcurrency(currency) }}</td>
+					<td><a href="#" class="btn btn-xs btn-block btn-default delete-qte"><span class="glyphicon glyphicon-minus-sign"></span></a></td>
+					<td>{{ detail.quantite|localizednumber }} {{ detail.unite }}</td>
+					<td><a href="#" class="btn btn-xs btn-block btn-default add-qte"><span class="glyphicon glyphicon-plus-sign"></span></a></td>
+					<td>{{ detail.prix|localizedcurrency(currency) }}</td>
+					<td>{{ detail.prixPaye|localizedcurrency(currency) }}</td>
+					<td><a href="#" class="btn btn-xs btn-block btn-default delete-row" id="delete-row-{{ detail.produit.id }}"><span class="glyphicon glyphicon-remove"></span></a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			{% endif %}
+			
+			
 		</table>
 		<div>		
-			<div class="hidden">	
+			<div class="">	
 			{{ form_start(form_achat) }}
 			{{ form_errors(form_achat) }}
 			{{ form_rest(form_achat) }}

@@ -100,7 +100,7 @@ class CaisseController extends Controller
     		$taux = $tauxParticipation->getTaux();
     	}
     	$achat->setTaux($taux);
-    	
+
     	$formAchat = $this->createForm(new AchatType(),$achat);
     	
     	if($request->getMethod() == 'POST')
@@ -137,7 +137,8 @@ class CaisseController extends Controller
     			"taux" => $tauxParticipation, 
     			"montantMaxAchat" => $lMontantMaxActuel,
     			'form' => $form->createView(),
-    			'form_achat' => $formAchat->createView()
+    			'form_achat' => $formAchat->createView(),
+    			"achat" => $achat
     	));
     }
     

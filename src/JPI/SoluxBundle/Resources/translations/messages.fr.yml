@@ -19,6 +19,8 @@ caisse:
         famille: "Famille"
         taux_participation: "Taux de participation"
         montant_max: "Montant maximum"
+    show:
+        titre: "Achat"
     produit:
         inconnu: 
             titre: "Produit Inconnu"
