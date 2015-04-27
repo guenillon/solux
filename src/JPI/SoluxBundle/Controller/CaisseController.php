@@ -27,6 +27,16 @@ class CaisseController extends Controller
     
     public function addAction(Famille $famille)
     {	
+    	return $this->formCaisse($famille);
+    }
+    
+    public function showAction(Achat $achat)
+    {
+    	$famille = $achat->getFamille();
+    	return $this->formCaisse($famille, $achat);
+    }
+    
+    private function formCaisse($famille, $achat = null) {
     	$form = $this->createForm(new CaisseRechercheProduitType());
     	
     	//On récupère la requête
@@ -77,9 +87,10 @@ class CaisseController extends Controller
     		}	
     	}
     	
-    	
-    	$achat = new Achat();
-    	$achat->setFamille($famille);
+    	if(is_null($achat)) {
+    		$achat = new Achat();
+    		$achat->setFamille($famille);
+    	}
     	
     	$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Famille');
     	$tauxParticipation = $repository->getTauxParticipation($famille->getId());
@@ -144,6 +155,24 @@ class CaisseController extends Controller
 	    	
 	    	return $response;
     	}
+    }
+    
+    public function listeAchatsAction()
+    {
+    	$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Famille');
+    	$listeFamille = $repository->findAll();
+    	 
+    	return $this->render('JPISoluxBundle:Caisse:listeAchats.html.twig', array("listeFamille" => $listeFamille));
+    }
+    
+    public function listeAchatsFamilleAction(Famille $famille) {
+    	$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Achat');
+    	$listeAchats = $repository->findByFamille($famille);
+    	 
+    	return $this->render('JPISoluxBundle:Caisse:listeAchatsFamille.html.twig',
+    			array("listeAchats" => $listeAchats,
+    					"famille" => $famille
+    			));
     }
 }
 ?>

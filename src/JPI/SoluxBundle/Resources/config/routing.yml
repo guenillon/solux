@@ -11,7 +11,23 @@ jpi_solux_caisse_add:
 jpi_solux_caisse_liste_produit:
     path:     /caisse/produits
     defaults: { _controller: "JPISoluxBundle:Caisse:listeProduit" }
-        
+
+jpi_solux_caisse_achats:
+    path:     /caisse/achats
+    defaults: { _controller: "JPISoluxBundle:Caisse:listeAchats" }
+    
+jpi_solux_caisse_achats_famille:
+    path:      /caisse/achats/famille/{id}
+    defaults:  { _controller: "JPISoluxBundle:Caisse:listeAchatsFamille" }
+    requirements:
+        id: \d+
+
+jpi_solux_caisse_achats_show:
+    path:      /caisse/achats/{id}
+    defaults:  { _controller: "JPISoluxBundle:Caisse:show" }
+    requirements:
+        id: \d+
+           
 jpi_solux_famille:
     path:     /parametrage/famille
     defaults: { _controller: "JPISoluxBundle:Famille:liste" }

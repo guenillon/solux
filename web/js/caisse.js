@@ -48,7 +48,7 @@ $(document).ready(function() {
 		$( "select[name$='[produit]']" ).each(function() {
 			lId.push($(this).val());
 		});
-		
+
 		if(lId.length > 0) {
 			$.post("./produits", {'id': lId}, function( data ) {
 				loadAddProduit(data);		
