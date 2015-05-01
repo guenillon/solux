@@ -25,7 +25,7 @@
 					<div class="col-xs-3 ">{{ 'caisse.add.famille'|trans }} : {{ famille.prenomChef }} {{ famille.nom }}</div>
 					<div class="col-xs-3 ">{{ 'caisse.add.taux_participation'|trans }} : 
 						{% if taux is null %}
-							<span id="taux" data-taux="100">Indéterminé</span>
+							<span id="taux" data-taux="1">Indéterminé</span>
 						{% else %}
 							<span id="taux" data-taux="{{ taux.taux }}">{{ (taux.taux *100)|localizednumber  }} %</span>
 						{% endif %}
@@ -41,7 +41,7 @@
 			</ul>
 		</div>
   	</div>
-	<div class="panel-body">
+	<div class="panel-body hide-show">
 		{{ form_start(form) }}
    		{{ form_errors(form) }}
    		<div class="col-xs-6">
@@ -76,16 +76,16 @@
 							{{ achat.montantPaye|localizednumber }}
 						{% endif %}
 					</span> €</div>
-				<div class="col-md-1">
+				<div class="col-md-1 hide-show">
 					<label class="control-label" for="versement">Versement</label>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-2 hide-show">
 					<div class="input-group">
 						<input type="text" class="form-control" id="versement"/>
 						<span class="input-group-addon"> €</span>
 					</div>
 				</div>
-				<div class="col-md-3">À rendre : <span id="rendre">0</span> €</div>
+				<div class="col-md-3 hide-show">À rendre : <span id="rendre">0</span> €</div>
 			</div>	
 		</div>
 	</div>
@@ -127,12 +127,28 @@
 					<td>{{ detail.produit.nom }}</td>
 					<td>{{ detail.produit.quantite|localizednumber }} {{ detail.produit.unite }}</td>
 					<td>{{ detail.produit.prix|localizedcurrency(currency) }}</td>
-					<td><a href="#" class="btn btn-xs btn-block btn-default delete-qte"><span class="glyphicon glyphicon-minus-sign"></span></a></td>
+					<td><a href="#" id="delete-qte-{{ detail.produit.id }}" class="btn btn-xs btn-block btn-default delete-qte hide-show"
+						data-produit-id="{{ detail.produit.id }}"
+	                    data-produit-prix="{{ detail.produit.prix }}"
+	                    data-produit-prix_fixe="{{ detail.produit.prixFixe }}"
+	                    data-produit-unite="{{ detail.produit.unite }}"
+	                    data-produit-quantite="{{ detail.produit.quantite }}"
+	                    data-produit-limite-quantite_max="-1"
+	                    data-produit-quantite-achat-total="-1"
+					><span class="glyphicon glyphicon-minus-sign"></span></a></td>
 					<td>{{ detail.quantite|localizednumber }} {{ detail.unite }}</td>
-					<td><a href="#" class="btn btn-xs btn-block btn-default add-qte"><span class="glyphicon glyphicon-plus-sign"></span></a></td>
+					<td><a href="#" id="add-qte-{{ detail.produit.id }}" class="btn btn-xs btn-block btn-default add-qte hide-show"
+						data-produit-id="{{ detail.produit.id }}"
+	                    data-produit-prix="{{ detail.produit.prix }}"
+	                    data-produit-prix_fixe="{{ detail.produit.prixFixe }}"
+	                    data-produit-unite="{{ detail.produit.unite }}"
+	                    data-produit-quantite="{{ detail.produit.quantite }}"
+	                    data-produit-limite-quantite_max="-1"
+	                    data-produit-quantite-achat-total="-1"
+					><span class="glyphicon glyphicon-plus-sign"></span></a></td>
 					<td>{{ detail.prix|localizedcurrency(currency) }}</td>
 					<td>{{ detail.prixPaye|localizedcurrency(currency) }}</td>
-					<td><a href="#" class="btn btn-xs btn-block btn-default delete-row" id="delete-row-{{ detail.produit.id }}"><span class="glyphicon glyphicon-remove"></span></a></td>
+					<td><a href="#" class="btn btn-xs btn-block btn-default delete-row hide-show" id="delete-row-{{ detail.produit.id }}"><span class="glyphicon glyphicon-remove"></span></a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -141,17 +157,28 @@
 			
 		</table>
 		<div>		
-			<div class="">	
+			<div class="hidden">	
 			{{ form_start(form_achat) }}
 			{{ form_errors(form_achat) }}
 			{{ form_rest(form_achat) }}
 			</div>	
 			<div class="form-group">
 				<div class="col-sm-2">
-					<a href="{{ path("jpi_solux_caisse") }}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> {{ 'form.annuler'|trans }}</a>
+					<a href="
+					{% if achat.id is not null %}
+						{{ path( 'jpi_solux_caisse_achats_famille', { 'id': famille.id }) }}
+					{% else %}
+						{{ path("jpi_solux_caisse") }}
+					{% endif %}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> {{ 'form.annuler'|trans }}</a>
 				</div>
 				<div class="col-sm-10 ">
 					<button type="submit" class="btn btn-default pull-right" id="btn-submit"><span class="glyphicon glyphicon-ok"></span> {{ 'form.enregistrer'|trans }}</button>
+					{% if achat.id is not null %}
+						<span class="btn-group pull-right btn-group-edit"> 
+							<a href="#" class="btn btn-default" id="btn-edit"><span class="glyphicon glyphicon-edit"></span> {{ 'form.modifier'|trans }}</a>
+							<a data-toggle="modal" href="#confirm-action" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> {{ 'form.supprimer.button'|trans }}</a>
+						</span>
+					{% endif %}
 				</div>
 			</div>
 			<div class="hidden">	
@@ -198,6 +225,23 @@
       </div>
       <div class="modal-body">
       	<div>{{ 'caisse.produit.montant_max.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirm-action">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'form.supprimer.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{  'caisse.confirm_delete'|trans }}</div>
+      </div>
+      <div class="modal-footer">
+        <a href="{{ path('jpi_solux_caisse_achats_delete' , { 'id': achat.id }) }}" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> {{ 'form.supprimer.button'|trans }}</a>
       </div>
     </div>
   </div>

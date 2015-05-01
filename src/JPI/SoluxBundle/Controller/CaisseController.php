@@ -87,7 +87,9 @@ class CaisseController extends Controller
     		}	
     	}
     	
+    	$addAchat = false;
     	if(is_null($achat)) {
+    		$addAchat = true;
     		$achat = new Achat();
     		$achat->setFamille($famille);
     	}
@@ -114,8 +116,12 @@ class CaisseController extends Controller
     				$em->persist($achat);
     				$em->flush();
     				
-    				$request->getSession()->getFlashBag()->add('success', 'Ajout effectué avec succés.');
-    				return $this->redirect($this->generateUrl('jpi_solux_caisse'));
+    				$request->getSession()->getFlashBag()->add('success', 'Achat enregistré avec succés.');
+    				if($addAchat) {
+    					return $this->redirect($this->generateUrl('jpi_solux_caisse'));
+    				} else {
+    					return $this->redirect($this->generateUrl('jpi_solux_caisse_achats'));
+    				}
     			}
     		}
     	}
@@ -150,6 +156,10 @@ class CaisseController extends Controller
 	    	$repo = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Produit');
 	    	$produits = $repo->getProduits($data);
 	    	
+	    	foreach($produits as $produit) {
+	    		$produit->getCategorie()->eraseProduits();
+	    	}
+	    	
 	    	$serializer = $this->container->get('serializer');
 	    	$response = new Response($serializer->serialize($produits, 'json'));
 	    	$response->headers->set('Content-Type', 'application/json');
@@ -174,6 +184,14 @@ class CaisseController extends Controller
     			array("listeAchats" => $listeAchats,
     					"famille" => $famille
     			));
+    }
+    
+    public function deleteAction(Achat $achat){
+    	$em = $this->getDoctrine()->getManager();
+    	$em->remove($achat);
+    	$em->flush();
+    	$this->container->get('session')->getFlashBag()->set('success', 'Achat supprimé avec succés.');
+    	return $this->redirect($this->generateUrl('jpi_solux_caisse_achats'));
     }
 }
 ?>

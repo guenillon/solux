@@ -1,8 +1,6 @@
 $(document).ready(function() {
 	// Déclenche le script uniquement sur la vue caisse
 	if($("#caisse-config").length == 1) {
-	
-	
 		var lDataTable = $('.jpi_table_data_table_caisse').DataTable({
 		    "language": {
 		    	"url": "https://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/French.json"
@@ -89,6 +87,20 @@ $(document).ready(function() {
 			  		e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
+				
+				// Ajout de quantité
+				$("#add-qte-" + lIdProduit).click(function(e) { 
+					majQuantite($(this), true);
+					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				    return false;
+			  	});
+				
+				// Ajout de quantité
+				$("#delete-qte-" + lIdProduit).click(function(e) { 			
+					majQuantite($(this), false);
+					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				    return false;
+			  	});
 			});
 			//majTotal();
 		}
@@ -97,32 +109,51 @@ $(document).ready(function() {
 			loadProduit();
 		} else {
 			reloadForm();
+			$(".hide-show").hide();
+			$("#btn-edit").click(function(e) {
+				$(".btn-group-edit").hide();
+				$(".hide-show").show();
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+			});
 		}
 		
 		function loadAddProduit(produits) {
+			var lTaux = parseFloat($('#taux').data("taux"));
+			
 			$(produits).each(function() {
 				var produit = this;			
 				var lEnteteNomChamp = '#jpi_soluxbundle_achat_detail_' + produit.id;
-				var lTaux = parseFloat($('#taux').data("taux"));
-	
-				var lQuantite = parseFloat($(lEnteteNomChamp + '_quantite').val());
+
+				var lQuantite = parseFloat($(lEnteteNomChamp + '_quantite').val().replace(',','.'));
 				var lPrix = (lQuantite * parseFloat(produit.prix)).toFixed(2);
 				var lPrixPaye = produit.prix;
 				if(!produit.prix_fixe) {
 					lPrixPaye = (parseFloat(lPrix)*lTaux).toFixed(2);
 				}
 				
+				var lQuantiteMax = -1;
+				var lQuantiteAchatTotal = -1;
+				
+				var ldataProduit =
+					'data-produit-id="' + produit.id + '" ' +
+                    'data-produit-prix="' + produit.prix + '" ' +
+                    'data-produit-prix_fixe="' + produit.prix_fixe + '" ' +
+                    'data-produit-unite="' + produit.unite + '" ' +
+                    'data-produit-quantite="' + produit.quantite + '" ' +
+                    'data-produit-limite-quantite_max="' + lQuantiteMax + '" ' +
+                    'data-produit-quantite-achat-total="' + lQuantiteAchatTotal + '" ';
+				
 				var lNode = lDataTable.row.add( [ produit.id,
 							                      produit.categorie.nom,
 							                      produit.nom,
 							                      produit.quantite + ' ' + produit.unite,
 							                      $.number(produit.prix, 2, ',', ' ' ) + ' €',
-							                      '<a href="#" class="btn btn-xs btn-block btn-default delete-qte"><span class="glyphicon glyphicon-minus-sign"></span></a>',
+							                      '<a href="#" id="delete-qte-' + produit.id + '" class="btn btn-xs btn-block btn-default delete-qte" ' + ldataProduit + '><span class="glyphicon glyphicon-minus-sign"></span></a>',
 							                      $.number(lQuantite, 2, ',', ' ' ) + ' ' + produit.unite,
-							                      '<a href="#" class="btn btn-xs btn-block btn-default add-qte"><span class="glyphicon glyphicon-plus-sign"></span></a>',
+							                      '<a href="#" id="add-qte-' + produit.id + '" class="btn btn-xs btn-block btn-default add-qte" ' + ldataProduit + '><span class="glyphicon glyphicon-plus-sign"></span></a>',
 							                      $.number(lPrix, 2, ',', ' ' ) + ' €',
 							                      $.number(lPrixPaye, 2, ',', ' ' ) + ' €',
-							                      '<a href="#" class="btn btn-xs btn-block btn-default delete-row"><span class="glyphicon glyphicon-remove"></span></a>'
+							                      '<a href="#" id="delete-row-' + produit.id + '" class="btn btn-xs btn-block btn-default delete-row"><span class="glyphicon glyphicon-remove"></span></a>'
 							                 ] ).draw().node();
 				
 				var $prototype = $(lEnteteNomChamp).parent().parent();
@@ -135,17 +166,16 @@ $(document).ready(function() {
 				    return false;
 			  	});
 				
-				var response = {'produit': produit, 'quantiteAchat': {'total': -1} };
 				// Ajout de quantité
 				$(lNode).find(".add-qte").click(function(e) { 			
-					majQuantite(lEnteteNomChamp, response, lTaux, true);
+					majQuantite($(this), true);
 					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
 				
 				// Ajout de quantité
 				$(lNode).find(".delete-qte").click(function(e) { 			
-					majQuantite(lEnteteNomChamp, response, lTaux, false);
+					majQuantite($(this), false);
 					e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 				    return false;
 			  	});
@@ -164,13 +194,20 @@ $(document).ready(function() {
 				
 				// Vérifier si le produit est déjà dans l'achat
 				if($( lEnteteNomChamp + '_produit').length > 0) { // Maj de la quantité et du prix
-					majQuantite(lEnteteNomChamp, response, lTaux, true);	
+					majQuantite($("#add-qte-" + produit.id), true);	
 				} else { // Ajout du produit au formulaire
+					var lQuantiteMax = -1;
+					var lQuantiteAchatTotal = parseFloat(response.quantiteAchat.total);
+					if(isNaN(lQuantiteAchatTotal)) {
+						lQuantiteAchatTotal = 0;
+					}
 					// On a dépassé la limite max
 					if( response.produit.limites[0]
-						&& response.produit.limites[0].quantite_max != "" 
-						&& parseFloat(response.produit.limites[0].quantite_max) < (parseFloat(response.quantiteAchat.total) + parseFloat(produit.quantite)).toFixed(2)) {
-						$("#quantite-max").modal('show');
+						&& response.produit.limites[0].quantite_max != "" ) {
+						lQuantiteMax = response.produit.limites[0].quantite_max;
+						if(parseFloat(response.produit.limites[0].quantite_max) < (lQuantiteAchatTotal + parseFloat(produit.quantite)).toFixed(2)) {
+							$("#quantite-max").modal('show'); 
+						}						
 					}
 					
 					var lPrixPaye = produit.prix;
@@ -190,17 +227,26 @@ $(document).ready(function() {
 					$prototype.find(lEnteteNomChamp + '_prixPaye').val(lPrixPaye);
 					$prototype.find(lEnteteNomChamp + '_taux').val(lTauxProduit);
 	
+					var ldataProduit =
+						'data-produit-id="' + produit.id + '" ' +
+	                    'data-produit-prix="' + produit.prix + '" ' +
+	                    'data-produit-prix_fixe="' + produit.prix_fixe + '" ' +
+	                    'data-produit-unite="' + produit.unite + '" ' +
+	                    'data-produit-quantite="' + produit.quantite + '" ' +
+	                    'data-produit-limite-quantite_max="' + lQuantiteMax + '" ' +
+	                    'data-produit-quantite-achat-total="' + lQuantiteAchatTotal + '" ';
+					
 					var lNode = lDataTable.row.add( [ produit.id,
 					                      produit.categorie.nom,
 					                      produit.nom,
 					                      produit.quantite + ' ' + produit.unite,
 					                      $.number(produit.prix, 2, ',', ' ' ) + ' €',
-					                      '<a href="#" class="btn btn-xs btn-block btn-default delete-qte"><span class="glyphicon glyphicon-minus-sign"></span></a>',
+					                      '<a href="#" id="delete-qte-' + produit.id + '" class="btn btn-xs btn-block btn-default delete-qte" ' + ldataProduit + '><span class="glyphicon glyphicon-minus-sign"></span></a>',
 					                      $.number(produit.quantite, 2, ',', ' ' ) + ' ' + produit.unite,
-					                      '<a href="#" class="btn btn-xs btn-block btn-default add-qte"><span class="glyphicon glyphicon-plus-sign"></span></a>',
+					                      '<a href="#" id="add-qte-' + produit.id + '" class="btn btn-xs btn-block btn-default add-qte" ' + ldataProduit + '><span class="glyphicon glyphicon-plus-sign"></span></a>',
 					                      $.number(produit.prix, 2, ',', ' ' ) + ' €',
 					                      $.number(lPrixPaye, 2, ',', ' ' ) + ' €',
-					                      '<a href="#" class="btn btn-xs btn-block btn-default delete-row"><span class="glyphicon glyphicon-remove"></span></a>'
+					                      '<a href="#" id="delete-row-' + produit.id + '" class="btn btn-xs btn-block btn-default delete-row"><span class="glyphicon glyphicon-remove"></span></a>'
 					                 ] ).draw().node();
 	
 					// Suppression de la ligne
@@ -214,14 +260,14 @@ $(document).ready(function() {
 					
 					// Ajout de quantité
 					$(lNode).find(".add-qte").click(function(e) { 			
-						majQuantite(lEnteteNomChamp, response, lTaux, true);
+						majQuantite($(this), true);
 						e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 					    return false;
 				  	});
 					
 					// Ajout de quantité
 					$(lNode).find(".delete-qte").click(function(e) { 			
-						majQuantite(lEnteteNomChamp, response, lTaux, false);
+						majQuantite($(this), false);
 						e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 					    return false;
 				  	});
@@ -234,52 +280,55 @@ $(document).ready(function() {
 			}
 		}
 		
-		function majQuantite(lEnteteNomChamp, response, lTaux, lAjout) {
+		function majQuantite(produit, lAjout) {
+			var lEnteteNomChamp = '#jpi_soluxbundle_achat_detail_' + produit.data('produit-id');
 			
-			var produit = response.produit;
+			var lQuantiteActuelle = parseFloat($(lEnteteNomChamp + '_quantite').val().replace(',','.'));
+			var lQuantiteDelta = parseFloat(produit.data('produit-quantite'));
+			
 			var lQuantite = 0;
 			if(lAjout) {
-				lQuantite = (
-						parseFloat($(lEnteteNomChamp + '_quantite').val())
-					+ 
-						parseFloat(produit.quantite)
-					).toFixed(2);
+				lQuantite = (lQuantiteActuelle + lQuantiteDelta).toFixed(2);
 			} else {
-				lQuantite = (
-						parseFloat($(lEnteteNomChamp + '_quantite').val())
-					-
-						parseFloat(produit.quantite)
-					).toFixed(2);
+				lQuantite = (lQuantiteActuelle - lQuantiteDelta).toFixed(2);
 			}
 			
 			// Pas de Quantité négative
 			if(lQuantite > 0) {
 				// Si la nouvelle quantité dépasse la limite max
-				if(response.produit.limites[0]
-					&& response.produit.limites[0].quantite_max != "" 
-					&& parseFloat(response.produit.limites[0].quantite_max) < (parseFloat(response.quantiteAchat.total) + parseFloat(lQuantite)).toFixed(2)
-					&& response.quantiteAchat.total != -1) {
+				if(produit.data('produit-limite-quantite_max') != -1
+					&& produit.data('produit-quantite-achat-total') != -1					
+					&& parseFloat(produit.data('produit-limite-quantite_max')) < (parseFloat(produit.data('produit-quantite-achat-total')) + parseFloat(lQuantite)).toFixed(2))
+					 {
 					$("#quantite-max").modal('show');
 				} 
-				var lPrix = (parseFloat(lQuantite) * parseFloat(produit.prix)).toFixed(2);
-								
+				var lPrix = (parseFloat(lQuantite) * parseFloat(produit.data('produit-prix'))).toFixed(2);
+
 				var lPrixPaye = lPrix;
-				if(!produit.prix_fixe) {
-					lPrixPaye = (lPrix*lTaux).toFixed(2);
+				if(!produit.data('produit-prix_fixe')) {
+					lPrixPaye = ( lPrix * parseFloat($('#taux').data("taux") )).toFixed(2);
 				}
 			
 				$(lEnteteNomChamp + '_quantite').val(lQuantite);
 				$(lEnteteNomChamp + '_prix').val(lPrix);
 				$(lEnteteNomChamp + '_prixPaye').val(lPrixPaye);
-								
-				var lIndex = lDataTable.column( 0, { order: 'index' } ).data().indexOf( produit.id );
 				
-				lDataTable.cell( lIndex, 6 ).data($.number(lQuantite, 2, ',', ' ' ) + ' ' + produit.unite);
-				lDataTable.cell( lIndex, 8 ).data($.number(lPrix, 2, ',', ' ' )+ ' €');
-				lDataTable.cell( lIndex, 9 ).data($.number(lPrixPaye, 2, ',', ' ' )+ ' €');
+				var lLigne = 
+					produit.parent().parent().children().each(function(index) {
+						switch(index) {
+							case 4:
+								$(this).text($.number(lQuantite, 2, ',', ' ' ) + ' ' + produit.data('produit-unite'));
+								break;
+							case 6:
+								$(this).text($.number(lPrix, 2, ',', ' ' )+ ' €');
+								break;
+							case 7:
+								$(this).text($.number(lPrixPaye, 2, ',', ' ' )+ ' €');
+								break;
+						}
+					});				
+				majTotal();
 			}
-	
-			majTotal();
 		}
 			
 		$("#btn-submit").hide();
@@ -313,13 +362,13 @@ $(document).ready(function() {
 			
 			var lTotal = 0;
 			$( "input[name$='[" + col + "]']" ).each(function() {
-				lTotal = (parseFloat(lTotal) + parseFloat($(this).val())).toFixed(2);			
+				lTotal = (parseFloat(lTotal) + parseFloat($(this).val().replace(',','.'))).toFixed(2);			
 			});
 			return lTotal;
 		}
 		
 		function majVersement() {
-			var lVersement = parseFloat($("#versement").val());
+			var lVersement = parseFloat($("#versement").val().replace(',','.'));
 			
 			var lRendre = 0;
 			if(!isNaN(lVersement)) {

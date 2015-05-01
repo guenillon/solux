@@ -27,7 +27,13 @@ jpi_solux_caisse_achats_show:
     defaults:  { _controller: "JPISoluxBundle:Caisse:show" }
     requirements:
         id: \d+
-           
+
+jpi_solux_caisse_achats_delete:
+    path:      /caisse/achats/delete/{id}
+    defaults:  { _controller: "JPISoluxBundle:Caisse:delete" }
+    requirements:
+        id: \d+
+                   
 jpi_solux_famille:
     path:     /parametrage/famille
     defaults: { _controller: "JPISoluxBundle:Famille:liste" }
