@@ -17,3 +17,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: validator.constraint_validator, alias: achat_taux_participation_famille }
+    jpi_solux.constraint.famille_tx_part_existe:
+        class: JPI\SoluxBundle\Validator\Constraints\FamilleTauxParticipationExisteValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: validator.constraint_validator, alias: famille_tx_part_existe }
