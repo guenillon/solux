@@ -5,11 +5,18 @@
 <p class="list-group-item">Prénom : {{ famille.prenomChef }}</p>
 <p class="list-group-item">Date d'entrée : {{ famille.dateEntree|localizeddate('medium', 'none', locale) }}</p>
 <p class="list-group-item">Date de sortie : {{famille.dateSortie is empty ? "" : famille.dateSortie|localizeddate('medium', 'none', locale) }}</p>
+<p class="list-group-item">Taux de participation : 
+{% if taux is null %}
+	Indéterminé
+{% else %}
+	{{ (taux.taux *100)|localizednumber }} %
+{% endif %}
+</p>
 <p class="list-group-item">Recettes : {{ famille.recettes|localizedcurrency(currency) }}</p>
 <p class="list-group-item">Dépenses : {{ famille.depenses|localizedcurrency(currency) }}</p>
 <p class="list-group-item">Statut professionnel : {{ famille.statutProfessionnel.nom }}</p>
 {% if famille.membres is not empty %}
-<p class="list-group-item">Membres
+<div class="list-group-item">Membres<br/><br/>
 	<table class="table table-striped table-bordered table-responsive table-condensed table-hover">
 		<thead>
 			<tr>
@@ -38,6 +45,6 @@
     {%- endfor -%}
     	</tbody>
     </table>
-</p>
+</div>
 {% endif %}
 {% endblock jpi_solux_show_content %}

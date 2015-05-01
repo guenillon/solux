@@ -37,6 +37,9 @@ class FamilleController extends EntityController
 	{
 		$entity = $this->getEntity($id);	
 		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
+		
+		$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Famille');
+		$tauxParticipation = $repository->getTauxParticipation($id);
 	
 		return $this->render($template, array(
 				"entity" => $entity,
@@ -44,7 +47,8 @@ class FamilleController extends EntityController
 				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $entity->getId())),
 				"entityName" => $this->entityLabelShow,
 				"entityLabel" => $entity->getNom(),
-				"famille" => $entity
+				"famille" => $entity,
+				"taux" => $tauxParticipation
 		));
 	}
 	
