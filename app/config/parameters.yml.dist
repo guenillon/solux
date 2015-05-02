@@ -17,4 +17,4 @@ parameters:
     locale:            en
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            937c48cb10b106a119e3b4235852d5567206eb5e

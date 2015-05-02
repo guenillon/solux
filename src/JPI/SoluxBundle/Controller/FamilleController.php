@@ -42,7 +42,6 @@ class FamilleController extends EntityController
 		$tauxParticipation = $repository->getTauxParticipation($id);
 	
 		return $this->render($template, array(
-				"entity" => $entity,
 				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $entity->getId())),
 				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $entity->getId())),
 				"entityName" => $this->entityLabelShow,
