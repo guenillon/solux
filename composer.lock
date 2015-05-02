@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e4b8b2e247fb26aa39f02f15eb1abf38",
+    "hash": "39aeac7884711ba380ea771fc668d617",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -45,56 +45,6 @@
                 "transliterator"
             ],
             "time": "2014-05-15 22:08:22"
-        },
-        {
-            "name": "coresphere/console-bundle",
-            "version": "dev-master",
-            "target-dir": "CoreSphere/ConsoleBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CoreSphere/ConsoleBundle.git",
-                "reference": "6cf6090c995badc566e88ddd2ff5749f1cdcba7c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CoreSphere/ConsoleBundle/zipball/6cf6090c995badc566e88ddd2ff5749f1cdcba7c",
-                "reference": "6cf6090c995badc566e88ddd2ff5749f1cdcba7c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": ">=2.1.0,<3.0"
-            },
-            "require-dev": {
-                "symfony/console": ">=2.1.0,<3.0"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "CoreSphere\\ConsoleBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Laszlo Korte",
-                    "email": "coresphere@laszlokorte.de"
-                },
-                {
-                    "name": "Markus Ullmann",
-                    "email": "mail@markus-ullmann.de"
-                }
-            ],
-            "description": "This bundle allows you accessing the symfony2 console via your browser",
-            "keywords": [
-                "console",
-                "javascript",
-                "symfony"
-            ],
-            "time": "2014-06-13 10:21:57"
         },
         {
             "name": "doctrine/annotations",
@@ -664,17 +614,17 @@
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
-            "version": "dev-master",
+            "version": "v2.2.0",
             "target-dir": "Doctrine/Bundle/FixturesBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "c5ff0542772102ddd4e2fbe173e9ad40ad67c22f"
+                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/c5ff0542772102ddd4e2fbe173e9ad40ad67c22f",
-                "reference": "c5ff0542772102ddd4e2fbe173e9ad40ad67c22f",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/c811f96f0cf83b997e3a3ed037cac729bbe3e803",
+                "reference": "c811f96f0cf83b997e3a3ed037cac729bbe3e803",
                 "shasum": ""
             },
             "require": {
@@ -686,7 +636,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -700,16 +650,18 @@
             ],
             "authors": [
                 {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
                 },
                 {
                     "name": "Doctrine Project",
                     "homepage": "http://www.doctrine-project.org"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony DoctrineFixturesBundle",
@@ -718,7 +670,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2015-01-19 02:21:37"
+            "time": "2013-09-05 11:23:37"
         },
         {
             "name": "doctrine/inflector",
@@ -1853,17 +1805,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v3.0.21",
+            "version": "v3.0.22",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8"
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/da23c78093676a823a1ff43a214987ea3fbf83c8",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
                 "shasum": ""
             },
             "require": {
@@ -1909,7 +1861,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-04-10 06:20:46"
+            "time": "2015-05-02 16:23:08"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2585,10 +2537,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "doctrine/doctrine-fixtures-bundle": 20,
-        "coresphere/console-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

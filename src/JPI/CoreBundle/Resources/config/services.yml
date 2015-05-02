@@ -4,7 +4,7 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     jpi_core.doctrine.entity_audit:
         class: JPI\CoreBundle\DoctrineListener\EntityAudit
-        arguments: ['@service_container']
+        arguments: ['@security.token_storage']
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: prePersist }
