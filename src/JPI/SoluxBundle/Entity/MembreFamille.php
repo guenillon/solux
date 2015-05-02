@@ -5,6 +5,7 @@ namespace JPI\SoluxBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * MembreFamille
@@ -221,5 +222,29 @@ class MembreFamille extends BaseEntity
     public function getFamille()
     {
         return $this->famille;
+    }
+    
+    /**
+     * isParentValid
+     *
+     * @param \Symfony\Component\Validator\ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function isParentValid(ExecutionContextInterface $context)
+    {
+    	if($this->getParent() && $this->getPourcentageACharge() != 1) {
+    		$context->addViolationAt(
+    				'pourcentageACharge',
+    				' Un parent doit être à 100%',
+    				array(),
+    				null
+    		);
+    		$context->addViolationAt(
+    				'parent',
+    				' Un parent doit être à 100%',
+    				array(),
+    				null
+    		);
+    	}
     }
 }
