@@ -170,3 +170,4 @@ abstract class Entity
 		return $this->updatedBy;
 	}
 }
+?>

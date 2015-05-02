@@ -33,7 +33,6 @@ class TauxParticipationController extends EntityController
 	public function showAction($id)
 	{
 		$entity = $this->getEntity($id);
-		$content = $this->getShowAttributes($entity);
 	
 		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
 		return $this->render($template, array(
