@@ -19,7 +19,7 @@ class AchatTauxParticipationFamilleValidator extends ConstraintValidator
 		$repository = $this->entityManager->getRepository('JPISoluxBundle:Famille');
 		$tauxParticipation = $repository->getTauxParticipation($achat->getFamille()->getId());
 
-		if ($tauxParticipation->getTaux() != $achat->getTaux()) {
+		if (!is_null($tauxParticipation) && $tauxParticipation->getTaux() != $achat->getTaux()) {
 			$this->context->addViolation($constraint->message, array());
 			return false;
 		}

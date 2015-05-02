@@ -5,6 +5,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}Pain d'Epices{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Latest compiled and minified CSS -->
@@ -22,7 +23,7 @@
 		<![endif]-->
 
 
-		{% stylesheets 'css/*' %}
+		{% stylesheets '@JPISoluxBundle/Resources/public/css/*' filter='?yui_css' %}
 		  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
 	</head>
@@ -86,7 +87,8 @@
 		<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	
 		{% javascripts 
-			'js/*'
+			'@JPISoluxBundle/Resources/public/js/*'
+			filter='?yui_js'
 		%}
 		  <script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}

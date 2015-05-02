@@ -230,6 +230,7 @@
   </div>
 </div>
 
+{% if achat.id is not null %}
 <div class="modal fade" id="confirm-action">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -246,5 +247,6 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 {% endblock jpi_solux_content %}
