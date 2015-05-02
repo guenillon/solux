@@ -1,11 +1,9 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use JPI\SoluxBundle\Controller\EntityController;
-use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\TauxParticipation;
-use JPI\SoluxBundle\Form\TauxParticipationType;
+use JPI\SoluxBundle\Form\Type\TauxParticipationType;
 
 class TauxParticipationController extends EntityController
 {

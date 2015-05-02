@@ -3,11 +3,9 @@ namespace JPI\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use JPI\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use JPI\CoreBundle\Export\Classes;
-use JPI\UserBundle\Form\Type\UserProfileFormType;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 
 class AdminController extends Controller

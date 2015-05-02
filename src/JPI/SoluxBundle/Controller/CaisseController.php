@@ -3,16 +3,9 @@ namespace JPI\SoluxBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\Famille;
-use JPI\SoluxBundle\Entity\Produit;
-use JPI\SoluxBundle\Form\CaisseRechercheProduitType;
-use JPI\SoluxBundle\Form\AchatType;
-/*use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;*/
+use JPI\SoluxBundle\Form\Type\CaisseRechercheProduitType;
+use JPI\SoluxBundle\Form\Type\AchatType;
 use JPI\SoluxBundle\Entity\Achat;
 
 class CaisseController extends Controller
@@ -60,14 +53,12 @@ class CaisseController extends Controller
 		    		if(!(empty($data['codeBarre']) && empty($data['nom']))) {		    			
 		    			// Ajout des infos pour les limites d'achats du produit
 		    			$data['nbMembres'] = $famille->countMembres();
-		    			//$data['idFamille'] = $famille->getId();
 		    			
 		    			//On va récupérer la méthode dans le repository afin de trouver le produit
 		    			$produits = $em->getRepository('JPISoluxBundle:Produit')->findProduitByParametres($data);
 		    			
 		    			if(!empty($produits)) {
 		    				$produit = $produits[0];
-		    				//$produit->eraseLimites();
 		    				$produit->getCategorie()->eraseProduits();
 		    				
 		    				$repositoryAchat = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Achat');

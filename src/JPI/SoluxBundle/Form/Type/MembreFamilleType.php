@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TauxParticipationType extends AbstractType
+class MembreFamilleType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,17 +15,25 @@ class TauxParticipationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('min', 'money', array(
-            		"label" => "Reste pour vivre : De",
+            ->add('nom', 'text', array(
+            		"label" => "Nom",
             		"required" => true
             ))
-            ->add('max', 'money', array(
-            		"label" => "À",
+            ->add('prenom', 'text', array(
+            		"label" => "Prénom",
             		"required" => true
             ))
-            ->add('taux', 'percent', array(
+            ->add('dateNaissance', 'birthday',  array(
+            		"label" => "Date de Naissance"
+            ))
+            ->add('pourcentageACharge', 'percent', array(
+            		"label" => "% à charge",
             		"precision" => 2,
-            		"required" => true
+            		"required" => false
+            ))
+            ->add('parent', 'checkbox', array(
+            		"label" => "Parent",
+            		"required" => false
             ))
         ;
     }
@@ -36,7 +44,7 @@ class TauxParticipationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\TauxParticipation'
+            'data_class' => 'JPI\SoluxBundle\Entity\MembreFamille'
         ));
     }
 
@@ -45,6 +53,6 @@ class TauxParticipationType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_tauxparticipation';
+        return 'jpi_soluxbundle_membrefamille';
     }
 }

@@ -14,18 +14,6 @@ class MembreFamilleRepository extends EntityRepository
 {
 	public function getMontantMax($id)
 	{
-		/*select * from montantmaxachat b
-		
-		where (
-				select count(1) from membrefamille a
-				where a.famille_id = 1
-				and parent = 1) between b.nbMembreAdulteMin and b.nbMembreAdulteMax
-				AND (
-						select count(1) from membrefamille c
-						where c.famille_id = 1
-						and parent = 0) between b.nbMembreEnfantMin and b.nbMembreEnfantMax
-		*/
-
 		$lSubquery1 = $this->createQueryBuilder('b');
 		$lSubquery1->select($lSubquery1->expr()->count('b.pourcentageACharge'))
 			->where($lSubquery1->expr()->eq('b.famille', ':id'))
@@ -53,14 +41,6 @@ class MembreFamilleRepository extends EntityRepository
 			->andWhere($lQuery->expr()->gte(sprintf('(%s)', $lSubquery3->getDQL()), 'a.nbMembreEnfantMin'))
 			->andWhere($lQuery->expr()->lte(sprintf('(%s)', $lSubquery4->getDQL()), 'a.nbMembreEnfantMax'))
 			->setParameter('id', $id);
-		
-		/*$lQuery->select('b')
-		->from($this->_entityName, 'a')
-		->from('JPI\SoluxBundle\Entity\TauxParticipation', 'b')
-		->where($lQuery->expr()->eq('a.id', ':id'))
-		->andWhere($lQuery->expr()->gte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.min'))
-		->andWhere($lQuery->expr()->lte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.max'))
-		->setParameter('id', $id);*/
 	
 		return $lQuery
 			->getQuery()

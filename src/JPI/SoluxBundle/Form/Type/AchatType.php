@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class LimiteAchatProduitType extends AbstractType
+class AchatType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,21 +15,18 @@ class LimiteAchatProduitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nbMembreMin', 'integer', array(
-            		"label" => "Membres : De",
+        	->add('montant', 'money', array(
             		"required" => true
             ))
-            ->add('nbMembreMax', 'integer', array(
-            		"label" => "À",
+            ->add('montantPaye', 'money', array(
             		"required" => true
             ))
-            ->add('duree', 'integer', array(
-            		"label" => "Durée (Jours)",
-            		"required" => true
-            ))
-            ->add('quantiteMax', 'number', array(
-            		"label" => "Quantité maximum",
-            		"required" => true
+            ->add('detail', 'collection', array(
+            		"label" => "Produits",
+            		'type'         => new AchatDetailType(),
+            		'allow_add'    => true,
+            		'allow_delete' => true,
+            		'by_reference' => false
             ))
         ;
     }
@@ -40,7 +37,7 @@ class LimiteAchatProduitType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\LimiteAchatProduit'
+            'data_class' => 'JPI\SoluxBundle\Entity\Achat'
         ));
     }
 
@@ -49,6 +46,6 @@ class LimiteAchatProduitType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_limiteachatproduit';
+        return 'jpi_soluxbundle_achat';
     }
 }

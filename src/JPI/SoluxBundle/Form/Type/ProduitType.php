@@ -1,11 +1,11 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use JPI\SoluxBundle\Form\LimiteAchatProduitType;
+use JPI\SoluxBundle\Form\Type\LimiteAchatProduitType;
 use JPI\SoluxBundle\Entity\CategorieRepository;
 
 class ProduitType extends AbstractType

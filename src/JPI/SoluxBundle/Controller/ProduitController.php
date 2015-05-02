@@ -1,13 +1,11 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use JPI\SoluxBundle\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\Produit;
-use JPI\SoluxBundle\Form\ProduitType;
+use JPI\SoluxBundle\Form\Type\ProduitType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use JPI\SoluxBundle\JPISoluxBundle;
 
 class ProduitController extends EntityController
 {

@@ -1,11 +1,10 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use JPI\SoluxBundle\Entity\ProduitRepository;
 
 class AchatDetailType extends AbstractType
 {

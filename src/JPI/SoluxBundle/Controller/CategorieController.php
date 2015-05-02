@@ -1,11 +1,10 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use JPI\SoluxBundle\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\Categorie;
-use JPI\SoluxBundle\Form\CategorieType;
+use JPI\SoluxBundle\Form\Type\CategorieType;
 
 class CategorieController extends EntityController
 {

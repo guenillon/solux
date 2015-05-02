@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AchatType extends AbstractType
+class CategorieType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,19 +15,9 @@ class AchatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        	->add('montant', 'money', array(
-            		"required" => true
-            ))
-            ->add('montantPaye', 'money', array(
-            		"required" => true
-            ))
-            ->add('detail', 'collection', array(
-            		"label" => "Produits",
-            		'type'         => new AchatDetailType(),
-            		'allow_add'    => true,
-            		'allow_delete' => true,
-            		'by_reference' => false
-            ))
+            ->add('nom')
+            ->add('description', 'textarea', array(
+            		"required" => false))
         ;
     }
     
@@ -37,7 +27,7 @@ class AchatType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\Achat'
+            'data_class' => 'JPI\SoluxBundle\Entity\Categorie'
         ));
     }
 
@@ -46,6 +36,6 @@ class AchatType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_achat';
+        return 'jpi_soluxbundle_categorie';
     }
 }

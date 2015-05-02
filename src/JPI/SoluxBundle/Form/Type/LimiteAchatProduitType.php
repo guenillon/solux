@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MembreFamilleType extends AbstractType
+class LimiteAchatProduitType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,25 +15,21 @@ class MembreFamilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', 'text', array(
-            		"label" => "Nom",
+            ->add('nbMembreMin', 'integer', array(
+            		"label" => "Membres : De",
             		"required" => true
             ))
-            ->add('prenom', 'text', array(
-            		"label" => "Prénom",
+            ->add('nbMembreMax', 'integer', array(
+            		"label" => "À",
             		"required" => true
             ))
-            ->add('dateNaissance', 'birthday',  array(
-            		"label" => "Date de Naissance"
+            ->add('duree', 'integer', array(
+            		"label" => "Durée (Jours)",
+            		"required" => true
             ))
-            ->add('pourcentageACharge', 'percent', array(
-            		"label" => "% à charge",
-            		"precision" => 2,
-            		"required" => false
-            ))
-            ->add('parent', 'checkbox', array(
-            		"label" => "Parent",
-            		"required" => false
+            ->add('quantiteMax', 'number', array(
+            		"label" => "Quantité maximum",
+            		"required" => true
             ))
         ;
     }
@@ -44,7 +40,7 @@ class MembreFamilleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\MembreFamille'
+            'data_class' => 'JPI\SoluxBundle\Entity\LimiteAchatProduit'
         ));
     }
 
@@ -53,6 +49,6 @@ class MembreFamilleType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_membrefamille';
+        return 'jpi_soluxbundle_limiteachatproduit';
     }
 }
