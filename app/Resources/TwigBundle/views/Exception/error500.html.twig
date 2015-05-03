@@ -1,0 +1,11 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+	<div class="well text-center">
+        <h1>Oops! Il y a un petit problème</h1>
+        <h2>
+        	Et voilà la machine est cassée.<br/>
+       		Regardons ce que nous raconte notre server "{{ status_code }} {{ status_text }}".
+        </h2>
+   </div>
+{% endblock %}

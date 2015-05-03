@@ -35,7 +35,7 @@
 						<a class="navbar-brand" href="{{ path("home") }}">Pain d'Épices</a>
 					</div>
 				  	<ul class="nav navbar-nav">
-						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						{% if app.security.token is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
 						<li> <a href="{{ path("jpi_solux_caisse") }}">Caisse</a> </li>
 						<li> <a href="{{ path("jpi_solux_caisse_achats") }}">Achats</a> </li>
 						<li class="dropdown"> 
@@ -58,11 +58,11 @@
 							</ul>
 						</li>
 						{% endif %}
-				  		{% if is_granted('ROLE_ADMIN') %}
+				  		{% if app.security.token is not null and is_granted('ROLE_ADMIN') %}
 						<li> <a href="{{ path("jpi_liste_user") }}">Utilisateurs</a> </li>
 						{% endif %}
 		 			</ul>
-		 			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		 			{% if app.security.token is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown"> 
 							<a data-toggle="dropdown" href="#">{{ app.user.username }} <b class="caret"></b></a>

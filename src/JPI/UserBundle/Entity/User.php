@@ -22,11 +22,6 @@ class User extends BaseUser
 	protected $id;
   
   /**
-   * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
-   */
-	private $deletedAt;
-  
-  /**
    * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
    */
 	private $updatedAt;
@@ -46,6 +41,11 @@ class User extends BaseUser
    */
 	private $createdBy;
   
+  /**
+   * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+   */
+	private $deletedAt;
+  
   
 	public function __construct()
   	{
@@ -64,19 +64,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return User
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
      * Get createdAt
      *
      * @return \DateTime 
@@ -87,14 +74,14 @@ class User extends BaseUser
     }
 
     /**
-     * Set createdBy
+     * Set createdAt
      *
-     * @param integer $createdBy
+     * @param \DateTime $createdAt
      * @return User
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedAt($createdAt)
     {
-        $this->createdBy = $createdBy;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -110,17 +97,18 @@ class User extends BaseUser
     }
 
     /**
-     * Set deletedAt
+     * Set createdBy
      *
-     * @param \DateTime $deletedAt
+     * @param integer $createdBy
      * @return User
      */
-    public function setDeletedAt($deletedAt)
+    public function setCreatedBy($createdBy)
     {
-        $this->deletedAt = $deletedAt;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
+
 
     /**
      * Get deletedAt
@@ -132,6 +120,29 @@ class User extends BaseUser
         return $this->deletedAt;
     }
 
+    /**
+     * Set deletedAt
+     *
+     * @param \DateTime $deletedAt
+     * @return User
+     */
+    public function setDeletedAt($deletedAt)
+    {
+    	$this->deletedAt = $deletedAt;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+    	return $this->updatedAt;
+    }
+    
     /**
      * Set updatedAt
      *
@@ -145,14 +156,15 @@ class User extends BaseUser
         return $this;
     }
 
+
     /**
-     * Get updatedAt
+     * Get updatedBy
      *
-     * @return \DateTime 
+     * @return integer
      */
-    public function getUpdatedAt()
+    public function getUpdatedBy()
     {
-        return $this->updatedAt;
+    	return $this->updatedBy;
     }
 
     /**
@@ -167,14 +179,5 @@ class User extends BaseUser
 
         return $this;
     }
-
-    /**
-     * Get updatedBy
-     *
-     * @return integer 
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updatedBy;
-    }
 }
+?>
