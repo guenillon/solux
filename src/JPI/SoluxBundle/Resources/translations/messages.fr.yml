@@ -31,7 +31,7 @@ caisse:
         montant_max: 
             titre: "Montant maximum atteint"
             message: "Le montant maximum d'achat est atteint."
-            
+    confirm_delete: "Voulez-vous supprimer cet achat ?"       
 
 categorie:
     liste:

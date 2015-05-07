@@ -37,6 +37,7 @@ $(document).ready(function() {
 		  // Pour chaque catégorie déjà existante, on ajoute un lien de suppression
 		  $container.children('div').each(function() {
 		    addDeleteLink($(this), $fieldName);
+		    tauxParticipationParent($(this));
 		  });
 		}
 		
@@ -52,9 +53,13 @@ $(document).ready(function() {
 		  // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
 		  addDeleteLink($prototype, $fieldName);
 		
+		  if($fieldName == "jpi_soluxbundle_famille_membres") {
+			  tauxParticipationParent($prototype);
+		  }
+		  
 		  // On ajoute le prototype modifié à la fin de la balise <div>
 		  $container.parent().parent().after($prototype);
-		
+
 		  // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
 		  index++;
 		}
@@ -74,5 +79,19 @@ $(document).ready(function() {
 		  $prototype.find('[id^=' + $fieldName + '_]').first().append($deleteLink);
 		}
 	
+	}
+	
+	function tauxParticipationParent($prototype) {
+		if($prototype.find("[name$='[parent]']").prop("checked")) {
+			$prototype.find("[name$='[pourcentageACharge]']").val(100).parent().parent().parent().hide();
+		}
+		
+		$prototype.find("[name$='[parent]']").click(function() {
+			if($(this).prop("checked")) {
+				$prototype.find("[name$='[pourcentageACharge]']").val(100).parent().parent().parent().hide();
+			} else {
+				$prototype.find("[name$='[pourcentageACharge]']").val('').parent().parent().parent().show();
+			}
+		});
 	}
 } );

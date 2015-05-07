@@ -5,6 +5,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}Pain d'Epices{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Latest compiled and minified CSS -->
@@ -22,7 +23,7 @@
 		<![endif]-->
 
 
-		{% stylesheets 'css/*' %}
+		{% stylesheets '@JPISoluxBundle/Resources/public/css/*' filter='?yui_css' %}
 		  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
 	</head>
@@ -34,10 +35,7 @@
 						<a class="navbar-brand" href="{{ path("home") }}">Pain d'Épices</a>
 					</div>
 				  	<ul class="nav navbar-nav">
-				  		{% if is_granted('ROLE_ADMIN') %}
-						<li> <a href="{{ path("jpi_liste_user") }}">Utilisateurs</a> </li>
-						{% endif %}
-						{% if not is_granted('ROLE_ADMIN') and is_granted('ROLE_USER') %}
+						{% if app.security.token is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
 						<li> <a href="{{ path("jpi_solux_caisse") }}">Caisse</a> </li>
 						<li> <a href="{{ path("jpi_solux_caisse_achats") }}">Achats</a> </li>
 						<li class="dropdown"> 
@@ -60,8 +58,11 @@
 							</ul>
 						</li>
 						{% endif %}
+				  		{% if app.security.token is not null and is_granted('ROLE_ADMIN') %}
+						<li> <a href="{{ path("jpi_liste_user") }}">Utilisateurs</a> </li>
+						{% endif %}
 		 			</ul>
-		 			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		 			{% if app.security.token is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown"> 
 							<a data-toggle="dropdown" href="#">{{ app.user.username }} <b class="caret"></b></a>
@@ -86,7 +87,8 @@
 		<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	
 		{% javascripts 
-			'js/*'
+			'@JPISoluxBundle/Resources/public/js/*'
+			filter='?yui_js'
 		%}
 		  <script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}

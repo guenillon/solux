@@ -1,11 +1,9 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use JPI\SoluxBundle\Controller\EntityController;
-use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\MontantMaxAchat;
-use JPI\SoluxBundle\Form\MontantMaxAchatType;
+use JPI\SoluxBundle\Form\Type\MontantMaxAchatType;
 
 class MontantMaxAchatController extends EntityController
 {
@@ -20,10 +18,6 @@ class MontantMaxAchatController extends EntityController
 		$this->pathList = 'jpi_solux_montant_max_achat';
 		
 		$this->repository = 'JPISoluxBundle:MontantMaxAchat';
-
-		/*$this->showAttributes = array(
-				"header" => array("Nom", "Description"),
-				"attribute" => array("nom", "description"));*/
 		
 		$this->exportAttributes = array(
 				"header" => array("Adultes : De", "À", "Enfants : De", "À", "Durée", "Montant"),

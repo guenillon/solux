@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class StatutProfessionnelType extends AbstractType
+class AchatType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,19 @@ class StatutProfessionnelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('description', 'textarea', array(
-            		"required" => false))
+        	->add('montant', 'money', array(
+            		"required" => true
+            ))
+            ->add('montantPaye', 'money', array(
+            		"required" => true
+            ))
+            ->add('detail', 'collection', array(
+            		"label" => "Produits",
+            		'type'         => new AchatDetailType(),
+            		'allow_add'    => true,
+            		'allow_delete' => true,
+            		'by_reference' => false
+            ))
         ;
     }
     
@@ -27,7 +37,7 @@ class StatutProfessionnelType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\StatutProfessionnel'
+            'data_class' => 'JPI\SoluxBundle\Entity\Achat'
         ));
     }
 
@@ -36,6 +46,6 @@ class StatutProfessionnelType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_statutprofessionnel';
+        return 'jpi_soluxbundle_achat';
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class LimiteAchatProduitType extends AbstractType
+class AchatDetailType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,20 +15,28 @@ class LimiteAchatProduitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nbMembreMin', 'integer', array(
-            		"label" => "Membres : De",
+            ->add('quantite', 'number', array(
+            		"label" => "Quantité",
             		"required" => true
             ))
-            ->add('nbMembreMax', 'integer', array(
-            		"label" => "À",
+            ->add('unite', 'text', array(
+            		"label" => "Unité",
             		"required" => true
             ))
-            ->add('duree', 'integer', array(
-            		"label" => "Durée (Jours)",
+            ->add('prix', 'money', array(
             		"required" => true
             ))
-            ->add('quantiteMax', 'number', array(
-            		"label" => "Quantité maximum",
+
+            ->add('taux', 'number', array(
+            		"required" => true
+            ))
+            ->add('prixPaye', 'money', array(
+            		"required" => true
+            ))
+            ->add('produit', 'entity', array(
+            		"label" => "Produit",
+            		"class" => "JPISoluxBundle:Produit",
+            		'property' => 'id',
             		"required" => true
             ))
         ;
@@ -40,7 +48,7 @@ class LimiteAchatProduitType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\LimiteAchatProduit'
+            'data_class' => 'JPI\SoluxBundle\Entity\AchatDetail'
         ));
     }
 
@@ -49,6 +57,6 @@ class LimiteAchatProduitType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_limiteachatproduit';
+        return 'jpi_soluxbundle_achatdetail';
     }
 }

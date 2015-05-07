@@ -1,13 +1,12 @@
 <?php
 
-namespace JPI\SoluxBundle\Form;
+namespace JPI\SoluxBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use JPI\SoluxBundle\Entity\ProduitRepository;
 
-class AchatDetailType extends AbstractType
+class MontantMaxAchatType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,28 +15,27 @@ class AchatDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantite', 'number', array(
-            		"label" => "Quantité",
+            ->add('nbMembreAdulteMin', 'integer', array(
+            		"label" => "Adultes : De",
             		"required" => true
             ))
-            ->add('unite', 'text', array(
-            		"label" => "Unité",
+            ->add('nbMembreAdulteMax', 'integer', array(
+            		"label" => "À",
             		"required" => true
             ))
-            ->add('prix', 'money', array(
+            ->add('nbMembreEnfantMin', 'integer', array(
+            		"label" => "Enfants : De",
             		"required" => true
             ))
-
-            ->add('taux', 'number', array(
+            ->add('nbMembreEnfantMax', 'integer', array(
+            		"label" => "À",
             		"required" => true
             ))
-            ->add('prixPaye', 'money', array(
+            ->add('duree', 'integer', array(
+            		"label" => "Durée (Jours)",
             		"required" => true
             ))
-            ->add('produit', 'entity', array(
-            		"label" => "Produit",
-            		"class" => "JPISoluxBundle:Produit",
-            		'property' => 'id',
+            ->add('montant', 'money', array(
             		"required" => true
             ))
         ;
@@ -49,7 +47,7 @@ class AchatDetailType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'JPI\SoluxBundle\Entity\AchatDetail'
+            'data_class' => 'JPI\SoluxBundle\Entity\MontantMaxAchat'
         ));
     }
 
@@ -58,6 +56,6 @@ class AchatDetailType extends AbstractType
      */
     public function getName()
     {
-        return 'jpi_soluxbundle_achatdetail';
+        return 'jpi_soluxbundle_montantmaxachat';
     }
 }

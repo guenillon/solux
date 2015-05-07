@@ -7,13 +7,14 @@ use JPI\CoreBundle\Entity\Entity as BaseEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ExecutionContextInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
+use JPI\SoluxBundle\Validator\Constraints as JPIAssert;
 
 /**
  * Famille
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="JPI\SoluxBundle\Entity\FamilleRepository")
+ * @JPIAssert\FamilleTauxParticipationExiste
  */
 class Famille extends BaseEntity
 {

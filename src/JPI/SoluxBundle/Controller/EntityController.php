@@ -2,9 +2,7 @@
 namespace JPI\SoluxBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
-use JPI\SoluxBundle\Form\CategorieType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

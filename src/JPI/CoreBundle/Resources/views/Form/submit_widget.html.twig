@@ -1,0 +1,5 @@
+{% block submit_widget -%}
+    {% set type = type|default('submit') %}
+    {% set jpi_icon_classe = 'glyphicon-ok' %}
+    {{- block('button_widget') -}}
+{%- endblock submit_widget %}
