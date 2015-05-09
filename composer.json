@@ -25,7 +25,8 @@
 		"friendsofsymfony/user-bundle" : "*",
 		"stof/doctrine-extensions-bundle" : "~1.1",
 		"liuggio/excelbundle" : "~2.0",
-		"jms/serializer-bundle": "^0.13.0"
+		"jms/serializer-bundle": "^0.13.0",
+		"coresphere/console-bundle": "dev-master"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.3"

@@ -34,7 +34,7 @@ class ProduitController extends EntityController
 	
 	public function showAction($id)
 	{
-		$entity = $this->getEntity($id);
+		$entity = $this->getProduit($id);
 		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
 
 		$lProduit = $entity[0];
@@ -50,12 +50,12 @@ class ProduitController extends EntityController
 	
 	public function editAction(Request $request, $id)
 	{
-		$entity = $this->getEntity($id);
+		$entity = $this->getProduit($id);
 		$lProduit = $entity[0];
 		return $this->edit($lProduit, $request, $this->entityTypeClass, $lProduit->getNom());
 	}
 	
-	protected function getEntity($id) {
+	protected function getProduit($id) {
 		$entity = $this->getRepository()->getProduit($id);
 		if (null === $entity) {
 			throw new NotFoundHttpException("L'élément d'id ".$id." n'existe pas.");
