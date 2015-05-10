@@ -97,38 +97,11 @@ jpi_solux_produit_delete:
     defaults:  { _controller: "JPISoluxBundle:Produit:delete" }
     requirements:
         id: \d+
-        
-jpi_solux_categorie:
-    path:     /parametrage/categorie
-    defaults: { _controller: "JPISoluxBundle:Categorie:liste" }
 
-jpi_solux_categorie_export:
-    path:      /parametrage/categorie/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:Categorie:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
-
-jpi_solux_categorie_show:
-    path:      /parametrage/categorie/{id}
-    defaults:  { _controller: "JPISoluxBundle:Categorie:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_categorie_add:
-    path:      /parametrage/categorie/add
-    defaults:  { _controller: "JPISoluxBundle:Categorie:add" }
-
-jpi_solux_categorie_edit:
-    path:      /parametrage/categorie/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:Categorie:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_categorie_delete:
-    path:      /parametrage/categorie/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:Categorie:delete" }
-    requirements:
-        id: \d+
+jpi_solux_categorie_controller:
+    resource: "@JPISoluxBundle/Controller/CategorieController.php"
+    prefix:   /parametrage
+    type:     annotation
         
 jpi_solux_statut_professionnel:
     path:     /parametrage/statut_professionnel

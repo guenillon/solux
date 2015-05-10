@@ -6,7 +6,7 @@
 		<div class="panel-title">
 			<ul class="list-inline">
         		<li class="col-xs-12">
-           			<h4 class="pull-left">{{ entityName|transchoice(nombreEntity) }}</h4>
+           			<h4 class="pull-left">{{ entityName|transchoice(liste|length) }}</h4>
           			<span class="btn-group pull-right"> 
           				<a href="{{ pathAdd }}" class="btn btn-default "><i class="glyphicon glyphicon-plus"></i> {{ 'form.ajouter'|trans }}</a>
 						<a href="{{ path(pathExport, { 'format': "xlsx" }) }}" class="btn btn-default "><i class="glyphicon glyphicon-download"></i> Excel</a>
