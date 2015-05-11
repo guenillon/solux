@@ -1,47 +1,91 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\SoluxBundle\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
+use JPI\SoluxBundle\Controller\EntityController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JPI\SoluxBundle\Entity\StatutProfessionnel;
-use JPI\SoluxBundle\Form\Type\StatutProfessionnelType;
 
+/**
+ * @Route("/statut_professionnel")
+ */
 class StatutProfessionnelController extends EntityController
 {
 	public function __construct()
 	{
-		$this->entityClass = new StatutProfessionnel();
-		$this->entityTypeClass = new StatutProfessionnelType();
-		
-		$this->entityLabel = "statut_professionnel";
-		$this->entityName = "StatutProfessionnel";
-		
-		$this->pathList = 'jpi_solux_statut_professionnel';
-		
-		$this->repository = 'JPISoluxBundle:StatutProfessionnel';
-
-		$this->showAttributes = array(
-				"header" => array("Nom", "Description"),
-				"attribute" => array("nom", "description"));
-		
-		$this->exportAttributes = array(
-				"header" => array("Nom", "Description"),
-				"attribute" => array("nom", "description"));
 		parent::__construct();
+		$this->manager = 'jpi_solux.manager.statut_professionnel';
 	}
 	
-	public function showAction($id)
+	/**
+	 * @Route("/", name="jpi_solux_statut_professionnel")
+	 * @Method({"GET"})
+	 */
+	public function listeAction()
 	{
-		$entity = $this->getEntity($id);
-		$content = $this->getShowAttributes($entity);
-	
-		return $this->show($entity, $content, false, $entity->getNom());
+		return parent::listeAction();
 	}
 	
-	public function editAction(Request $request, $id)
+	/**
+	 * @Route("/add", name="jpi_solux_statut_professionnel_add")
+	 * @Method({"GET", "POST"})
+	 */
+	public function addAction(Request $request)
 	{
-		$entity = $this->getEntity($id);
-		return $this->edit($entity, $request, $this->entityTypeClass, $entity->getNom());
+		return parent::addAction($request);
+	}
+	
+	/**
+	 * @Route("/{id}", name="jpi_solux_statut_professionnel_show", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function showAction(StatutProfessionnel $id)
+	{
+		$statutProfessionnel = $id;	
+		return $this->show($statutProfessionnel, $statutProfessionnel->getNom());
+	}
+	
+	/**
+	 * @Route("/edit/{id}", name="jpi_solux_statut_professionnel_edit", requirements={"id" = "\d+"})
+	 * @Method({"GET", "POST"})
+	 */
+	public function editAction(Request $request, StatutProfessionnel $id)
+	{
+		$this->getManager()->setEntity($id);
+	
+		$form = $this->getFormUpdate();
+	
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+	
+			$this->getManager()->set($this->getManager()->getEntity());
+			$this->flashMsg('update');
+	
+			return $this->redirectUpdate();
+		}
+	
+		return $this->renderUpdate($form, $id->getNom());
+	}
+	
+	/**
+	 * @Route("/delete/{id}", name="jpi_solux_statut_professionnel_delete", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function deleteAction(StatutProfessionnel $id)
+	{
+		$this->delete($id);
+		$this->flashMsg('delete');
+		return $this->redirectDelete();
+	}
+	
+	/**
+	 * @Route("/export.{format}", name="jpi_solux_statut_professionnel_export", requirements={"format" = "%jpi.export.format%"}, defaults={"format" = "%jpi.export.default%"})
+	 * @Method({"GET"})
+	 */
+	public function exportAction($format)
+	{
+		return parent::exportAction($format);
 	}
 }
 ?>

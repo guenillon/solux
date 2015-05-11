@@ -1,6 +1,6 @@
 {% extends "JPISoluxBundle:Form:show.html.twig" %}
 
 {% block jpi_solux_show_content %}
-<p class="list-group-item">Reste pour vivre. De : {{ taux.min|localizedcurrency(currency) }} à {{ taux.max|localizedcurrency(currency) }}</p>
-<p class="list-group-item">Taux : {{ (taux.taux *100)|localizednumber  }} %</p>
+<p class="list-group-item">Reste pour vivre. De : {{ entity.min|localizedcurrency(currency) }} à {{ entity.max|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Taux : {{ (entity.taux *100)|localizednumber  }} %</p>
 {% endblock jpi_solux_show_content %}

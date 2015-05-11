@@ -1,53 +1,103 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use JPI\SoluxBundle\Controller\EntityController;
-use JPI\SoluxBundle\Entity\Famille;
-use JPI\SoluxBundle\Form\Type\FamilleType;
 use Symfony\Component\HttpFoundation\Request;
+use JPI\SoluxBundle\Controller\EntityController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use JPI\SoluxBundle\Entity\Famille;
 
+/**
+ * @Route("/famille")
+ */
 class FamilleController extends EntityController
 {
 	public function __construct()
 	{
-		$this->entityClass = new Famille();
-		$this->entityTypeClass = new FamilleType();
-	
-		$this->entityLabel = "famille";
-		$this->entityName = "Famille";
-	
-		$this->pathList = 'jpi_solux_famille';
-	
-		$this->repository = 'JPISoluxBundle:Famille';
-
-		$this->exportAttributes = array(
-				"header" => array("Nom", "Prénom"),
-				"attribute" => array("nom", "prenomChef"));
 		parent::__construct();
+		$this->manager = 'jpi_solux.manager.famille';
 	}
 	
-	public function showAction($id)
+	/**
+	 * @Route("/", name="jpi_solux_famille")
+	 * @Method({"GET"})
+	 */
+	public function listeAction()
 	{
-		$entity = $this->getEntity($id);	
-		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
+		return parent::listeAction();
+	}
+	
+	/**
+	 * @Route("/add", name="jpi_solux_famille_add")
+	 * @Method({"GET", "POST"})
+	 */
+	public function addAction(Request $request)
+	{
+		return parent::addAction($request);
+	}
+	
+	/**
+	 * @Route("/{id}", name="jpi_solux_famille_show", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function showAction(Famille $id)
+	{
+		$famille = $id;	
+		$this->templateShowEntity = true;
 		
 		$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Famille');
 		$tauxParticipation = $repository->getTauxParticipation($id);
-	
-		return $this->render($template, array(
-				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $entity->getId())),
-				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $entity->getId())),
-				"entityName" => $this->entityLabelShow,
-				"entityLabel" => $entity->getNom(),
-				"famille" => $entity,
+		
+		return $this->render($this->getTemplateShow(), array(
+				"pathEdit" => $this->generateUrl($this->getPathEdit(), array('id' => $famille->getId())),
+				"pathDelete" => $this->generateUrl($this->getPathDelete(), array('id' => $famille->getId())),
+				"entityName" => $this->getEntityLabelShow(),
+				"entityLabel" => $famille->getNom(),
+				"famille" => $famille,
 				"taux" => $tauxParticipation
 		));
 	}
 	
-	public function editAction(Request $request, $id)
+	/**
+	 * @Route("/edit/{id}", name="jpi_solux_famille_edit", requirements={"id" = "\d+"})
+	 * @Method({"GET", "POST"})
+	 */
+	public function editAction(Request $request, Famille $id)
 	{
-		$entity = $this->getEntity($id);
-		return $this->edit($entity, $request, $this->entityTypeClass, $entity->getNom());
+		$this->getManager()->setEntity($id);
+	
+		$form = $this->getFormUpdate();
+	
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+	
+			$this->getManager()->set($this->getManager()->getEntity());
+			$this->flashMsg('update');
+	
+			return $this->redirectUpdate();
+		}
+	
+		return $this->renderUpdate($form, $id->getNom());
+	}
+	
+	/**
+	 * @Route("/delete/{id}", name="jpi_solux_famille_delete", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function deleteAction(Famille $id)
+	{
+		$this->delete($id);
+		$this->flashMsg('delete');
+		return $this->redirectDelete();
+	}
+	
+	/**
+	 * @Route("/export.{format}", name="jpi_solux_famille_export", requirements={"format" = "%jpi.export.format%"}, defaults={"format" = "%jpi.export.default%"})
+	 * @Method({"GET"})
+	 */
+	public function exportAction($format)
+	{
+		return parent::exportAction($format);
 	}
 }
 ?>

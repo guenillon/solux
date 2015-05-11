@@ -1,7 +1,6 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Controller\EntityController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

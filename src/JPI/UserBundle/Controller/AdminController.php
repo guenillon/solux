@@ -7,12 +7,17 @@ use JPI\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use JPI\CoreBundle\Export\Classes;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class AdminController extends Controller
 {
+	/**
+	 * @Route("/", name="jpi_liste_user")
+	 * @Method({"GET"})
+	 */
     public function listeUserAction()
     {        
-    	
     	$userManager = $this->get('fos_user.user_manager');
     	$lListeUsers = $userManager->findUsers();
     	
@@ -21,6 +26,10 @@ class AdminController extends Controller
    		));
     }
     
+    /**
+     * @Route("/user/{id}", name="jpi_show_user_profile", requirements={"id" = "\d+"})
+     * @Method({"GET"})
+     */
     public function showAction(User $user, $id)
     {
     	return $this->render('JPIUserBundle:Admin:show.html.twig', array(
@@ -28,6 +37,10 @@ class AdminController extends Controller
     	));
     }
     
+    /**
+     * @Route("/edit/{id}", name="jpi_user_edit", requirements={"id" = "\d+"})
+     * @Method({"GET", "POST"})
+     */
     public function editAction(User $user, Request $request, $id)
     {
     	$form = $this->get('form.factory')->create('jpi_user_profile', $user);
@@ -52,6 +65,10 @@ class AdminController extends Controller
         );
     }
     
+    /**
+     * @Route("/delete/{id}", name="jpi_user_delete", requirements={"id" = "\d+"})
+     * @Method({"GET"})
+     */
     public function deleteAction(User $user, $id)
     {
     	$currentUser= $this->getUser();
@@ -66,6 +83,10 @@ class AdminController extends Controller
     	return $this->redirect($this->generateUrl('jpi_liste_user'));
     }
     
+    /**
+     * @Route("/add", name="jpi_user_add")
+     * @Method({"GET", "POST"})
+     */
     public function addAction()
     {
     	$form = $this->get('fos_user.registration.form');
@@ -81,6 +102,10 @@ class AdminController extends Controller
     	));
     }
     
+    /**
+     * @Route("/export.{format}", name="jpi_user_export", requirements={"format" = "%jpi.export.format%"}, defaults={"format" = "%jpi.export.default%"})
+     * @Method({"GET"})
+     */
     public function exportAction($format)
     {    	
     	// nom du fichier

@@ -29,16 +29,6 @@ class CategorieManager extends BaseManager
 				"attribute" => array("nom", "description"));
 	}
 	
-	/**
-	 * Retourne la liste des catégories
-	 *
-	 * @return Categorie
-	 */
-	public function getListe()
-	{
-		return $this->getRepository()->findAll();
-	}
-
 	public function set(Categorie $categorie)
 	{
 		return $this->persistAndFlush($categorie);

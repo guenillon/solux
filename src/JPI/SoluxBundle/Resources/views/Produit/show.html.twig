@@ -1,18 +1,18 @@
 {% extends "JPISoluxBundle:Form:show.html.twig" %}
 
 {% block jpi_solux_show_content %}
-<p class="list-group-item">Catégorie : {{ produit.categorie.nom }}</p>
-<p class="list-group-item">Nom : {{ produit.nom }}</p>
-<p class="list-group-item">Quantité : {{ produit.quantite|localizednumber }} {{ produit.unite }}</p>
-<p class="list-group-item">Prix : {{ produit.prix|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Catégorie : {{ entity.categorie.nom }}</p>
+<p class="list-group-item">Nom : {{ entity.nom }}</p>
+<p class="list-group-item">Quantité : {{ entity.quantite|localizednumber }} {{ entity.unite }}</p>
+<p class="list-group-item">Prix : {{ entity.prix|localizedcurrency(currency) }}</p>
 <p class="list-group-item">Prix Fixe : 
-				{% if produit.prixFixe %}
+				{% if entity.prixFixe %}
 					{{ "produit.show.prixFixe.oui"|trans  }}
 				{% else %}
 					{{ "produit.show.prixFixe.non"|trans  }}
 				{% endif %}
 </p>
-{% if not produit.limites.empty %}
+{% if not entity.limites.empty %}
 <div class="list-group-item">Limites<br/><br/>
 	<table class="table table-striped table-bordered table-responsive table-condensed table-hover">
 		<thead>
@@ -23,11 +23,11 @@
 			</tr>
 		</thead>
 		<tbody>
-	{%- for ligne in produit.limites -%}
+	{%- for ligne in entity.limites -%}
 		<tr>
 			<td>De {{ ligne.nbMembreMin }} à {{ ligne.nbMembreMax }} {{ 'form.membre'|transchoice(ligne.nbMembreMax) }}</td>
 			<td>{{ ligne.duree|localizednumber }}  {{ 'form.duree.jour'|transchoice(ligne.duree) }}</td>
-			<td>{{ ligne.quantiteMax|localizednumber }} {{ produit.unite }}</td>
+			<td>{{ ligne.quantiteMax|localizednumber }} {{ entity.unite }}</td>
 		</tr>
     {%- endfor -%}
     	</tbody>

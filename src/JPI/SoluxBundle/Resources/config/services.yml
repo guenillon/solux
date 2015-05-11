@@ -29,3 +29,23 @@ services:
     jpi_solux.manager.categorie:
         class: JPI\SoluxBundle\Manager\CategorieManager
         arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.produit:
+        class: JPI\SoluxBundle\Manager\ProduitManager
+        arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.montant_max_achat:
+        class: JPI\SoluxBundle\Manager\MontantMaxAchatManager
+        arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.taux_participation:
+        class: JPI\SoluxBundle\Manager\TauxParticipationManager
+        arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.statut_professionnel:
+        class: JPI\SoluxBundle\Manager\StatutProfessionnelManager
+        arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.famille:
+        class: JPI\SoluxBundle\Manager\FamilleManager
+        arguments: ['@doctrine.orm.entity_manager']

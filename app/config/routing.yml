@@ -20,11 +20,8 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
-    
-home:
-    path:     /
-    defaults: { _controller: "JPISoluxBundle:Home:index" }
 
 jpi_user:
-    resource: "@JPIUserBundle/Resources/config/routing.yml"
+    resource: "@JPIUserBundle/Controller/AdminController.php"
     prefix: /admin
+    type: annotation

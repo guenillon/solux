@@ -33,168 +33,37 @@ jpi_solux_caisse_achats_delete:
     defaults:  { _controller: "JPISoluxBundle:Caisse:delete" }
     requirements:
         id: \d+
-                   
-jpi_solux_famille:
-    path:     /parametrage/famille
-    defaults: { _controller: "JPISoluxBundle:Famille:liste" }
 
-jpi_solux_famille_export:
-    path:      /parametrage/famille/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:Famille:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
+home_controller:
+    resource: "@JPISoluxBundle/Controller/HomeController.php"
+    type:     annotation
 
-jpi_solux_famille_show:
-    path:      /parametrage/famille/{id}
-    defaults:  { _controller: "JPISoluxBundle:Famille:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_famille_add:
-    path:      /parametrage/famille/add
-    defaults:  { _controller: "JPISoluxBundle:Famille:add" }
-
-jpi_solux_famille_edit:
-    path:      /parametrage/famille/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:Famille:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_famille_delete:
-    path:      /parametrage/famille/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:Famille:delete" }
-    requirements:
-        id: \d+
-        
-jpi_solux_produit:
-    path:     /parametrage/produit
-    defaults: { _controller: "JPISoluxBundle:Produit:liste" }
-
-jpi_solux_produit_export:
-    path:      /parametrage/produit/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:Produit:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
-
-jpi_solux_produit_show:
-    path:      /parametrage/produit/{id}
-    defaults:  { _controller: "JPISoluxBundle:Produit:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_produit_add:
-    path:      /parametrage/produit/add
-    defaults:  { _controller: "JPISoluxBundle:Produit:add" }
-
-jpi_solux_produit_edit:
-    path:      /parametrage/produit/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:Produit:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_produit_delete:
-    path:      /parametrage/produit/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:Produit:delete" }
-    requirements:
-        id: \d+
-
+jpi_solux_famille_controller:
+    resource: "@JPISoluxBundle/Controller/FamilleController.php"
+    prefix:   /parametrage
+    type:     annotation
+       
 jpi_solux_categorie_controller:
     resource: "@JPISoluxBundle/Controller/CategorieController.php"
     prefix:   /parametrage
     type:     annotation
-        
-jpi_solux_statut_professionnel:
-    path:     /parametrage/statut_professionnel
-    defaults: { _controller: "JPISoluxBundle:StatutProfessionnel:liste" }
+    
+jpi_solux_produit_controller:
+    resource: "@JPISoluxBundle/Controller/ProduitController.php"
+    prefix:   /parametrage
+    type:     annotation
+    
+jpi_solux_montant_max_achat_controller:
+    resource: "@JPISoluxBundle/Controller/MontantMaxAchatController.php"
+    prefix:   /parametrage
+    type:     annotation
+    
+jpi_solux_taux_participation_controller:
+    resource: "@JPISoluxBundle/Controller/TauxParticipationController.php"
+    prefix:   /parametrage
+    type:     annotation    
 
-jpi_solux_statut_professionnel_export:
-    path:      /parametrage/statut_professionnel/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:StatutProfessionnel:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
-
-jpi_solux_statut_professionnel_show:
-    path:      /parametrage/statut_professionnel/{id}
-    defaults:  { _controller: "JPISoluxBundle:StatutProfessionnel:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_statut_professionnel_add:
-    path:      /parametrage/statut_professionnel/add
-    defaults:  { _controller: "JPISoluxBundle:StatutProfessionnel:add" }
-
-jpi_solux_statut_professionnel_edit:
-    path:      /parametrage/statut_professionnel/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:StatutProfessionnel:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_statut_professionnel_delete:
-    path:      /parametrage/statut_professionnel/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:StatutProfessionnel:delete" }
-    requirements:
-        id: \d+
-        
-jpi_solux_taux_participation:
-    path:     /parametrage/taux_participation
-    defaults: { _controller: "JPISoluxBundle:TauxParticipation:liste" }
-
-jpi_solux_taux_participation_export:
-    path:      /parametrage/taux_participation/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:TauxParticipation:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
-
-jpi_solux_taux_participation_show:
-    path:      /parametrage/taux_participation/{id}
-    defaults:  { _controller: "JPISoluxBundle:TauxParticipation:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_taux_participation_add:
-    path:      /parametrage/taux_participation/add
-    defaults:  { _controller: "JPISoluxBundle:TauxParticipation:add" }
-
-jpi_solux_taux_participation_edit:
-    path:      /parametrage/taux_participation/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:TauxParticipation:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_taux_participation_delete:
-    path:      /parametrage/taux_participation/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:TauxParticipation:delete" }
-    requirements:
-        id: \d+      
-  
-jpi_solux_montant_max_achat:
-    path:     /parametrage/montant_max_achat
-    defaults: { _controller: "JPISoluxBundle:MontantMaxAchat:liste" }
-
-jpi_solux_montant_max_achat_export:
-    path:      /parametrage/montant_max_achat/export.{format}
-    defaults:  { _controller: "JPISoluxBundle:MontantMaxAchat:export", format: "%jpi.export.default%" }
-    requirements:
-        format: "%jpi.export.format%"
-
-jpi_solux_montant_max_achat_show:
-    path:      /parametrage/montant_max_achat/{id}
-    defaults:  { _controller: "JPISoluxBundle:MontantMaxAchat:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_montant_max_achat_add:
-    path:      /parametrage/montant_max_achat/add
-    defaults:  { _controller: "JPISoluxBundle:MontantMaxAchat:add" }
-
-jpi_solux_montant_max_achat_edit:
-    path:      /parametrage/montant_max_achat/edit/{id}
-    defaults:  { _controller: "JPISoluxBundle:MontantMaxAchat:edit" }
-    requirements:
-        id: \d+
-
-jpi_solux_montant_max_achat_delete:
-    path:      /parametrage/montant_max_achat/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:MontantMaxAchat:delete" }
-    requirements:
-        id: \d+
+jpi_solux_statut_professionnel_controller:
+    resource: "@JPISoluxBundle/Controller/StatutProfessionnelController.php"
+    prefix:   /parametrage
+    type:     annotation    

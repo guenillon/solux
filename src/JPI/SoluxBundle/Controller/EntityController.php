@@ -229,14 +229,20 @@ abstract class EntityController extends Controller
 		} else {
 			$entityLabel = $label;
 		}
-	
-		return $this->render($this->getTemplateShow(), array(
+		
+		$templateVar = array(
 				"pathEdit" => $this->generateUrl($this->getPathEdit(), array('id' => $entity->getId())),
 				"pathDelete" => $this->generateUrl($this->getPathDelete(), array('id' => $entity->getId())),
 				"entityName" => $this->getEntityLabelShow(),
 				"entityLabel" => $entityLabel,
 				"showContent" => $this->getShowAttributes($entity)
-		));
+		);
+		
+		if($this->templateShowEntity) {
+			$templateVar["entity"] = $entity;
+		}	
+	
+		return $this->render($this->getTemplateShow(), $templateVar);
 	}
 	
 	/* Edit */	

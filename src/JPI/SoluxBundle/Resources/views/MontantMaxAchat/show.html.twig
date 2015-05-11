@@ -1,8 +1,8 @@
 {% extends "JPISoluxBundle:Form:show.html.twig" %}
 
 {% block jpi_solux_show_content %}
-<p class="list-group-item">Adultes De : {{ montant.nbMembreAdulteMin|localizednumber }} à {{ montant.nbMembreAdulteMax|localizednumber }}</p>
-<p class="list-group-item">Enfants De : {{ montant.nbMembreEnfantMin|localizednumber }} à {{ montant.nbMembreEnfantMax|localizednumber }}</p>
-<p class="list-group-item">Durée : {{ montant.duree|localizednumber }} {{ 'form.duree.jour'|transchoice(montant.duree) }}</p>
-<p class="list-group-item">Montant : {{ montant.montant|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Adultes De : {{ entity.nbMembreAdulteMin|localizednumber }} à {{ entity.nbMembreAdulteMax|localizednumber }}</p>
+<p class="list-group-item">Enfants De : {{ entity.nbMembreEnfantMin|localizednumber }} à {{ entity.nbMembreEnfantMax|localizednumber }}</p>
+<p class="list-group-item">Durée : {{ entity.duree|localizednumber }} {{ 'form.duree.jour'|transchoice(entity.duree) }}</p>
+<p class="list-group-item">Montant : {{ entity.montant|localizedcurrency(currency) }}</p>
 {% endblock jpi_solux_show_content %}

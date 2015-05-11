@@ -4,63 +4,90 @@ namespace JPI\SoluxBundle\Controller;
 use JPI\SoluxBundle\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Entity\Produit;
-use JPI\SoluxBundle\Form\Type\ProduitType;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * @Route("/produit")
+ */
 class ProduitController extends EntityController
 {
 	public function __construct()
 	{
-		$this->entityClass = new Produit();
-		$this->entityTypeClass = new ProduitType();
-		
-
-		$this->entityLabel = "produit";
-		$this->entityName = "Produit";
-		
-		$this->pathList = 'jpi_solux_produit';
-
-		$this->repository = 'JPISoluxBundle:Produit';
-		
-		$this->showAttributes = array(
-				"header" => array("Nom", "Quantité", "Unité", "Prix", "Prix Fixe ?", "Catégorie"), 
-				"attribute" => array("nom", "quantite", "unite", "prix", "prixFixe", "categorie"));
-
-		$this->exportAttributes = array(
-				"header" => array("Nom", "Description", "Quantité", "Unité", "Prix", "Prix Fixe ?"),
-				"attribute" => array("nom", "description", "quantite", "unite", "prix", "prixFixe"));
 		parent::__construct();
+		$this->manager = 'jpi_solux.manager.produit';
 	}
 	
-	public function showAction($id)
+	/**
+	 * @Route("/", name="jpi_solux_produit")
+	 * @Method({"GET"})
+	 */
+	public function listeAction()
 	{
-		$entity = $this->getProduit($id);
-		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
-
-		$lProduit = $entity[0];
-		$id = $lProduit->getId();
-		return $this->render($template, array(
-				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $id)),
-				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $id)),
-				"entityName" => $this->entityLabelShow,
-				"entityLabel" => $lProduit->getNom(),
-				"produit" => $lProduit
-		));
+		return parent::listeAction();
 	}
 	
-	public function editAction(Request $request, $id)
+	/**
+	 * @Route("/add", name="jpi_solux_produit_add")
+	 * @Method({"GET", "POST"})
+	 */
+	public function addAction(Request $request)
 	{
-		$entity = $this->getProduit($id);
-		$lProduit = $entity[0];
-		return $this->edit($lProduit, $request, $this->entityTypeClass, $lProduit->getNom());
+		return parent::addAction($request);
 	}
 	
-	protected function getProduit($id) {
-		$entity = $this->getRepository()->getProduit($id);
-		if (null === $entity) {
-			throw new NotFoundHttpException("L'élément d'id ".$id." n'existe pas.");
+	/**
+	 * @Route("/{id}", name="jpi_solux_produit_show", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function showAction(Produit $id)
+	{
+		$produit = $id;
+		$this->templateShowEntity = true;
+	
+		return $this->show($produit, $produit->getNom());
+	}
+	
+	/**
+	 * @Route("/edit/{id}", name="jpi_solux_produit_edit", requirements={"id" = "\d+"})
+	 * @Method({"GET", "POST"})
+	 */
+	public function editAction(Request $request, Produit $id)
+	{
+		$this->getManager()->setEntity($id);
+	
+		$form = $this->getFormUpdate();
+	
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+	
+			$this->getManager()->set($this->getManager()->getEntity());
+			$this->flashMsg('update');
+	
+			return $this->redirectUpdate();
 		}
-		return $entity;
+	
+		return $this->renderUpdate($form, $id->getNom());
+	}
+	
+	/**
+	 * @Route("/delete/{id}", name="jpi_solux_produit_delete", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function deleteAction(Produit $id)
+	{
+		$this->delete($id);
+		$this->flashMsg('delete');
+		return $this->redirectDelete();
+	}
+	
+	/**
+	 * @Route("/export.{format}", name="jpi_solux_produit_export", requirements={"format" = "%jpi.export.format%"}, defaults={"format" = "%jpi.export.default%"})
+	 * @Method({"GET"})
+	 */
+	public function exportAction($format)
+	{
+		return parent::exportAction($format);
 	}
 }
 ?>

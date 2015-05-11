@@ -1,43 +1,93 @@
 <?php
 namespace JPI\SoluxBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Controller\EntityController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JPI\SoluxBundle\Entity\MontantMaxAchat;
-use JPI\SoluxBundle\Form\Type\MontantMaxAchatType;
 
+/**
+ * @Route("/montant_max_achat")
+ */
 class MontantMaxAchatController extends EntityController
 {
 	public function __construct()
 	{
-		$this->entityClass = new MontantMaxAchat();
-		$this->entityTypeClass = new MontantMaxAchatType();
-		
-		$this->entityLabel = "montant_max_achat";
-		$this->entityName = "MontantMaxAchat";
-		
-		$this->pathList = 'jpi_solux_montant_max_achat';
-		
-		$this->repository = 'JPISoluxBundle:MontantMaxAchat';
-		
-		$this->exportAttributes = array(
-				"header" => array("Adultes : De", "À", "Enfants : De", "À", "Durée", "Montant"),
-				"attribute" => array("nbMembreAdulteMin", "nbMembreAdulteMax", "nbMembreEnfantMin", "nbMembreEnfantMax", "duree", "montant"));
 		parent::__construct();
+		$this->manager = 'jpi_solux.manager.montant_max_achat';
 	}
 	
-	public function showAction($id)
+	/**
+	 * @Route("/", name="jpi_solux_montant_max_achat")
+	 * @Method({"GET"})
+	 */
+	public function listeAction()
 	{
-		$entity = $this->getEntity($id);		
-		$template = 'JPISoluxBundle:'.$this->entityName.':show.html.twig';
-
-		return $this->render($template, array(
-				"entity" => $entity,
-				"pathEdit" => $this->generateUrl($this->pathEdit, array('id' => $entity->getId())),
-				"pathDelete" => $this->generateUrl($this->pathDelete, array('id' => $entity->getId())),
-				"entityName" => $this->entityLabelShow,
-				"entityLabel" => $entity->getId(),
-				"montant" => $entity
-		));
+		return parent::listeAction();
+	}
+	
+	/**
+	 * @Route("/add", name="jpi_solux_montant_max_achat_add")
+	 * @Method({"GET", "POST"})
+	 */
+	public function addAction(Request $request)
+	{
+		return parent::addAction($request);
+	}
+	
+	/**
+	 * @Route("/{id}", name="jpi_solux_montant_max_achat_show", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function showAction(MontantMaxAchat $id)
+	{
+		$montantMaxAchat = $id;
+		$this->templateShowEntity = true;
+	
+		return $this->show($montantMaxAchat, $montantMaxAchat->getId());
+	}
+	
+	/**
+	 * @Route("/edit/{id}", name="jpi_solux_montant_max_achat_edit", requirements={"id" = "\d+"})
+	 * @Method({"GET", "POST"})
+	 */
+	public function editAction(Request $request, MontantMaxAchat $id)
+	{
+		$this->getManager()->setEntity($id);
+	
+		$form = $this->getFormUpdate();
+	
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+	
+			$this->getManager()->set($this->getManager()->getEntity());
+			$this->flashMsg('update');
+	
+			return $this->redirectUpdate();
+		}
+	
+		return $this->renderUpdate($form, $id->getId());
+	}
+	
+	/**
+	 * @Route("/delete/{id}", name="jpi_solux_montant_max_achat_delete", requirements={"id" = "\d+"})
+	 * @Method({"GET"})
+	 */
+	public function deleteAction(MontantMaxAchat $id)
+	{
+		$this->delete($id);
+		$this->flashMsg('delete');
+		return $this->redirectDelete();
+	}
+	
+	/**
+	 * @Route("/export.{format}", name="jpi_solux_montant_max_achat_export", requirements={"format" = "%jpi.export.format%"}, defaults={"format" = "%jpi.export.default%"})
+	 * @Method({"GET"})
+	 */
+	public function exportAction($format)
+	{
+		return parent::exportAction($format);
 	}
 }
 ?>

@@ -139,5 +139,10 @@ abstract class BaseManager
 		$this->em->remove($entity);
 		$this->em->flush();
 	}
+	
+	public function getListe()
+	{
+		return $this->getRepository()->findAll();
+	}
 }
 ?>
