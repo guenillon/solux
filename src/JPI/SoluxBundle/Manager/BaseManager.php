@@ -47,7 +47,7 @@ abstract class BaseManager
 		return $this->entityTypeClass;
 	}
 	
-	public function setEm($entityTypeClass)
+	public function setEm($em)
 	{
 		$this->em = $em;
 	

@@ -4,7 +4,6 @@ namespace JPI\SoluxBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class EntityController extends Controller
 {
@@ -281,6 +280,16 @@ abstract class EntityController extends Controller
 	protected function redirectDelete()
 	{
 		return $this->redirect($this->generateUrl($this->getPathList()));
+	}
+	
+	protected function renderDelete($form)
+	{	
+		return $this->render($this->getTemplateUpdate(),array(
+				'form' => $form->createView(),
+				"pathReturn" => $this->generateUrl($this->getPathShow(), array('id' => $this->getManager()->getEntity()->getId())),
+				"entityName" => $this->getEntityLabelEdit(),
+				"entityLabel" => $entityLabel
+		));
 	}
 	
 	/* Export */
