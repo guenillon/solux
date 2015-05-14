@@ -72,13 +72,12 @@ class ProduitController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_produit_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(Produit $id)
+	public function deleteAction(Request $request, Produit $id)
 	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**

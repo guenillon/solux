@@ -9,6 +9,7 @@ use JPI\CoreBundle\Export\Classes;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use JPI\UserBundle\Form\Type\DeleteType;
 
 class AdminController extends Controller
 {
@@ -32,8 +33,10 @@ class AdminController extends Controller
      */
     public function showAction(User $user, $id)
     {
+    	$form = $this->createForm(new DeleteType());
     	return $this->render('JPIUserBundle:Admin:show.html.twig', array(
-    			'user' => $user
+    			'user' => $user,
+    			'formDelete' => $form->createView()
     	));
     }
     
@@ -67,9 +70,9 @@ class AdminController extends Controller
     
     /**
      * @Route("/delete/{id}", name="jpi_user_delete", requirements={"id" = "\d+"})
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      */
-    public function deleteAction(User $user, $id)
+    public function deleteAction(Request $request, User $user, $id)
     {
     	$currentUser= $this->getUser();
     	
@@ -77,10 +80,21 @@ class AdminController extends Controller
     		throw new AccessDeniedException('This user does not have access to this section.');
     	}
     	
-    	$userManager = $this->get('fos_user.user_manager');
-    	$userManager->deleteUser($user);
-    	$this->setFlash('success', 'delete.flash.success');
-    	return $this->redirect($this->generateUrl('jpi_liste_user'));
+    	$form = $this->createForm(new DeleteType());
+    	
+    	$form->handleRequest($request);
+    	if ($form->isSubmitted() && $form->isValid()) {
+    	
+    		$userManager = $this->get('fos_user.user_manager');
+	    	$userManager->deleteUser($user);
+	    	$this->setFlash('success', 'delete.flash.success');
+	    	return $this->redirect($this->generateUrl('jpi_liste_user'));
+    	}
+    	
+    	return $this->render('JPIUserBundle:Admin:delete.html.twig', array(
+    			'user' => $user,
+    			'formDelete' => $form->createView()
+    	));
     }
     
     /**

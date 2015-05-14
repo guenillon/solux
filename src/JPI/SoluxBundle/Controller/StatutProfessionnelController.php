@@ -70,13 +70,12 @@ class StatutProfessionnelController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_statut_professionnel_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(StatutProfessionnel $id)
+	public function deleteAction(Request $request, StatutProfessionnel $id)
 	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**

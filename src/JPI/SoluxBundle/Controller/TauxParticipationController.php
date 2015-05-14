@@ -72,13 +72,12 @@ class TauxParticipationController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_taux_participation_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(TauxParticipation $id)
+	public function deleteAction(Request $request, TauxParticipation $id)
 	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**

@@ -4,6 +4,7 @@ namespace JPI\SoluxBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JPI\CoreBundle\Export\Classes\JPIExportConfig;
 use Symfony\Component\HttpFoundation\Request;
+use JPI\SoluxBundle\Form\Type\DeleteType;
 
 abstract class EntityController extends Controller
 {
@@ -92,6 +93,10 @@ abstract class EntityController extends Controller
 				
 	protected function getTemplateUpdate() {
 		return $this->bundleName.':Form:edit.html.twig';
+	}
+				
+	protected function getTemplateDelete() {
+		return $this->bundleName.':Form:delete.html.twig';
 	}
 
 	/* Utils */
@@ -222,7 +227,7 @@ abstract class EntityController extends Controller
 		
 	/* Show */
 	protected function show($entity, $label = null)
-	{	
+	{			
 		if(is_null($label)) {
 			$entityLabel = $entity->getId();
 		} else {
@@ -234,7 +239,8 @@ abstract class EntityController extends Controller
 				"pathDelete" => $this->generateUrl($this->getPathDelete(), array('id' => $entity->getId())),
 				"entityName" => $this->getEntityLabelShow(),
 				"entityLabel" => $entityLabel,
-				"showContent" => $this->getShowAttributes($entity)
+				"showContent" => $this->getShowAttributes($entity),
+				'formDelete' => $this->getFormDelete()->createView(),
 		);
 		
 		if($this->templateShowEntity) {
@@ -258,7 +264,7 @@ abstract class EntityController extends Controller
 	protected function renderUpdate($form, $label = null)
 	{
 		if(is_null($label)) {
-			$entityLabel = $entity->getId();
+			$entityLabel = $this->getManager()->getEntity()->getId();
 		} else {
 			$entityLabel = $label;
 		}
@@ -272,9 +278,27 @@ abstract class EntityController extends Controller
 	}
 
 	/* Delete */	
-	protected function delete($entity)
+	protected function delete(Request $request)
 	{
+		$form = $this->getFormDelete();
+		
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+				
+			$this->deleteEntity();
+			return $this->redirectDelete();
+		}
+		return $this->renderDelete($form);
+	}
+	
+	protected function deleteEntity($entity = null)
+	{
+		if(is_null($entity))
+		{
+			$entity = $this->getManager()->getEntity();
+		}
 		$this->getManager()->delete($entity);
+		$this->flashMsg('delete');
 	}
 	
 	protected function redirectDelete()
@@ -282,12 +306,22 @@ abstract class EntityController extends Controller
 		return $this->redirect($this->generateUrl($this->getPathList()));
 	}
 	
-	protected function renderDelete($form)
+	protected function getFormDelete()
+	{
+		return $this->createForm(new DeleteType());
+	}
+	
+	protected function renderDelete($form, $label = null)
 	{	
-		return $this->render($this->getTemplateUpdate(),array(
-				'form' => $form->createView(),
-				"pathReturn" => $this->generateUrl($this->getPathShow(), array('id' => $this->getManager()->getEntity()->getId())),
-				"entityName" => $this->getEntityLabelEdit(),
+		if(is_null($label)) {
+			$entityLabel = $this->getManager()->getEntity()->getId();
+		} else {
+			$entityLabel = $label;
+		}
+		
+		return $this->render($this->getTemplateDelete(),array(
+				"formDelete" => $form->createView(),
+				"pathDelete" => $this->generateUrl($this->getPathDelete(), array('id' => $this->getManager()->getEntity()->getId())),
 				"entityLabel" => $entityLabel
 		));
 	}

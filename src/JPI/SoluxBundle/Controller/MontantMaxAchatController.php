@@ -72,13 +72,12 @@ class MontantMaxAchatController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_montant_max_achat_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(MontantMaxAchat $id)
+	public function deleteAction(Request $request, MontantMaxAchat $id)
 	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**

@@ -28,7 +28,7 @@
 	      	Voulez-vous supprimer {{ user.username }} ?
 	      </div>
 	      <div class="modal-footer">
-	        <a href="{{ path("jpi_user_delete", { 'id': user.id }) }}" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Supprimer</a>
+	      	{% include "JPIUserBundle:Admin:layout_form_delete.html.twig" %}
 	      </div>
 	    </div>
 	  </div>

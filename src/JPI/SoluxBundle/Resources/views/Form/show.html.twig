@@ -27,7 +27,7 @@
 	      	{% endblock jpi_solux_delete_confirm_message %}
 	      </div>
 	      <div class="modal-footer">
-	        <a href="{{ pathDelete }}" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> {{ 'form.supprimer.button'|trans }}</a>
+	      {% include "JPISoluxBundle:Form:layout_form_delete.html.twig" %}
 	      </div>
 	    </div>
 	  </div>

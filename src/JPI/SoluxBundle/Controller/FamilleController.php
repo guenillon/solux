@@ -54,7 +54,8 @@ class FamilleController extends EntityController
 				"entityName" => $this->getEntityLabelShow(),
 				"entityLabel" => $famille->getNom(),
 				"famille" => $famille,
-				"taux" => $tauxParticipation
+				"taux" => $tauxParticipation,
+				'formDelete' => $this->getFormDelete()->createView(),
 		));
 	}
 	
@@ -82,13 +83,12 @@ class FamilleController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_famille_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(Famille $id)
+	public function deleteAction(Request $request, Famille $id)
 	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**

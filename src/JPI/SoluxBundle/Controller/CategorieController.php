@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JPI\SoluxBundle\Entity\Categorie;
 
+
+
 /**
  * @Route("/categorie")
  */
@@ -72,13 +74,12 @@ class CategorieController extends EntityController
 	
 	/**
 	 * @Route("/delete/{id}", name="jpi_solux_categorie_delete", requirements={"id" = "\d+"})
-	 * @Method({"GET"})
+	 * @Method({"DELETE"})
 	 */
-	public function deleteAction(Categorie $id)
-	{
-		$this->delete($id);
-		$this->flashMsg('delete');
-		return $this->redirectDelete();
+	public function deleteAction(Request $request, Categorie $id)
+	{	
+		$this->getManager()->setEntity($id);
+		return $this->delete($request);
 	}
 	
 	/**
