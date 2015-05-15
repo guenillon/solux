@@ -33,5 +33,10 @@ class FamilleManager extends BaseManager
 	{
 		return $this->deleteEntity($famille);
 	}
+	
+	public function getTauxParticipation(Famille $famille)
+	{
+		return $this->getRepository()->getTauxParticipation($famille->getId());
+	}
 }
 ?>

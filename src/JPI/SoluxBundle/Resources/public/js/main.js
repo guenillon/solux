@@ -1,4 +1,6 @@
 $(document).ready(function() {	
+	 $.fn.dataTable.moment( 'DD/MM/YYYY' );
+	 
 	$('.jpi_table_data_table').DataTable({
 	    "language": {
 		"url": "https://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/French.json"

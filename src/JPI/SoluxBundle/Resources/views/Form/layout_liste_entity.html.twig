@@ -17,7 +17,7 @@
 		</div>
 	</div>
 	<div class="panel-body">
-		<table class="jpi_table_data_table table table-striped table-bordered table-responsive table-condensed table-hover">
+		<table {% block data_table_config  %}{% endblock data_table_config %} class="jpi_table_data_table table table-striped table-bordered table-responsive table-condensed table-hover">
 			{% block liste_entity_table_data  %}
 			{% endblock liste_entity_table_data %}
 		</table>

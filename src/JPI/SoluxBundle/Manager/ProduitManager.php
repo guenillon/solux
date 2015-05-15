@@ -38,5 +38,15 @@ class ProduitManager extends BaseManager
 	{
 		return $this->deleteEntity($produit);
 	}
+	
+	public function findProduitByParametres(Produit $produit, $nbMembre)
+	{
+		return $this->getRepository()->findProduitByParametres($produit, $nbMembre);
+	}
+	
+	public function getProduits($produits)
+	{
+		return $this->getRepository()->getProduits($produits);
+	}
 }
 ?>

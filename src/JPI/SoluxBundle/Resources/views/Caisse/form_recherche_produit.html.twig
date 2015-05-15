@@ -1,0 +1,11 @@
+{{ form_start(form, {'action': path( 'jpi_solux_caisse_produit' , {'id': famille.id } ) }   ) }}
+{{ form_errors(form) }}
+<div class="col-xs-6">
+	{{ form_row(form.codeBarre) }}
+</div>
+<div class="col-xs-6">
+	{{ form_row(form.nom) }}
+</div>
+<input class="hidden" type="submit" />
+{{ form_rest(form) }}
+{{ form_end(form) }}

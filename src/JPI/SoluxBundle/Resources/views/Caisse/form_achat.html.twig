@@ -1,0 +1,162 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% extends "JPISoluxBundle::layout.html.twig" %}
+{% block jpi_solux_content %}
+{% block achat_caisse_config %}{% endblock achat_caisse_config %}
+<div class="panel panel-default">
+	<div class="panel-heading clearfix">
+    	<div class="panel-title">
+			<ul class="list-inline">
+        		<li class="col-xs-12">
+           			<div class="col-xs-3 ">
+           				{% block achat_titre %}
+           				{% endblock achat_titre %}
+					</div>           			
+					<div class="col-xs-3 ">{{ 'caisse.add.famille'|trans }} : {{ famille.prenomChef }} {{ famille.nom }}</div>
+					<div class="col-xs-3 ">{{ 'caisse.add.taux_participation'|trans }} : 
+						{% if achat.taux is null %}
+							<span id="taux" data-taux="1">Indéterminé</span>
+						{% else %}
+							<span id="taux" data-taux="{{ achat.taux }}">{{ (achat.taux *100)|localizednumber  }} %</span>
+						{% endif %}
+					</div>
+					<div class="col-xs-3 ">{{ 'caisse.add.montant_max'|trans }} : 
+						{% if montantMaxAchat is null %}
+							<span id="montantMax" data-montantMax="-1">Aucune limite</span>
+						{% else %}
+							<span id="montantMax" data-montantMax="{{ montantMaxAchat }}">{{ montantMaxAchat|localizedcurrency(currency) }}</span>
+						{% endif %}
+					</div>	
+				</li>
+			</ul>
+		</div>
+  	</div>
+	<div class="panel-body hide-show">	
+	{% include "JPISoluxBundle:Caisse:form_recherche_produit.html.twig" %}
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading clearfix">
+    	<div class="panel-title">
+			<div class="row">
+				<div class="col-md-3">Total : 
+					<span id="total">
+						{% block achat_total %}
+						{% endblock achat_total %}
+					</span> €</div>
+				<div class="col-md-3">Total payé : 
+					<span id="total-paye">
+						{% block achat_total_paye %}
+						{% endblock achat_total_paye %}
+					</span> €</div>
+				<div class="col-md-1 hide-show">
+					<label class="control-label" for="versement">Versement</label>
+				</div>
+				<div class="col-md-2 hide-show">
+					<div class="input-group">
+						<input type="text" class="form-control" id="versement"/>
+						<span class="input-group-addon"> €</span>
+					</div>
+				</div>
+				<div class="col-md-3 hide-show">À rendre : <span id="rendre">0</span> €</div>
+			</div>	
+		</div>
+	</div>
+    <div class="panel-body">
+    	<table data-paging="false" data-searching="false" data-info="false" class="jpi_table_data_table_caisse table table-striped table-bordered table-responsive table-condensed table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Catégorie</th>
+					<th class="text-center">Produit</th>
+					<th class="text-center">Qu</th>
+					<th class="text-center">Pu</th>
+					<th colspan="3" class="text-center">Quantité</th>
+					<th class="text-center">Prix</th>
+					<th class="text-center">Prix Payé</th>
+					<th></th>
+				</tr>
+				<tr class="hidden">
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			{% block tbody_liste_produit %}
+			{% endblock tbody_liste_produit %}	
+		</table>
+		<div>		
+			<div class="hidden">	
+			{{ form_start(form_achat) }}
+			{{ form_errors(form_achat) }}
+			{{ form_rest(form_achat) }}
+			</div>	
+			<div class="form-group">
+				<div class="col-sm-2">
+					<a href="{% block achat_link_return %}{% endblock achat_link_return %}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> {{ 'form.annuler'|trans }}</a>
+				</div>
+				<div class="col-sm-10 ">
+					<button type="submit" class="btn btn-default pull-right" id="btn-submit"><span class="glyphicon glyphicon-ok"></span> {{ 'form.enregistrer'|trans }}</button>
+					{% block achat_link_edit_group %}
+					{% endblock achat_link_edit_group %}
+				</div>
+			</div>
+			<div class="hidden">	
+			{{ form_end(form_achat) }}
+			</div>	
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="produit-inconnu">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.inconnu.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.inconnu.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quantite-max">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.quantite_max.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.quantite_max.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="montant-max">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'caisse.produit.montant_max.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{ 'caisse.produit.montant_max.message'|trans }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block modal_delete %}{% endblock modal_delete %}
+{% endblock jpi_solux_content %}

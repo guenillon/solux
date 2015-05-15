@@ -48,32 +48,31 @@ class ProduitRepository extends EntityRepository
 		;
 	}
 	
-	public function findProduitByParametres($data)
+	public function findProduitByParametres(Produit $produit, $nbMembre)
 	{
 		$query = $this->createQueryBuilder('a');
 			
 		// Si la recherche porte sur le codeBarre	
-		if($data['codeBarre'] != '')
+		if($produit->getCodeBarre() != '')
 		{
 			$query->andWhere('a.codeBarre = :codeBarre')
-			->setParameter('codeBarre', $data['codeBarre']);
+			->setParameter('codeBarre', $produit->getCodeBarre());
 		}
 	
 		// Si la recherche porte sur le nom	
-		if($data['nom'] != '')
+		if($produit->getNom() != '')
 		{
 			$query->andWhere('a.nom = :nom')
-			->setParameter('nom', $data['nom']);
+			->setParameter('nom', $produit->getNom());
 		}
 		
 		$query->leftJoin('a.limites', 'limites', 'WITH', ':nbMembres >= limites.nbMembreMin AND :nbMembres <= limites.nbMembreMax ' )
 			->addSelect('limites')
-			->setParameter('nbMembres', $data['nbMembres'])
+			->setParameter('nbMembres', $nbMembre)
 			->join('a.categorie', 'categorie')
 			->addSelect('categorie');
 	
 		return $query->getQuery()->getResult();
-	
 	}
 }
 ?>

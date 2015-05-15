@@ -27,7 +27,7 @@ class AchatDetailType extends AbstractType
             		"required" => true
             ))
 
-            ->add('taux', 'number', array(
+            ->add('taux', 'text', array(
             		"required" => true
             ))
             ->add('prixPaye', 'money', array(

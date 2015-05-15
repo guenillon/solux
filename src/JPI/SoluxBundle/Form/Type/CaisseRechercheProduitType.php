@@ -30,6 +30,7 @@ class CaisseRechercheProduitType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+        		'data_class' => 'JPI\SoluxBundle\Entity\Produit'
         ));
     }
 

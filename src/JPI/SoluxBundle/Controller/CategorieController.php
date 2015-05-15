@@ -7,8 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JPI\SoluxBundle\Entity\Categorie;
 
-
-
 /**
  * @Route("/categorie")
  */

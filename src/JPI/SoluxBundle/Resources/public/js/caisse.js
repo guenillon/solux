@@ -102,7 +102,6 @@ $(document).ready(function() {
 				    return false;
 			  	});
 			});
-			//majTotal();
 		}
 		
 		if($("#caisse-config").data("add") == "1") {

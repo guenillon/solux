@@ -49,3 +49,7 @@ services:
     jpi_solux.manager.famille:
         class: JPI\SoluxBundle\Manager\FamilleManager
         arguments: ['@doctrine.orm.entity_manager']
+
+    jpi_solux.manager.achat:
+        class: JPI\SoluxBundle\Manager\AchatManager
+        arguments: ['@doctrine.orm.entity_manager']

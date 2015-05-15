@@ -1,0 +1,83 @@
+{% extends "JPISoluxBundle:Caisse:form_achat.html.twig" %}
+
+{% block achat_caisse_config %}
+<div class="hidden" id="caisse-config" data-add="0"></div>
+{% endblock achat_caisse_config %}
+
+{% block achat_titre %}
+	{{ 'caisse.show.titre'|trans }} : {{ achat.date|localizeddate('short', 'none', locale) }}
+{% endblock achat_titre %}
+
+{% block achat_total %}
+	{{ achat.montant|localizednumber }}
+{% endblock achat_total %}
+
+{% block achat_total_paye %}
+	{{ achat.montantPaye|localizednumber }}
+{% endblock achat_total_paye %}
+
+{% block tbody_liste_produit %}
+<tbody>
+	{% for detail in achat.detail %}
+	<tr>
+		<td>{{ detail.produit.id }}</td>
+		<td>{{ detail.produit.categorie.nom }}</td>
+		<td>{{ detail.produit.nom }}</td>
+		<td>{{ detail.produit.quantite|localizednumber }} {{ detail.produit.unite }}</td>
+		<td>{{ detail.produit.prix|localizedcurrency(currency) }}</td>
+		<td><a href="#" id="delete-qte-{{ detail.produit.id }}" class="btn btn-xs btn-block btn-default delete-qte hide-show"
+			data-produit-id="{{ detail.produit.id }}"
+                    data-produit-prix="{{ detail.produit.prix }}"
+                    data-produit-prix_fixe="{{ detail.produit.prixFixe }}"
+                    data-produit-unite="{{ detail.produit.unite }}"
+                    data-produit-quantite="{{ detail.produit.quantite }}"
+                    data-produit-limite-quantite_max="-1"
+                    data-produit-quantite-achat-total="-1"
+				><span class="glyphicon glyphicon-minus-sign"></span></a></td>
+				<td>{{ detail.quantite|localizednumber }} {{ detail.unite }}</td>
+		<td><a href="#" id="add-qte-{{ detail.produit.id }}" class="btn btn-xs btn-block btn-default add-qte hide-show"
+			data-produit-id="{{ detail.produit.id }}"
+                    data-produit-prix="{{ detail.produit.prix }}"
+                    data-produit-prix_fixe="{{ detail.produit.prixFixe }}"
+                    data-produit-unite="{{ detail.produit.unite }}"
+                    data-produit-quantite="{{ detail.produit.quantite }}"
+                    data-produit-limite-quantite_max="-1"
+                    data-produit-quantite-achat-total="-1"
+				><span class="glyphicon glyphicon-plus-sign"></span></a></td>
+				<td>{{ detail.prix|localizedcurrency(currency) }}</td>
+		<td>{{ detail.prixPaye|localizedcurrency(currency) }}</td>
+		<td><a href="#" class="btn btn-xs btn-block btn-default delete-row hide-show" id="delete-row-{{ detail.produit.id }}"><span class="glyphicon glyphicon-remove"></span></a></td>
+	</tr>
+	{% endfor %}
+</tbody>
+{% endblock tbody_liste_produit %}
+
+{% block achat_link_return %}
+	{{ path( 'jpi_solux_caisse_achats_famille', { 'id': famille.id }) }}
+{% endblock achat_link_return %}
+
+{% block achat_link_edit_group %}
+	<span class="btn-group pull-right btn-group-edit"> 
+		<a href="#" class="btn btn-default" id="btn-edit"><span class="glyphicon glyphicon-edit"></span> {{ 'form.modifier'|trans }}</a>
+		<a data-toggle="modal" href="#confirm-action" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> {{ 'form.supprimer.button'|trans }}</a>
+	</span>
+{% endblock achat_link_edit_group %}
+
+{% block modal_delete %}
+<div class="modal fade" id="confirm-action">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title">{{ 'form.supprimer.titre'|trans }}</h4>
+      </div>
+      <div class="modal-body">
+      	<div>{{  'caisse.confirm_delete'|trans }}</div>
+      </div>
+      <div class="modal-footer">
+      	{% include "JPISoluxBundle:Form:layout_form_delete.html.twig" %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal_delete %}

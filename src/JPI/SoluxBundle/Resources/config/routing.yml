@@ -1,42 +1,10 @@
-jpi_solux_caisse:
-    path:     /caisse
-    defaults: { _controller: "JPISoluxBundle:Caisse:liste" }
-
-jpi_solux_caisse_add:
-    path:      /caisse/{id}
-    defaults:  { _controller: "JPISoluxBundle:Caisse:add" }
-    requirements:
-        id: \d+
-
-jpi_solux_caisse_liste_produit:
-    path:     /caisse/produits
-    defaults: { _controller: "JPISoluxBundle:Caisse:listeProduit" }
-
-jpi_solux_caisse_achats:
-    path:     /caisse/achats
-    defaults: { _controller: "JPISoluxBundle:Caisse:listeAchats" }
-    
-jpi_solux_caisse_achats_famille:
-    path:      /caisse/achats/famille/{id}
-    defaults:  { _controller: "JPISoluxBundle:Caisse:listeAchatsFamille" }
-    requirements:
-        id: \d+
-
-jpi_solux_caisse_achats_show:
-    path:      /caisse/achats/{id}
-    defaults:  { _controller: "JPISoluxBundle:Caisse:show" }
-    requirements:
-        id: \d+
-
-jpi_solux_caisse_achats_delete:
-    path:      /caisse/achats/delete/{id}
-    defaults:  { _controller: "JPISoluxBundle:Caisse:delete" }
-    requirements:
-        id: \d+
-
 home_controller:
     resource: "@JPISoluxBundle/Controller/HomeController.php"
     type:     annotation
+
+jpi_solux_caisse_controller:
+    resource: "@JPISoluxBundle/Controller/CaisseController.php"
+    type:     annotation    
 
 jpi_solux_famille_controller:
     resource: "@JPISoluxBundle/Controller/FamilleController.php"
