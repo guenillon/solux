@@ -75,6 +75,7 @@
       	<div>{{  'caisse.confirm_delete'|trans }}</div>
       </div>
       <div class="modal-footer">
+      	{% set pathDelete = path('jpi_solux_caisse_achats_delete', {'id' : achat.id}) %}
       	{% include "JPISoluxBundle:Form:layout_form_delete.html.twig" %}
       </div>
     </div>

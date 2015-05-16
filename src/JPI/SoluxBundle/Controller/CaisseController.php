@@ -95,12 +95,11 @@ class CaisseController extends Controller
     	 
     	return $this->render('JPISoluxBundle:Caisse:edit.html.twig', array(
     			"famille" => $famille,
+    			"achat" => $achat,
     			"montantMaxAchat" => $lMontantMaxActuel,
     			'form' => $form->createView(),
     			'form_achat' => $formAchat->createView(),
-    			"achat" => $achat,
-    			'formDelete' => $formDelete->createView(),
-    			"pathDelete" => $this->generateUrl('jpi_solux_caisse_achats_delete', array('id' => $achat->getId()))
+    			'formDelete' => $formDelete->createView()
     	));
     }
 

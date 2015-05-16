@@ -1,5 +1,6 @@
 {% extends "JPISoluxBundle:Form:show.html.twig" %}
-
+{% set famille = entity.famille %}
+{% set taux = entity.taux %}
 {% block jpi_solux_show_content %}
 <p class="list-group-item">Nom : {{ famille.nom }}</p>
 <p class="list-group-item">Prénom : {{ famille.prenomChef }}</p>

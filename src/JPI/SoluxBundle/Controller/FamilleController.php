@@ -48,13 +48,16 @@ class FamilleController extends EntityController
 		$repository = $this->getDoctrine()->getManager()->getRepository('JPISoluxBundle:Famille');
 		$tauxParticipation = $repository->getTauxParticipation($id);
 		
+		$entity = array();
+		$entity['famille'] = $famille;
+		$entity['taux'] = $tauxParticipation;
+		
 		return $this->render($this->getTemplateShow(), array(
 				"pathEdit" => $this->generateUrl($this->getPathEdit(), array('id' => $famille->getId())),
 				"pathDelete" => $this->generateUrl($this->getPathDelete(), array('id' => $famille->getId())),
 				"entityName" => $this->getEntityLabelShow(),
 				"entityLabel" => $famille->getNom(),
-				"famille" => $famille,
-				"taux" => $tauxParticipation,
+				"entity" => $entity,
 				'formDelete' => $this->getFormDelete()->createView(),
 		));
 	}
