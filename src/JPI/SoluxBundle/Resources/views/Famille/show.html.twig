@@ -1,22 +1,20 @@
 {% extends "JPISoluxBundle:Form:show.html.twig" %}
-{% set famille = entity.famille %}
-{% set taux = entity.taux %}
 {% block jpi_solux_show_content %}
-<p class="list-group-item">Nom : {{ famille.nom }}</p>
-<p class="list-group-item">Prénom : {{ famille.prenomChef }}</p>
-<p class="list-group-item">Date d'entrée : {{ famille.dateEntree|localizeddate('medium', 'none', locale) }}</p>
-<p class="list-group-item">Date de sortie : {{famille.dateSortie is empty ? "" : famille.dateSortie|localizeddate('medium', 'none', locale) }}</p>
+<p class="list-group-item">Nom : {{ entity.famille.nom }}</p>
+<p class="list-group-item">Prénom : {{ entity.famille.prenomChef }}</p>
+<p class="list-group-item">Date d'entrée : {{ entity.famille.dateEntree|localizeddate('medium', 'none', locale) }}</p>
+<p class="list-group-item">Date de sortie : {{entity.famille.dateSortie is empty ? "" : entity.famille.dateSortie|localizeddate('medium', 'none', locale) }}</p>
 <p class="list-group-item">Taux de participation : 
-{% if taux is null %}
+{% if entity.taux is null %}
 	Indéterminé
 {% else %}
-	{{ (taux.taux *100)|localizednumber }} %
+	{{ (entity.taux.taux *100)|localizednumber }} %
 {% endif %}
 </p>
-<p class="list-group-item">Recettes : {{ famille.recettes|localizedcurrency(currency) }}</p>
-<p class="list-group-item">Dépenses : {{ famille.depenses|localizedcurrency(currency) }}</p>
-<p class="list-group-item">Statut professionnel : {{ famille.statutProfessionnel.nom }}</p>
-{% if famille.membres is not empty %}
+<p class="list-group-item">Recettes : {{ entity.famille.recettes|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Dépenses : {{ entity.famille.depenses|localizedcurrency(currency) }}</p>
+<p class="list-group-item">Statut professionnel : {{ entity.famille.statutProfessionnel.nom }}</p>
+{% if entity.famille.membres is not empty %}
 <div class="list-group-item">Membres<br/><br/>
 	<table class="table table-striped table-bordered table-responsive table-condensed table-hover">
 		<thead>
@@ -29,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-	{%- for ligne in famille.membres -%}
+	{%- for ligne in entity.famille.membres -%}
 		<tr>
 			<td>{{ ligne.nom }}</td>
 			<td>{{ ligne.prenom }}</td>
