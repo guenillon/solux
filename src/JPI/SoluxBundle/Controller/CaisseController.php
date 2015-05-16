@@ -12,12 +12,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use JPI\SoluxBundle\Form\Type\DeleteType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @Route("/caisse")
  */
 class CaisseController extends Controller
 {
+	private $parameters;
+	
 	/**
 	 * @Route("/", name="jpi_solux_caisse")
 	 * @Method({"GET"})
@@ -105,10 +109,12 @@ class CaisseController extends Controller
 
     /**
      * @Route("/add/produits", name="jpi_solux_caisse_liste_produit")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
-    public function listeProduitAction() {    	
-    	$data = $this->getRequest()->request->get('id');
+    public function listeProduitAction() {
+    	$this->parameters =array('id' => true );
+    	$parameters = $this->getQuerystringParameters();
+    	$data = $parameters['id'];
 	    $produits = $this->get('jpi_solux.manager.produit')->getProduits($data);
 	    	
 	    foreach($produits as $produit) {
@@ -124,50 +130,81 @@ class CaisseController extends Controller
     
     /**
      * @Route("/produit/{id}", name="jpi_solux_caisse_produit", requirements={"id" = "\d+"})
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
     public function produitAction(Request $request, Famille $famille) {
-    	$serializer = $this->container->get('serializer');
-    	$quantiteAchatProduit = "";
-    	$produitReturn = "";
-    	
-    	// Le formulaire
-    	$produit = new Produit();
-    	$form = $this->createForm(new CaisseRechercheProduitType(), $produit);
-    	
-    	//Mapping des données
-    	$form->handleRequest($request);
-    	
-    	// Si le form est en soumission
-    	if($form->isSubmitted())
-    	{
-    		$produitRecherche = "";    		
-    		// Ne pas envoyer la requête si les deux champs sont vides
-    		if(!(empty($produit->getCodeBarre()) && empty($produit->getNom()))) {
+    	// Récupération des paramètres
+    	$this->parameters =array('jpi_soluxbundle_recherche_produit' => true );
+    	$parameters = $this->getQuerystringParameters();    	
+    	// test des paramètres du formulaire
+    	$parameters = $this->checkQuerystringParameters(array('codeBarre' => true, 'nom' => true, '_token' => false), $parameters['jpi_soluxbundle_recherche_produit']);
+
+		$quantiteAchatProduit = "";
+		$produitReturn = "";
+		$produitRecherche = "";
+    		
+		// Mapping du form
+		$produit = new Produit();
+		$produit->setCodeBarre($parameters['codeBarre']);
+		$produit->setNom($parameters['nom']);
+		
+		// Ne pas envoyer la requête si les deux champs sont vides
+		if(!(empty($produit->getCodeBarre()) && empty($produit->getNom()))) {
     			 				
-    			//On va récupérer la méthode dans le repository afin de trouver le produit
-    			$produits = $this->get('jpi_solux.manager.produit')->findProduitByParametres($produit, $famille->countMembres());
+			//On va récupérer la méthode dans le repository afin de trouver le produit
+			$produits = $this->get('jpi_solux.manager.produit')->findProduitByParametres($produit, $famille->countMembres());
     			
-    			// Traitement du produit si la recherche retoure des produits
-    			if(!empty($produits)) {
-    				$produitRecherche = $produits[0];
-    				// Ne pas charger les produits de la catégorie
-    				$produitRecherche->getCategorie()->eraseProduits();
+			// Traitement du produit si la recherche retoure des produits
+			if(!empty($produits)) {
+				$produitRecherche = $produits[0];
+				// Ne pas charger les produits de la catégorie
+				$produitRecherche->getCategorie()->eraseProduits();
     			
-    				// Si le produit à des limites chargement de la quantité d'achat pour la famille
-    				$limites = $produitRecherche->getLimites();
-    				if(!empty($limites) && isset($limites[0])) {
-    					$quantiteAchatProduit = $this->get('jpi_solux.manager.achat')->getTotalAchatProduitSurPeriode($famille->getId(), $limites[0]->getDuree(), $produitRecherche->getId());
-    				}
-    			}
-    		}
-    		$produitReturn = $produitRecherche;
-    	}
-    	
+				// Si le produit à des limites chargement de la quantité d'achat pour la famille
+				$limites = $produitRecherche->getLimites();
+				if(!empty($limites) && isset($limites[0])) {
+					$quantiteAchatProduit = $this->get('jpi_solux.manager.achat')->getTotalAchatProduitSurPeriode($famille->getId(), $limites[0]->getDuree(), $produitRecherche->getId());
+				}
+			}
+		}
+		$produitReturn = $produitRecherche;
+    		    	
     	// Retour des informations en JSON
+		$serializer = $this->container->get('serializer');
     	$response = new Response($serializer->serialize(array("produit" => $produitReturn, "quantiteAchat" => $quantiteAchatProduit), 'json'));
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
+    }
+    
+    /**
+     * Validate GET parameters.
+     *
+     * @return array
+     *
+     * @throws HttpException
+     */
+    protected function getQuerystringParameters()
+    {
+		return $this->checkQuerystringParameters($this->parameters, $this->get('request')->query->all());
+    }
+    
+    protected function checkQuerystringParameters($listParamaters, $parameters)
+    {
+    	$resolver = new OptionsResolver();
+    	$resolver
+    	->setOptional(array_keys(array_filter($listParamaters, function ($val) {
+    		return (false === $val);
+    	})))
+    	->setRequired(array_keys(array_filter($listParamaters, function ($val) {
+    		return (true === $val);
+    	})))
+    	;
+    	
+		try {
+			return $resolver->resolve($parameters);
+		} catch (\Exception $e) {
+    		throw new HttpException(400, 'Invalid parameters.');
+		}
     }
     
     /**

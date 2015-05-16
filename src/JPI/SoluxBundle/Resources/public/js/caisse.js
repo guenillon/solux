@@ -42,7 +42,7 @@ $(document).ready(function() {
 		
 		function submitSearchProduit(form) {
 			lock = true;
-			$(form).ajaxSubmit({"clearForm":true, "success": addProduit, "dataType": 'json'});
+			$(form).ajaxSubmit({"type":'get', "clearForm":true, "success": addProduit, "dataType": 'json'});
 		}
 		
 		function loadProduit() {
@@ -53,7 +53,7 @@ $(document).ready(function() {
 	
 			if(lId.length > 0) {
 				var lPath = "./produits";
-				$.post(lPath, {'id': lId}, function( data ) {
+				$.get(lPath, {'id': lId}, function( data ) {
 					loadAddProduit(data);		
 				}, "json");
 			}
