@@ -3,7 +3,6 @@ namespace JPI\SoluxBundle\Manager;
 
 use JPI\SoluxBundle\Entity\Achat;
 use JPI\SoluxBundle\Entity\Famille;
-use JPI\SoluxBundle\Form\Type\AchatType;
 use Doctrine\ORM\EntityManager;
 
 class AchatManager
