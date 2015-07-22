@@ -76,7 +76,7 @@ class Famille extends BaseEntity
      * @ORM\Column(name="recettes", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
-     * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\Range(min = -100000, max = 100000000)
      */
     protected $recettes;
 
@@ -86,7 +86,7 @@ class Famille extends BaseEntity
      * @ORM\Column(name="depenses", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
-     * @Assert\Range(min = 0, max = 100000000)
+     * @Assert\Range(min = -100000, max = 100000000)
      */
     protected $depenses;
     

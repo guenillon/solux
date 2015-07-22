@@ -15,12 +15,21 @@ class FamilleRepository extends EntityRepository
 	public function getTauxParticipation($id)
 	{	
 		$lQuery = $this->_em->createQueryBuilder();
+		
+		$lSubquery1 = $this->createQueryBuilder('a');
+		$lSubquery1->select( '(' . $lQuery->expr()->diff('a.recettes', 'a.depenses') .') / sum(membres.pourcentageACharge)' )
+			->JOIN('a.membres', 'membres')
+			->where($lQuery->expr()->eq('a.id', ':id'));
+		
+		$lSubquery2 = $this->createQueryBuilder('c');
+		$lSubquery2->select( '(' . $lQuery->expr()->diff('c.recettes', 'c.depenses') .') / sum(membres2.pourcentageACharge)' )
+		->JOIN('c.membres', 'membres2')
+		->where($lQuery->expr()->eq('c.id', ':id'));
+
 		$lQuery->select('b')
-			->from($this->_entityName, 'a')
 			->from('JPI\SoluxBundle\Entity\TauxParticipation', 'b')
-			->where($lQuery->expr()->eq('a.id', ':id'))
-			->andWhere($lQuery->expr()->gte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.min'))
-			->andWhere($lQuery->expr()->lte($lQuery->expr()->diff('a.recettes', 'a.depenses'), 'b.max'))
+			->Where($lQuery->expr()->gte(sprintf('(%s)', $lSubquery1->getDQL()), 'b.min'))
+			->andWhere($lQuery->expr()->lte(sprintf('(%s)', $lSubquery2->getDQL()), 'b.max'))
 			->setParameter('id', $id);
 
 		return $lQuery

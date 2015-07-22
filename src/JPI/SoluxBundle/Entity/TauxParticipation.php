@@ -31,7 +31,7 @@ class TauxParticipation extends BaseEntity
      *
      * @ORM\Column(name="min", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\GreaterThan(value = -100000)
      */
     protected $min;
 
@@ -40,7 +40,7 @@ class TauxParticipation extends BaseEntity
      *
      * @ORM\Column(name="max", type="decimal", precision=12, scale=2)
      * @Assert\NotBlank()
-     * @Assert\GreaterThan(value = 0)
+     * @Assert\GreaterThan(value = -100000)
      */
     protected $max;
 
