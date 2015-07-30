@@ -35,11 +35,12 @@ class TauxParticipationRepository extends EntityRepository
 
 	public function familleTauxParticipationExiste($famille)
 	{
-		$lQuery = $this->createQueryBuilder('a');
-		$lQuery->where($lQuery->expr()->gte($lQuery->expr()->diff(':recettes', ':depenses'), 'a.min'))
-		->andWhere($lQuery->expr()->lte($lQuery->expr()->diff(':recettes', ':depenses'), 'a.max'))
+		$lQuery = $this->createQueryBuilder('a');		
+		$lQuery->where($lQuery->expr()->gte( $lQuery->expr()->quot($lQuery->expr()->diff(':recettes', ':depenses') , ':pctAchrg'), 'a.min'))
+		->andWhere($lQuery->expr()->lte($lQuery->expr()->quot($lQuery->expr()->diff(':recettes', ':depenses') , ':pctAchrg'), 'a.max'))
 		->setParameter('recettes', $famille->getRecettes())
-		->setParameter('depenses', $famille->getDepenses());
+		->setParameter('depenses', $famille->getDepenses())
+		->setParameter('pctAchrg', $famille->sumPourcentageACharge());
 	
 		return $lQuery
 		->getQuery()

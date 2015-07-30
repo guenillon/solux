@@ -128,6 +128,16 @@ class Famille extends BaseEntity
     {
     	return count($this->membres);
     }
+    
+    public function sumPourcentageACharge()
+    {
+    	$lSum = 0;
+    	foreach($this->membres as $membre)
+    	{
+    		$lSum += $membre->getPourcentageACharge();
+    	}
+    	return $lSum;    	
+    }
 
     /**
      * Get id
@@ -341,6 +351,22 @@ class Famille extends BaseEntity
 	    				null
 	    		);
 	    	}
+    	}
+    }
+    
+    /**
+     * @Assert\Callback
+     */
+    public function isPourcentageAChargeValid(ExecutionContextInterface $context)
+    {
+    	if($this->sumPourcentageACharge() <= 0)
+    	{
+    		$context->addViolationAt(
+    				'membres',
+    				'Il faut au minimum un membre dans la famille',
+    				array(),
+    				null
+    		);
     	}
     }
 }
