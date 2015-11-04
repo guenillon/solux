@@ -273,7 +273,9 @@ class AchatDetail extends BaseEntity
     				null
     		);
     	}
-    	if($this->getPrixPaye() != bcmul($this->getPrix(), $this->getTaux(), 2)) {
+    	if($this->getPrixPaye() != bcmul($this->getPrix(), $this->getTaux(), 2)
+    		&& $this->getPrixPaye() != round(bcmul($this->getPrix(), $this->getTaux(), 3),2)
+    			) {
     		$context->addViolationAt(
     				'prixPaye',
     				'Le prix payé est incorrect.',
